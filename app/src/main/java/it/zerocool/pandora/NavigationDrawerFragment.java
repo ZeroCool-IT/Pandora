@@ -2,9 +2,9 @@ package it.zerocool.pandora;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +26,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     public static final String PREF_FILE_NAME = "preference";
     public static final String KEY_USER_LEARNED_DRAWER = "user_learned_drawer";
+    private static String FRAG_SECTION_ID = "frag_section_id";
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -59,7 +60,7 @@ public class NavigationDrawerFragment extends Fragment {
         adapter = new DrawerAdapter(getActivity(), getData(getActivity()));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+//        recyclerView.setOnClickListener(this);
 
         return layout;
     }
@@ -136,6 +137,33 @@ public class NavigationDrawerFragment extends Fragment {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString(preferenceName, preferenceValue);
     }
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    /*@Override
+    public void onClick(View v) {
+        selectItem(recyclerView.getChildPosition(v));
+
+    }
+
+    private void selectItem(int position) {
+        ContentFragment f = new ContentFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(FRAG_SECTION_ID, position);
+        f.setArguments(bundle);
+        FragmentManager fm = getFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.content_frame, f)
+                .commit();
+        recyclerView.getChildAt(position).setSelected(true);
+        getActivity().setTitle(getResources().getStringArray(R.array.drawer_list)[position]);
+        mDrawerLayout.closeDrawer(recyclerView);
+    }*/
+
+
 
 
 }
