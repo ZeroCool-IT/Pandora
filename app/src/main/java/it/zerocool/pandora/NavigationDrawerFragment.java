@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,7 +41,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     //Commit test
     //2nd commit test
-    public NavigationDrawerFragment() {}
+    public NavigationDrawerFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,9 +59,19 @@ public class NavigationDrawerFragment extends Fragment {
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
 
+
         adapter = new DrawerAdapter(getActivity(), getData(getActivity()));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        selectItem(position);
+
+                    }
+                })
+        );
 //        recyclerView.setOnClickListener(this);
 
         return layout;
@@ -95,7 +107,7 @@ public class NavigationDrawerFragment extends Fragment {
                 super.onDrawerOpened(drawerView);
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
-                    saveToPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, mUserLearnedDrawer+"");
+                    saveToPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, mUserLearnedDrawer + "");
                     getActivity().invalidateOptionsMenu();
 
                 }
@@ -105,7 +117,7 @@ public class NavigationDrawerFragment extends Fragment {
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 //Set transparency of toolbar on drawer slide
                 if (slideOffset < 0.6) {
-                    toolbar.setAlpha(1-slideOffset);
+                    toolbar.setAlpha(1 - slideOffset);
                     Log.d("TEST", "offset " + slideOffset);
                 }
             }
@@ -122,8 +134,6 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
 
-
-
     }
 
     public static void saveToPreferences(Context context, String preferenceName, String preferenceValue) {
@@ -133,21 +143,11 @@ public class NavigationDrawerFragment extends Fragment {
         editor.apply();
     }
 
-    public static  String readFromPreferences(Context context, String preferenceName, String preferenceValue) {
+    public static String readFromPreferences(Context context, String preferenceName, String preferenceValue) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString(preferenceName, preferenceValue);
     }
 
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
-    /*@Override
-    public void onClick(View v) {
-        selectItem(recyclerView.getChildPosition(v));
-
-    }
 
     private void selectItem(int position) {
         ContentFragment f = new ContentFragment();
@@ -158,12 +158,10 @@ public class NavigationDrawerFragment extends Fragment {
         fm.beginTransaction()
                 .replace(R.id.content_frame, f)
                 .commit();
-        recyclerView.getChildAt(position).setSelected(true);
+//        recyclerView.getChildAt(position).setSelected(true);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_list)[position]);
-        mDrawerLayout.closeDrawer(recyclerView);
-    }*/
-
-
+        mDrawerLayout.closeDrawers();
+    }
 
 
 }

@@ -2,6 +2,7 @@ package it.zerocool.pandora;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import it.zerocool.pandora.utilities.Constraints;
 
 public class ContentFragment extends Fragment {
 
-    private static String FRAG_SECTION_ID = "frag_section_id";
+    public static String FRAG_SECTION_ID = "frag_section_id";
 
     private ImageView ivContent;
 
@@ -32,11 +33,15 @@ public class ContentFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_content, container, false);
         ivContent = (ImageView) layout.findViewById(R.id.ivContent);
 
+
         int id = getArguments().getInt(FRAG_SECTION_ID);
+
+//        ivContent.setImageResource(getResources().getStringArray(R.array.drawer_list)[id]);
+        Log.i("ID SELECTION", Integer.valueOf(id).toString());
+
         setUp(id);
-
-
-        return inflater.inflate(R.layout.fragment_content, container, false);
+        return layout;
+//        return inflater.inflate(R.layout.fragment_content, container, false);
 
 
     }
@@ -44,8 +49,11 @@ public class ContentFragment extends Fragment {
     private void setUp(int id) {
 
         switch (id) {
+
             case Constraints.TOSEE:
                 ivContent.setImageResource(R.drawable.ic_tosee);
+                ivContent.invalidate();
+                Log.i("Selection", "TO SEE");
                 break;
             case Constraints.EVENT:
                 ivContent.setImageResource(R.drawable.ic_event);
@@ -70,6 +78,7 @@ public class ContentFragment extends Fragment {
                 break;
             default:
                 break;
+
 
         }
 

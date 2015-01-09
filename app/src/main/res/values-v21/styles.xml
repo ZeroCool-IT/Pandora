@@ -7,5 +7,7 @@
         <item name="android:colorAccent">@color/accentColor</item>
         <item name="android:statusBarColor">@color/primaryColorDark</item>
         <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:fontFamily">@string/font_fontFamily_medium</item>
+
     </style>
 </resources>
