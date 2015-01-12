@@ -1,21 +1,29 @@
 package it.zerocool.pandora;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import it.zerocool.pandora.utilities.Constraints;
+import java.util.ArrayList;
+import java.util.List;
+
+import it.zerocool.pandora.model.Cardable;
+import it.zerocool.pandora.model.Eat;
 
 
 public class ContentFragment extends Fragment {
 
     public static String FRAG_SECTION_ID = "frag_section_id";
 
-    private ImageView ivContent;
+    private RecyclerView rvContent;
+    private ContentAdapter adapter;
+
+//    private ImageView ivContent;
 
     public ContentFragment() {
         // Required empty public constructor
@@ -31,22 +39,39 @@ public class ContentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_content, container, false);
-        ivContent = (ImageView) layout.findViewById(R.id.ivContent);
+        rvContent = (RecyclerView) layout.findViewById(R.id.content_recycler_view);
+        rvContent.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        adapter = new ContentAdapter(getActivity(), getData(getActivity()));
+        rvContent.setAdapter(adapter);
+
+
+//        ivContent = (ImageView) layout.findViewById(R.id.ivContent);
 
 
         int id = getArguments().getInt(FRAG_SECTION_ID);
 
-//        ivContent.setImageResource(getResources().getStringArray(R.array.drawer_list)[id]);
-        Log.i("ID SELECTION", Integer.valueOf(id).toString());
 
-        setUp(id);
+//        setUp(id);
         return layout;
-//        return inflater.inflate(R.layout.fragment_content, container, false);
 
 
     }
 
-    private void setUp(int id) {
+    private List<Cardable> getData(Context context) {
+        List<Cardable> data = new ArrayList<Cardable>();
+        int[] imagery = {R.drawable.im_restaurant, R.drawable.im_pizza, R.drawable.im_pub, R.drawable.im_pizza_grill, R.drawable.im_fastfood, R.drawable.im_holycow, R.drawable.im_bakery, R.drawable.im_brunch};
+        String[] places = context.getResources().getStringArray(R.array.content_test_array);
+        for (int i = 0; i < places.length; i++) {
+            Eat current = new Eat(i);
+            current.setName(places[i]);
+            current.setImage(Integer.valueOf(imagery[i]).toString());
+            data.add(current);
+        }
+        return data;
+    }
+
+/*    private void setUp(int id) {
 
         switch (id) {
 
@@ -82,7 +107,7 @@ public class ContentFragment extends Fragment {
 
         }
 
-    }
+    }*/
 
 
 }

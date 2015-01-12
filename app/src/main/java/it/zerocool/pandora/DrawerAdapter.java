@@ -69,31 +69,4 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
 
         }
     }
-
-/*    private class DrawerItemClickListener implements RecyclerView.OnClickListener {
-
-        *//**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     *//*
-        @Override
-        public void onClick(View v) {
-
-        }
-
-        private void selectItem(int position) {
-            ContentFragment f = new ContentFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt(ContentFragment.FRAG_SECTION_ID, position);
-            f.setArguments(bundle);
-            FragmentManager fm = f.getFragmentManager();
-            fm.beginTransaction()
-                    .replace(R.id.content_frame, f)
-                    .commit();
-            *//*recyclerView.getChildAt(position).setSelected(true);
-            context.setTitle(getResources().getStringArray(R.array.drawer_list)[position]);
-            mDrawerLayout.closeDrawer(recyclerView);*//*
-        }
-    }*/
 }

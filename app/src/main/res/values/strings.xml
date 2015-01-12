@@ -22,4 +22,15 @@
         <item>About</item>
     </string-array>
 
+    <string-array name="content_test_array">
+        <item>Mickey Mouse Restaurant</item>
+        <item>Goofy\'s Pizza</item>
+        <item>Donald Duck Pub</item>
+        <item>Huey, Dewey e Louie Pizza and Grill</item>
+        <item>Scrooge McDuck Fast food</item>
+        <item>"Holy cow!" by Clarabelle Cow</item>
+        <item>Minnie Mouse House of Cake</item>
+        <item>Brunch with Daisy Duck</item>
+    </string-array>
+
 </resources>

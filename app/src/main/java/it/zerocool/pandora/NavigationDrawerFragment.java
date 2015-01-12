@@ -72,7 +72,6 @@ public class NavigationDrawerFragment extends Fragment {
                     }
                 })
         );
-//        recyclerView.setOnClickListener(this);
 
         return layout;
     }
@@ -81,7 +80,6 @@ public class NavigationDrawerFragment extends Fragment {
         List<DrawerItem> data = new ArrayList<DrawerItem>();
         int[] icons = {R.drawable.ic_tosee, R.drawable.ic_event, R.drawable.ic_eat, R.drawable.ic_sleep, R.drawable.ic_news, R.drawable.ic_shop, R.drawable.ic_services, R.drawable.ic_about};
         String[] titles = context.getResources().getStringArray(R.array.drawer_list);
-        //String [] titles = {"To See", "Event", "Eat", "Sleep", "News", "Shop", "Services", "About"};
         for (int i = 0; i < titles.length && i < icons.length; i++) {
             DrawerItem current = new DrawerItem();
             current.iconID = icons[i];
