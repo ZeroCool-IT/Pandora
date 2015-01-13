@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.zerocool.pandora.utilities.Constraints;
+
 
 /**
  *
@@ -122,7 +124,10 @@ public class NavigationDrawerFragment extends Fragment {
         };
         if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
             mDrawerLayout.openDrawer(containerView);
+        } else {
+            selectItem(Constraints.TOSEE);
         }
+
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerLayout.post(new Runnable() {
             @Override
@@ -156,9 +161,14 @@ public class NavigationDrawerFragment extends Fragment {
         fm.beginTransaction()
                 .replace(R.id.content_frame, f)
                 .commit();
-//        recyclerView.getChildAt(position).setSelected(true);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_list)[position]);
         mDrawerLayout.closeDrawers();
+    }
+
+    private void drawSelected(int position) {
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+//            adapter.
+        }
     }
 
 

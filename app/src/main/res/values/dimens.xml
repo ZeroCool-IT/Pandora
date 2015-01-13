@@ -3,4 +3,5 @@
     <dimen name="nav_drawer_width">280dp</dimen>
     <dimen name="app_bar_top_padding">0dp</dimen>
     <dimen name="drawer_margin_top">24dp</dimen>
+    <dimen name="content_recycler_top_margin">@dimen/abc_action_bar_default_height_material</dimen>
 </resources>

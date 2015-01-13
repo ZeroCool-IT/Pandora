@@ -8,19 +8,25 @@
     android:padding="8dp"
     card_view:cardCornerRadius="4dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:layout_weight="1"
-        android:orientation="vertical">
 
-        <RelativeLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+        android:orientation="vertical">
 
-            <ImageView
+        <TextView
+            android:padding="16dp"
+            android:id="@+id/content_header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Header"
+            android:textSize="24sp"
+            android:textColor="@color/text87"
+            android:fontFamily="sans-serif" />
+
+        <ImageView
+            android:layout_weight="1"
                 android:id="@+id/content_imagery"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -28,33 +34,6 @@
                 android:contentDescription="@string/iv_card_imagery"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_abstract" />
-
-            <TextView
-                android:id="@+id/content_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/content_imagery"
-                android:text="Dummy Place"
-                style="@style/CardOverlayText"
-                android:gravity="center"
-                android:padding="8dp" />
-        </RelativeLayout>
-
-
-        <Button
-            android:id="@+id/card_button"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="end"
-            android:drawableEnd="@drawable/ic_chevron_right_grey600_36dp"
-            android:drawableRight="@drawable/ic_chevron_right_grey600_36dp"
-            android:text="@string/bt_card_details"
-            android:textAllCaps="true"
-            android:fontFamily="sans-serif"
-            android:textColor="@color/accentColor"
-            android:textSize="14sp" />
 
     </LinearLayout>
 

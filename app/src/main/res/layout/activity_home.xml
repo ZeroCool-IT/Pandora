@@ -3,12 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/content_frame"
-        android:fitsSystemWindows="true"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         tools:context=".HomeActivity">
@@ -19,7 +17,7 @@
 
 
     </RelativeLayout>
-    
+
     <fragment
         android:id="@+id/fragment_navigation_drawer"
         android:layout_width="280dp"

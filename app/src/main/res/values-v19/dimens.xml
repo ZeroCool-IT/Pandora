@@ -2,4 +2,5 @@
 <resources>
     <dimen name="app_bar_top_padding">24dp</dimen>
     <dimen name="drawer_margin_top">48dp</dimen>
+    <dimen name="content_recycler_top_margin">80dp</dimen>
 </resources>
