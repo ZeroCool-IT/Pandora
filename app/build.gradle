@@ -8,8 +8,8 @@ android {
         applicationId "it.zerocool.pandora"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 6
-        versionName "0.14a"
+        versionCode 7
+        versionName "0.15a"
     }
     buildTypes {
         release {

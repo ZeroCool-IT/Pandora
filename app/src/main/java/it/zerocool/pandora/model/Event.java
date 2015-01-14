@@ -6,6 +6,7 @@
 package it.zerocool.pandora.model;
 
 import android.location.Location;
+import android.text.TextUtils;
 
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -329,6 +330,6 @@ public class Event implements Cardable {
      */
     @Override
     public String getSubheader() {
-        return null;
+        return TextUtils.join(", ", getTags());
     }
 }

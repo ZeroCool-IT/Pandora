@@ -7,6 +7,7 @@ package it.zerocool.pandora.model;
 
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.text.TextUtils;
 
 import java.util.LinkedList;
 import java.util.Locale;
@@ -263,6 +264,6 @@ public class Place implements Cardable {
      */
     @Override
     public String getSubheader() {
-        return null;
+        return TextUtils.join(", ", getTags());
     }
 }

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private View containerView;
     private RecyclerView recyclerView;
+    private View previousSelected;
 
     private DrawerAdapter adapter;
 
@@ -70,6 +72,7 @@ public class NavigationDrawerFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         selectItem(position);
+//                        drawSelected(view);
 
                     }
                 })
@@ -80,7 +83,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     public static List<DrawerItem> getData(Context context) {
         List<DrawerItem> data = new ArrayList<DrawerItem>();
-        int[] icons = {R.drawable.ic_tosee, R.drawable.ic_event, R.drawable.ic_eat, R.drawable.ic_sleep, R.drawable.ic_news, R.drawable.ic_shop, R.drawable.ic_services, R.drawable.ic_about};
+        int[] icons = {R.drawable.ic_beenhere_grey600_36dp, R.drawable.ic_event_note_grey600_36dp, R.drawable.ic_local_restaurant_grey600_36dp, R.drawable.ic_local_hotel_grey600_36dp, R.drawable.ic_newspaper_grey600_36dp, R.drawable.ic_local_mall_grey600_36dp, R.drawable.ic_directions_train_grey600_36dp, R.drawable.ic_local_library_grey600_36dp};
         String[] titles = context.getResources().getStringArray(R.array.drawer_list);
         for (int i = 0; i < titles.length && i < icons.length; i++) {
             DrawerItem current = new DrawerItem();
@@ -153,22 +156,29 @@ public class NavigationDrawerFragment extends Fragment {
 
 
     private void selectItem(int position) {
-        ContentFragment f = new ContentFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(FRAG_SECTION_ID, position);
-        f.setArguments(bundle);
-        FragmentManager fm = getFragmentManager();
-        fm.beginTransaction()
-                .replace(R.id.content_frame, f)
-                .commit();
-        getActivity().setTitle(getResources().getStringArray(R.array.drawer_list)[position]);
-        mDrawerLayout.closeDrawers();
+        if (position != Constraints.ABOUT) {
+            ContentFragment f = new ContentFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt(FRAG_SECTION_ID, position);
+            f.setArguments(bundle);
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction()
+                    .replace(R.id.content_frame, f)
+                    .commit();
+            getActivity().setTitle(getResources().getStringArray(R.array.drawer_list)[position]);
+//        drawSelected(view);
+            mDrawerLayout.closeDrawers();
+        } else {
+            //TODO About fragment
+        }
     }
 
-    private void drawSelected(int position) {
-        for (int i = 0; i < adapter.getItemCount(); i++) {
-//            adapter.
-        }
+    private void drawSelected(View view) {
+        TextView prevTv = (TextView) previousSelected.findViewById(R.id.listText);
+        prevTv.setTextColor(getResources().getColor(R.color.text87));
+        TextView tv = (TextView) view.findViewById(R.id.listText);
+        tv.setTextColor(getResources().getColor(R.color.primaryColor));
+        previousSelected = view;
     }
 
 

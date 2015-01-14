@@ -78,7 +78,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
     public void onBindViewHolder(ContentAdapter.ContentViewHolder holder, int position) {
         Cardable current = contentItems.get(position);
         holder.header.setText(current.getHeader());
-        Picasso.with(context).load(Integer.parseInt(current.getImagery())).into(holder.imagery);
+        holder.subHeader.setText(current.getSubheader());
+        Picasso.with(context).
+                load(R.drawable.im_blurred_restaurant_placeholder).
+                placeholder(R.drawable.im_blurred_restaurant_placeholder).
+                error(R.drawable.im_blurred_restaurant_placeholder).
+                into(holder.imagery);
         ;
         //TODO retrieve image from web
     }
@@ -90,20 +95,23 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
      */
     @Override
     public int getItemCount() {
-
-        return contentItems.size();
+        if (contentItems != null)
+            return contentItems.size();
+        else
+            return 0;
     }
 
     class ContentViewHolder extends RecyclerView.ViewHolder {
 
         TextView header;
+        TextView subHeader;
         ImageView imagery;
 
         public ContentViewHolder(View itemView) {
             super(itemView);
             header = (TextView) itemView.findViewById(R.id.content_header);
+            subHeader = (TextView) itemView.findViewById(R.id.content_subheader);
             imagery = (ImageView) itemView.findViewById(R.id.content_imagery);
-            //TODO Card button and its Click Listener
         }
 
     }
