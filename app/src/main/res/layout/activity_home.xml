@@ -24,7 +24,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:layout="@layout/fragment_navigation_drawer"
-        android:name="it.zerocool.pandora.NavigationDrawerFragment"
+        android:name="it.zerocool.batmacaana.NavigationDrawerFragment"
         tools:layout="@layout/fragment_navigation_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

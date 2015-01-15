@@ -1,9 +1,9 @@
 /**
  * Project: Pandora
- * File it.zerocool.pandora.utility/RequestUtilities.java
+ * File it.zerocool.batmacaana.utility/RequestUtilities.java
  * @author Marco Battisti
  */
-package it.zerocool.pandora.utilities;
+package it.zerocool.batmacaana.utilities;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginTop="@dimen/content_recycler_top_margin"
-    tools:context="it.zerocool.pandora.ContentFragment">
+    tools:context="it.zerocool.batmacaana.ContentFragment">
 
 
     <android.support.v7.widget.RecyclerView

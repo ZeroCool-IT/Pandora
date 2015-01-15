@@ -1,4 +1,4 @@
-package it.zerocool.pandora;
+package it.zerocool.batmacaana;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

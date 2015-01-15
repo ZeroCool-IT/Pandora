@@ -1,9 +1,9 @@
 /**
  * Project: Pandora
- * File it.zerocool.pandora.utility/Contraints.java
+ * File it.zerocool.batmacaana.utility/Contraints.java
  * @author Marco Battisti
  */
-package it.zerocool.pandora.utilities;
+package it.zerocool.batmacaana.utilities;
 
 /**
  * Class containing constraint values

@@ -1,9 +1,9 @@
 /**
  * Project: Pandora
- * File it.zerocool.pandora.utility/ParsingUtilities.java
+ * File it.zerocool.batmacaana.utility/ParsingUtilities.java
  * @author Marco Battisti
  */
-package it.zerocool.pandora.utilities;
+package it.zerocool.batmacaana.utilities;
 
 import android.location.Location;
 import android.util.Log;
@@ -16,17 +16,17 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
-import it.zerocool.pandora.model.Cardable;
-import it.zerocool.pandora.model.ContactCard;
-import it.zerocool.pandora.model.Eat;
-import it.zerocool.pandora.model.Event;
-import it.zerocool.pandora.model.News;
-import it.zerocool.pandora.model.Place;
-import it.zerocool.pandora.model.Service;
-import it.zerocool.pandora.model.Shop;
-import it.zerocool.pandora.model.Sleep;
-import it.zerocool.pandora.model.TimeCard;
-import it.zerocool.pandora.model.ToSee;
+import it.zerocool.batmacaana.model.Cardable;
+import it.zerocool.batmacaana.model.ContactCard;
+import it.zerocool.batmacaana.model.Eat;
+import it.zerocool.batmacaana.model.Event;
+import it.zerocool.batmacaana.model.News;
+import it.zerocool.batmacaana.model.Place;
+import it.zerocool.batmacaana.model.Service;
+import it.zerocool.batmacaana.model.Shop;
+import it.zerocool.batmacaana.model.Sleep;
+import it.zerocool.batmacaana.model.TimeCard;
+import it.zerocool.batmacaana.model.ToSee;
 
 /**
  * Utility class for data parsing
@@ -148,6 +148,8 @@ public class ParsingUtilities {
 
         } catch (JSONException e) {
             Log.e("JSON Exception", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            Log.e("Coordinate conversion exception", e.getMessage());
         }
         return result;
 

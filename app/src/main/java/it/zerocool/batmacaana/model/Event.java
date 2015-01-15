@@ -1,9 +1,9 @@
 /**
  * Project: Pandora
- * File: it.zerocool.pandora.model/Event.java
+ * File: it.zerocool.batmacaana.model/Event.java
  * @author Marco Battisti
  */
-package it.zerocool.pandora.model;
+package it.zerocool.batmacaana.model;
 
 import android.location.Location;
 import android.text.TextUtils;
@@ -13,8 +13,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-import it.zerocool.pandora.utilities.Constraints;
-import it.zerocool.pandora.utilities.ParsingUtilities;
+import it.zerocool.batmacaana.utilities.Constraints;
+import it.zerocool.batmacaana.utilities.ParsingUtilities;
 
 /**
  * Public class representing city's events

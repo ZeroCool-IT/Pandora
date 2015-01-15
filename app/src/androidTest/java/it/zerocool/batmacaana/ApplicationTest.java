@@ -1,4 +1,4 @@
-package it.zerocool.pandora;
+package it.zerocool.batmacaana;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

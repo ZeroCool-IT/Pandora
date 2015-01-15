@@ -1,14 +1,14 @@
 /**
  * Project: Pandora
- * File: it.zerocool.pandora.model/News.java
+ * File: it.zerocool.batmacaana.model/News.java
  * @author Marco Battisti
  */
-package it.zerocool.pandora.model;
+package it.zerocool.batmacaana.model;
 
 import java.util.GregorianCalendar;
 
-import it.zerocool.pandora.utilities.Constraints;
-import it.zerocool.pandora.utilities.ParsingUtilities;
+import it.zerocool.batmacaana.utilities.Constraints;
+import it.zerocool.batmacaana.utilities.ParsingUtilities;
 
 /**
  * Public class representing city's news

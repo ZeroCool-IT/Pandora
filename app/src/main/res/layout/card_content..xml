@@ -29,9 +29,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Header"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textColor="@color/primary_text_color"
-                android:fontFamily="sans-serif" />
+                android:fontFamily="sans-serif"
+                android:ellipsize="end"
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/content_subheader"
@@ -44,7 +46,8 @@
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
                 android:ellipsize="end"
-                android:textColor="@color/secondary_text_color" />
+                android:textColor="@color/secondary_text_color"
+                android:maxLines="1" />
         </LinearLayout>
 
 

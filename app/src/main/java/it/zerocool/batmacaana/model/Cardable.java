@@ -1,10 +1,10 @@
 /**
  * Project: Pandora
- * File: it.zerocool.pandora.model/Cardable.java
+ * File: it.zerocool.batmacaana.model/Cardable.java
  * @author Marco Battisti
  */
 
-package it.zerocool.pandora.model;
+package it.zerocool.batmacaana.model;
 
 /**
  * Public interface representing all the items that can be represented with a CardView

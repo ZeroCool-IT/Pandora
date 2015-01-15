@@ -1,4 +1,4 @@
-package it.zerocool.pandora.dialog;
+package it.zerocool.batmacaana.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-import it.zerocool.pandora.R;
+import it.zerocool.batmacaana.R;
 
 /**
  * Created by Marco on 14/01/2015.

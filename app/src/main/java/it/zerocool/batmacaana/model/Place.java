@@ -1,9 +1,9 @@
 /**
  * Project: Pandora
- * File it.zerocool.pandora.model/Place.java
+ * File it.zerocool.batmacaana.model/Place.java
  * @author Marco Battisti
  */
-package it.zerocool.pandora.model;
+package it.zerocool.batmacaana.model;
 
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-import it.zerocool.pandora.utilities.Constraints;
+import it.zerocool.batmacaana.utilities.Constraints;
 
 /**
  * Class representing city's places

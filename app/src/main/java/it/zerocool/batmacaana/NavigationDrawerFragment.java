@@ -1,4 +1,4 @@
-package it.zerocool.pandora;
+package it.zerocool.batmacaana;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,7 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.zerocool.pandora.utilities.Constraints;
+import it.zerocool.batmacaana.utilities.Constraints;
 
 
 /**
@@ -127,9 +127,9 @@ public class NavigationDrawerFragment extends Fragment {
         };
         if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
             mDrawerLayout.openDrawer(containerView);
-        } else {
-            selectItem(Constraints.TOSEE);
         }
+        selectItem(Constraints.TOSEE);
+
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerLayout.post(new Runnable() {

@@ -1,4 +1,4 @@
-package it.zerocool.pandora;
+package it.zerocool.batmacaana;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Collections;
 import java.util.List;
 
-import it.zerocool.pandora.model.Cardable;
+import it.zerocool.batmacaana.model.Cardable;
 
 /**
  * Created by Marco on 11/01/2015.
@@ -79,12 +79,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         Cardable current = contentItems.get(position);
         holder.header.setText(current.getHeader());
         holder.subHeader.setText(current.getSubheader());
+        String imgUri = "http://www.ilmiositodemo.altervista.org/app/images/big/" + current.getImagery();
         Picasso.with(context).
-                load(R.drawable.im_blurred_restaurant_placeholder).
+                load(imgUri).
                 placeholder(R.drawable.im_blurred_restaurant_placeholder).
                 error(R.drawable.im_blurred_restaurant_placeholder).
                 into(holder.imagery);
-        ;
+
         //TODO retrieve image from web
     }
 

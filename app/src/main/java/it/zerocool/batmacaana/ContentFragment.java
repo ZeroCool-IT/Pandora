@@ -1,4 +1,4 @@
-package it.zerocool.pandora;
+package it.zerocool.batmacaana;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -17,12 +17,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.zerocool.pandora.dialog.WarningDialog;
-import it.zerocool.pandora.model.Cardable;
-import it.zerocool.pandora.model.Eat;
-import it.zerocool.pandora.utilities.Constraints;
-import it.zerocool.pandora.utilities.ParsingUtilities;
-import it.zerocool.pandora.utilities.RequestUtilities;
+import it.zerocool.batmacaana.dialog.WarningDialog;
+import it.zerocool.batmacaana.model.Cardable;
+import it.zerocool.batmacaana.model.Eat;
+import it.zerocool.batmacaana.utilities.Constraints;
+import it.zerocool.batmacaana.utilities.ParsingUtilities;
+import it.zerocool.batmacaana.utilities.RequestUtilities;
 
 
 public class ContentFragment extends Fragment {

@@ -3,20 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DADADA"
-    tools:context="it.zerocool.pandora.NavigationDrawerFragment">
+    tools:context="it.zerocool.batmacaana.NavigationDrawerFragment">
 
     <LinearLayout
         android:id="@+id/containerDrawerImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#64c768">
+        android:background="@color/primaryColor">
 
         <ImageView
             android:layout_width="280dp"
             android:layout_height="140dp"
             android:layout_marginTop="@dimen/drawer_margin_top"
-            android:src="@drawable/ic_abstract2"
-            android:layout_marginBottom="16dp" />
+            android:src="@drawable/im_logo"
+            android:layout_marginBottom="16dp"
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 

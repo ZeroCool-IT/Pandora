@@ -1,4 +1,4 @@
-package it.zerocool.pandora;
+package it.zerocool.batmacaana;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
