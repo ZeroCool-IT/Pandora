@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +37,8 @@ public class ContentFragment extends Fragment {
     private View layout;
     private LayoutInflater inflater;
     private ViewGroup container;
+    private ProgressBar progressBar;
+
 
 //    private ImageView ivContent;
 
@@ -55,6 +58,7 @@ public class ContentFragment extends Fragment {
         this.inflater = inflater;
         this.container = container;
         layout = inflater.inflate(R.layout.fragment_content, container, false);
+        progressBar = (ProgressBar) layout.findViewById(R.id.progressBar);
         rvContent = (RecyclerView) layout.findViewById(R.id.content_recycler_view);
         rvContent.setLayoutManager(new LinearLayoutManager(getActivity()));
         int id = getArguments().getInt(FRAG_SECTION_ID);
@@ -196,6 +200,8 @@ public class ContentFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(List<Cardable> cardables) {
+            progressBar.setVisibility(View.INVISIBLE);
+            rvContent.setVisibility(View.VISIBLE);
             if (cardables.isEmpty()) {
                 ContentFallbackFragment f = new ContentFallbackFragment();
                 FragmentManager fm = getFragmentManager();
@@ -208,6 +214,18 @@ public class ContentFragment extends Fragment {
                 adapter = new ContentAdapter(getActivity(), cardables);
                 rvContent.setAdapter(adapter);
             }
+        }
+
+        /**
+         * Runs on the UI thread before {@link #doInBackground}.
+         *
+         * @see #onPostExecute
+         * @see #doInBackground
+         */
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            rvContent.setVisibility(View.INVISIBLE);
         }
     }
 
