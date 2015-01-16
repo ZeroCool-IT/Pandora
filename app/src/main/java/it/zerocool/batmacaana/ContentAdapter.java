@@ -82,8 +82,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         String imgUri = "http://www.ilmiositodemo.altervista.org/app/images/big/" + current.getImagery();
         Picasso.with(context).
                 load(imgUri).
-                placeholder(R.drawable.im_blurred_restaurant_placeholder).
-                error(R.drawable.im_blurred_restaurant_placeholder).
+                placeholder(R.drawable.im_placeholeder).
+                error(R.drawable.im_broken_imagery).
                 into(holder.imagery);
 
         //TODO retrieve image from web
