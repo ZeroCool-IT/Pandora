@@ -11,7 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +38,7 @@ public class ContentFragment extends Fragment {
     private View layout;
     private LayoutInflater inflater;
     private ViewGroup container;
-    private ProgressBar progressBar;
+    private ProgressBarCircularIndeterminate progressBar;
 
 
 //    private ImageView ivContent;
@@ -58,7 +59,7 @@ public class ContentFragment extends Fragment {
         this.inflater = inflater;
         this.container = container;
         layout = inflater.inflate(R.layout.fragment_content, container, false);
-        progressBar = (ProgressBar) layout.findViewById(R.id.progressBar);
+        progressBar = (ProgressBarCircularIndeterminate) layout.findViewById(R.id.progressBar);
         rvContent = (RecyclerView) layout.findViewById(R.id.content_recycler_view);
         rvContent.setLayoutManager(new LinearLayoutManager(getActivity()));
         int id = getArguments().getInt(FRAG_SECTION_ID);

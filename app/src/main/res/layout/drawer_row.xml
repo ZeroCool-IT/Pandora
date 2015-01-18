@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:orientation="horizontal">
+    ripple:rv_centered="false"
+    app:rv_color="@color/ripple_color"
+    app:rv_alpha="90">
 
     <ImageView
         android:padding="8dp"
@@ -30,4 +34,4 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textSize="14sp" />
 
-</RelativeLayout>
+</com.andexert.library.RippleView>

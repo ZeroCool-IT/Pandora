@@ -6,4 +6,6 @@
     <color name="text87">#de000000</color>
     <color name="primary_text_color">#212121</color>
     <color name="secondary_text_color">#727272</color>
+    <color name="ripple_color">#B6B6B6</color>
+    <color name="transparent_bg">#00FFFFFF</color>
 </resources>
