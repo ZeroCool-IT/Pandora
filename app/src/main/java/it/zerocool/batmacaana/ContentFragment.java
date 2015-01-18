@@ -131,10 +131,14 @@ public class ContentFragment extends Fragment {
             Bundle arguments = new Bundle();
             arguments.putString(WarningDialog.TITLE, title);
             arguments.putString(WarningDialog.MESSAGE, message);
-            arguments.putInt(WarningDialog.ICON, R.drawable.ic_connection_failure);
+            arguments.putInt(WarningDialog.ICON, R.drawable.ic_error_red_36dp);
             dialog.setArguments(arguments);
             dialog.show(getFragmentManager(), "No Connection warning");
+            Bundle fallbackArgs = new Bundle();
+            fallbackArgs.putInt(ContentFallbackFragment.FALLBACK_TYPE_ARG, Constraints.CONNECTION_ERROR);
+            fallbackArgs.putInt(ContentFallbackFragment.FALLBACK_REFRESH_ARG, getArguments().getInt(FRAG_SECTION_ID));
             ContentFallbackFragment f = new ContentFallbackFragment();
+            f.setArguments(fallbackArgs);
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction()
                     .replace(R.id.content_frame, f)
@@ -202,15 +206,36 @@ public class ContentFragment extends Fragment {
         protected void onPostExecute(List<Cardable> cardables) {
             progressBar.setVisibility(View.INVISIBLE);
             rvContent.setVisibility(View.VISIBLE);
-            if (cardables.isEmpty()) {
-                ContentFallbackFragment f = new ContentFallbackFragment();
-                FragmentManager fm = getFragmentManager();
+            Bundle args = new Bundle();
+            args.putInt(ContentFallbackFragment.FALLBACK_REFRESH_ARG, getArguments().getInt(FRAG_SECTION_ID));
+            ContentFallbackFragment f = new ContentFallbackFragment();
+            FragmentManager fm = getFragmentManager();
+
+            if (cardables != null && cardables.isEmpty()) {
+                args.putInt(ContentFallbackFragment.FALLBACK_TYPE_ARG, Constraints.NO_RESULTS);
+                f.setArguments(args);
                 fm.beginTransaction()
                         .replace(R.id.content_frame, f)
                         .commit();
                 Log.i("TASK", "No results!");
+
+            } else if (cardables == null) {
+                String title = getResources().getString(R.string.dialog_title_uhoh);
+                String message = getResources().getString(R.string.dialog_message_error);
+                WarningDialog dialog = new WarningDialog();
+                Bundle arguments = new Bundle();
+                arguments.putString(WarningDialog.TITLE, title);
+                arguments.putString(WarningDialog.MESSAGE, message);
+                arguments.putInt(WarningDialog.ICON, R.drawable.ic_error_red_36dp);
+                dialog.setArguments(arguments);
+                dialog.show(getFragmentManager(), "Error retrieving data");
+                args.putInt(ContentFallbackFragment.FALLBACK_TYPE_ARG, Constraints.CONNECTION_ERROR);
+                f.setArguments(args);
+                fm.beginTransaction()
+                        .replace(R.id.content_frame, f)
+                        .commit();
+                Log.i("TASK ERROR", "Failed to get results");
             } else {
-                super.onPostExecute(cardables);
                 adapter = new ContentAdapter(getActivity(), cardables);
                 rvContent.setAdapter(adapter);
             }

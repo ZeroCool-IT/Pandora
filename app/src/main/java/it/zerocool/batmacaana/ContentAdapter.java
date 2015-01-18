@@ -83,7 +83,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         Picasso.with(context).
                 load(imgUri).
                 placeholder(R.drawable.im_placeholeder).
-                error(R.drawable.im_broken_imagery).
+                error(R.drawable.im_noimage).
                 into(holder.imagery);
 
         //TODO retrieve image from web

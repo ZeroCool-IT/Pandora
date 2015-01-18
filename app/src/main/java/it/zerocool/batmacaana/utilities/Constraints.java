@@ -19,6 +19,10 @@ public class Constraints {
     public static final String EMPTY_VALUE = "";
 
 
+    //Error fallback type fragment
+    public static final int CONNECTION_ERROR = 0;
+    public static final int NO_RESULTS = 1;
+
     //Places types
     public static final int TYPE_TOSEE = 1;
     public static final int TYPE_EAT = 2;

@@ -30,7 +30,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     public static final String PREF_FILE_NAME = "preference";
     public static final String KEY_USER_LEARNED_DRAWER = "user_learned_drawer";
-    private static String FRAG_SECTION_ID = "frag_section_id";
+    public static final String FRAG_SECTION_ID = "frag_section_id";
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
