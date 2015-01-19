@@ -86,7 +86,7 @@ public class ParsingUtilities {
      * @param json is the JSON string
      * @return the list of Place objects
      */
-    public static ArrayList<Cardable> parsePlaceFromJSON(String json) {
+    public static ArrayList<Cardable> parsePlaceFromJSON(String json, Location currentLocation) {
         ArrayList<Cardable> result = new ArrayList<Cardable>();
         try {
             JSONObject reader = new JSONObject(json);
@@ -140,6 +140,8 @@ public class ParsingUtilities {
                     t.setClosingDaysFromCSV(toBuild.getString("CLOSINGDAYS"));
                     t.setNotes(toBuild.getString("NOTES"));
                     p.setTimeCard(t);
+                    LocationUtilities.setPlaceDistance(p, currentLocation);
+                    Log.i("DISTANCE TEST", p.getName() + ": " + Float.valueOf(p.getDistanceFromCurrentPosition()).toString());
                     result.add(p);
 
 

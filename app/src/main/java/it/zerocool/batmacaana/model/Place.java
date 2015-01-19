@@ -5,7 +5,6 @@
  */
 package it.zerocool.batmacaana.model;
 
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.text.TextUtils;
 
@@ -26,14 +25,14 @@ public class Place implements Cardable {
     protected String name;
     protected String image;
     protected String fsqrLink;
-    protected Drawable drawableImagery;
+
 
     protected LinkedList<String> tags;
     protected String description;
     protected ContactCard contact;
     protected TimeCard timeCard;
     protected Location location;
-
+    protected float distanceFromCurrentPosition;
 
     /**
      * Public constructor
@@ -207,19 +206,28 @@ public class Place implements Cardable {
         return location;
     }
 
-    /*public void setDrawableImagery(Drawable imagery) {
-        this.drawableImagery = imagery;
-    }
-
-    public Drawable getDrawableImagery() {
-        return drawableImagery;
-    }*/
 
     /**
      * @param location is the location of the place to set
      */
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    /**
+     * @return the distance in meters from the current position
+     */
+    public float getDistanceFromCurrentPosition() {
+        return distanceFromCurrentPosition;
+    }
+
+    /**
+     * Set the distance in meters from the current position
+     *
+     * @param distanceFromCurrentPosition is the distance to set
+     */
+    public void setDistanceFromCurrentPosition(float distanceFromCurrentPosition) {
+        this.distanceFromCurrentPosition = distanceFromCurrentPosition;
     }
 
     /**

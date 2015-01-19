@@ -75,6 +75,11 @@ public class Constraints {
     public static final int DEC_26 = 11;
 
 
+    //Latidude and longitude tags for Shared Preferences
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
+
+
     /**
      *
      */

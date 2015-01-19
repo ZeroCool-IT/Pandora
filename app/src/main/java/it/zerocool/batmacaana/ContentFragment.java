@@ -1,6 +1,8 @@
 package it.zerocool.batmacaana;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,6 +41,7 @@ public class ContentFragment extends Fragment {
     private LayoutInflater inflater;
     private ViewGroup container;
     private ProgressBarCircularIndeterminate progressBar;
+    private Location currentLocation;
 
 
 //    private ImageView ivContent;
@@ -58,6 +61,7 @@ public class ContentFragment extends Fragment {
                              Bundle savedInstanceState) {
         this.inflater = inflater;
         this.container = container;
+        readCurrentLocationFromPreferences();
         layout = inflater.inflate(R.layout.fragment_content, container, false);
         progressBar = (ProgressBarCircularIndeterminate) layout.findViewById(R.id.progressBar);
         rvContent = (RecyclerView) layout.findViewById(R.id.content_recycler_view);
@@ -71,6 +75,17 @@ public class ContentFragment extends Fragment {
 
         return layout;
 
+
+    }
+
+    private void readCurrentLocationFromPreferences() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(NavigationDrawerFragment.PREF_FILE_NAME, Context.MODE_PRIVATE);
+        String latitude = sharedPreferences.getString(Constraints.LATITUDE, null);
+        String longitude = sharedPreferences.getString(Constraints.LONGITUDE, null);
+        Location current = new Location("");
+        current.setLatitude(Location.convert(latitude));
+        current.setLongitude(Location.convert(longitude));
+        currentLocation = current;
 
     }
 
@@ -175,7 +190,7 @@ public class ContentFragment extends Fragment {
                 String json = RequestUtilities.inputStreamToString(is);
                 switch (type) {
                     case Constraints.PLACE:
-                        res = ParsingUtilities.parsePlaceFromJSON(json);
+                        res = ParsingUtilities.parsePlaceFromJSON(json, currentLocation);
                         break;
                     case Constraints.NEWS:
                         res = ParsingUtilities.parseNewsFromJSON(json);
