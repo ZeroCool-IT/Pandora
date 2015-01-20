@@ -332,4 +332,20 @@ public class Event implements Cardable {
     public String getSubheader() {
         return TextUtils.join(", ", getTags());
     }
+
+    /**
+     * Get the accent info, if any
+     *
+     * @return a String representing the accent information of the card
+     */
+    @Override
+    public String getAccentInfo() {
+        /*GregorianCalendar date = getStartDate();
+        Context context = HomeActivity.getContext();
+        String [] array = context.getResources().getStringArray(R.array.month);
+        String month = array[date.get(GregorianCalendar.MONTH)];
+        String day = Integer.valueOf(date.get(GregorianCalendar.DAY_OF_MONTH)).toString();
+        return day + " " + month;*/
+        return null;
+    }
 }

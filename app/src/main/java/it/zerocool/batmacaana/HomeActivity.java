@@ -148,4 +148,9 @@ public class HomeActivity extends ActionBarActivity {
         /*Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         saveLocationToPreferences(location);*/
     }
+
+    public static Context getContext() {
+
+        return getContext();
+    }
 }

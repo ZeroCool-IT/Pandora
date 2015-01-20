@@ -14,41 +14,67 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:paddingLeft="8dp"
             android:layout_weight="1">
 
             <TextView
                 android:paddingTop="16dp"
-                android:paddingLeft="16dp"
+                android:paddingLeft="8dp"
                 android:paddingBottom="4dp"
                 android:paddingRight="16dp"
                 android:id="@+id/content_header"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Header"
                 android:textSize="18sp"
                 android:textColor="@color/primary_text_color"
                 android:fontFamily="sans-serif"
                 android:ellipsize="end"
-                android:maxLines="1" />
+                android:maxLines="2"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/content_accent"
+                android:layout_toEndOf="@+id/content_accent" />
 
             <TextView
                 android:id="@+id/content_subheader"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Tag"
                 android:paddingTop="4dp"
-                android:paddingLeft="16dp"
+                android:paddingLeft="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
                 android:ellipsize="end"
                 android:textColor="@color/secondary_text_color"
-                android:maxLines="1" />
-        </LinearLayout>
+                android:maxLines="1"
+                android:layout_weight="1"
+                android:layout_below="@+id/content_header"
+                android:layout_toRightOf="@+id/content_accent"
+                android:layout_toEndOf="@+id/content_accent" />
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="10,1 Km"
+                android:background="@drawable/circular_textview"
+                android:textColor="@color/secondary_text_color"
+                android:id="@+id/content_accent"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:elevation="5dp" />
+
+        </RelativeLayout>
 
 
         <ImageView
@@ -59,7 +85,7 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/iv_card_imagery"
             android:scaleType="centerInside"
-            android:src="@drawable/im_blurred_restaurant_placeholder" />
+            android:src="@drawable/im_broken_imagery" />
 
     </LinearLayout>
 

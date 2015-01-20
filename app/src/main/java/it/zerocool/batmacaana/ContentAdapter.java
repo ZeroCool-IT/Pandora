@@ -79,6 +79,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         Cardable current = contentItems.get(position);
         holder.header.setText(current.getHeader());
         holder.subHeader.setText(current.getSubheader());
+        String accent = current.getAccentInfo();
+        if (accent == null) {
+            accent = "N/A";
+        }
+        holder.accent.setText(accent);
+
         String imgUri = "http://www.ilmiositodemo.altervista.org/app/images/big/" + current.getImagery();
         Picasso.with(context).
                 load(imgUri).
@@ -106,6 +112,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
         TextView header;
         TextView subHeader;
+        TextView accent;
         ImageView imagery;
 
         public ContentViewHolder(View itemView) {
@@ -113,6 +120,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
             header = (TextView) itemView.findViewById(R.id.content_header);
             subHeader = (TextView) itemView.findViewById(R.id.content_subheader);
             imagery = (ImageView) itemView.findViewById(R.id.content_imagery);
+            accent = (TextView) itemView.findViewById(R.id.content_accent);
         }
 
     }

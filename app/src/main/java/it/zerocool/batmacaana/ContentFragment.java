@@ -19,13 +19,16 @@ import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import it.zerocool.batmacaana.dialog.WarningDialog;
 import it.zerocool.batmacaana.model.Cardable;
 import it.zerocool.batmacaana.model.Eat;
+import it.zerocool.batmacaana.model.Place;
 import it.zerocool.batmacaana.utilities.Constraints;
 import it.zerocool.batmacaana.utilities.ParsingUtilities;
+import it.zerocool.batmacaana.utilities.PlaceComparator;
 import it.zerocool.batmacaana.utilities.RequestUtilities;
 
 
@@ -190,7 +193,11 @@ public class ContentFragment extends Fragment {
                 String json = RequestUtilities.inputStreamToString(is);
                 switch (type) {
                     case Constraints.PLACE:
+                        Log.i("ZEROCOOL", "Current position: " + currentLocation.toString());
                         res = ParsingUtilities.parsePlaceFromJSON(json, currentLocation);
+                        ArrayList<Place> temp = (ArrayList) res;
+                        Collections.sort(temp, new PlaceComparator());
+                        res = (List) temp;
                         break;
                     case Constraints.NEWS:
                         res = ParsingUtilities.parseNewsFromJSON(json);

@@ -31,4 +31,11 @@ public interface Cardable {
      * @return a String representing card's sub-header
      */
     public String getSubheader();
+
+    /**
+     * Get the accent info, if any
+     *
+     * @return a String representing the accent information of the card
+     */
+    public String getAccentInfo();
 }

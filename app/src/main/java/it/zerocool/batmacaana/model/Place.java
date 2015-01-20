@@ -8,6 +8,7 @@ package it.zerocool.batmacaana.model;
 import android.location.Location;
 import android.text.TextUtils;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.StringTokenizer;
@@ -273,5 +274,28 @@ public class Place implements Cardable {
     @Override
     public String getSubheader() {
         return TextUtils.join(", ", getTags());
+    }
+
+    /**
+     * Get the accent info, if any
+     *
+     * @return a String representing the accent information of the card
+     */
+    @Override
+    public String getAccentInfo() {
+        String res;
+        float distance = getDistanceFromCurrentPosition();
+        if (distance > 1000) {
+            distance /= 1000;
+            DecimalFormat format = new DecimalFormat("###.#");
+            res = format.format(distance);
+            res += " Km";
+        } else {
+            DecimalFormat format = new DecimalFormat("###");
+            res = format.format(distance);
+            res += " m";
+        }
+        return res;
+
     }
 }
