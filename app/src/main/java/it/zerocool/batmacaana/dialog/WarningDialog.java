@@ -17,6 +17,7 @@ public class WarningDialog extends DialogFragment {
     private String title;
     private String message;
     private Drawable icon;
+    private AlertDialog.Builder builder;
 
     public static final String TITLE = "title";
     public static final String MESSAGE = "message";
@@ -31,7 +32,7 @@ public class WarningDialog extends DialogFragment {
      * Action performed on creation of dialog
      */
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),
+        builder = new AlertDialog.Builder(getActivity(),
                 AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
         title = getArguments().getString(TITLE);
         message = getArguments().getString(MESSAGE);

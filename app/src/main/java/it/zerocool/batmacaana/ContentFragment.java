@@ -80,8 +80,8 @@ public class ContentFragment extends Fragment {
 
     private void readCurrentLocationFromPreferences() {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(NavigationDrawerFragment.PREF_FILE_NAME, Context.MODE_PRIVATE);
-        String latitude = sharedPreferences.getString(Constraints.LATITUDE, null);
-        String longitude = sharedPreferences.getString(Constraints.LONGITUDE, null);
+        String latitude = sharedPreferences.getString(Constraints.LATITUDE, "41.604742");
+        String longitude = sharedPreferences.getString(Constraints.LONGITUDE, "13.081480");
         Location current = new Location("");
         current.setLatitude(Location.convert(latitude));
         current.setLongitude(Location.convert(longitude));
@@ -201,7 +201,7 @@ public class ContentFragment extends Fragment {
                 return res;
 
             } catch (IOException e) {
-                Log.e("TASK ERROR", e.getMessage());
+                Log.e("ZEROCOOL TASK", e.getMessage());
                 e.printStackTrace();
             }
             return res;
@@ -233,7 +233,7 @@ public class ContentFragment extends Fragment {
                 fm.beginTransaction()
                         .replace(R.id.content_frame, f)
                         .commit();
-                Log.i("TASK", "No results!");
+                Log.i("ZEROCOOL", "No results!");
 
             } else if (cardables == null) {
                 String title = getResources().getString(R.string.dialog_title_uhoh);
@@ -250,7 +250,7 @@ public class ContentFragment extends Fragment {
                 fm.beginTransaction()
                         .replace(R.id.content_frame, f)
                         .commit();
-                Log.i("TASK ERROR", "Failed to get results");
+                Log.e("ZEROCOOL TASK ERROR", "Failed to get results");
             } else {
                 adapter = new ContentAdapter(getActivity(), cardables);
                 rvContent.setAdapter(adapter);

@@ -2,32 +2,39 @@ package it.zerocool.batmacaana;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
+import it.zerocool.batmacaana.dialog.LocationWarningDialog;
 import it.zerocool.batmacaana.utilities.Constraints;
 
 
 public class HomeActivity extends ActionBarActivity {
 
-    private Toolbar toolbar;
     public static final String PREF_LOCATION = "location";
     public static final int LOCATION_UPDATE_TIME = 120000;
     public static final int LOCATION_MIN_DISTANCE_UPDATE = 100;
+    private Toolbar toolbar;
+    private LocationWarningDialog dialog;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        requestLocationServices();
+        //requestLocationServices();
 
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
@@ -39,6 +46,27 @@ public class HomeActivity extends ActionBarActivity {
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
     }
 
+    /**
+     * Dispatch onResume() to fragments.  Note that for better inter-operation
+     * with older versions of the platform, at the point of this call the
+     * fragments attached to the activity are <em>not</em> resumed.  This means
+     * that in some cases the previous state may still be saved, not allowing
+     * fragment transactions that modify the state.  To correctly interact
+     * with fragments in their proper state, you should instead override
+     * {@link #onResumeFragments()}.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+        if (locationManager != null && locationListener != null) {
+            locationManager.removeUpdates(locationListener);
+        }
+        Log.i("ZEROCOOL", "onResume() called");
+        requestLocationServices();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -77,9 +105,17 @@ public class HomeActivity extends ActionBarActivity {
     }
 
     private void requestLocationServices() {
-        final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+        String provider = locationManager.getBestProvider(criteria, true);
+        List<String> availableProvider = locationManager.getProviders(criteria, true);
+        if (!availableProvider.contains(LocationManager.GPS_PROVIDER) && !availableProvider.contains(LocationManager.NETWORK_PROVIDER)) {
+            dialog = new LocationWarningDialog();
+            dialog.show(getSupportFragmentManager(), "Location warning");
+        }
 
-        LocationListener locationListener = new LocationListener() {
+        locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 saveLocationToPreferences(location);
@@ -87,28 +123,29 @@ public class HomeActivity extends ActionBarActivity {
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                if (status == LocationProvider.OUT_OF_SERVICE || status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
+                /*if (status == LocationProvider.OUT_OF_SERVICE || status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
                     Location location = locationManager.getLastKnownLocation(provider);
                     saveLocationToPreferences(location);
-                }
+                }*/
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-
+                Log.w("ZEROCOOL", "The provider " + provider + " is enabled!");
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                Location location = locationManager.getLastKnownLocation(provider);
-                saveLocationToPreferences(location);
+                Log.w("ZEROCOOL", "The provider " + provider + " is disabled!");
             }
-
-
         };
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_TIME,
-                LOCATION_MIN_DISTANCE_UPDATE, locationListener);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        saveLocationToPreferences(location);
+        if (provider != null && locationManager.getAllProviders().contains(provider)) {
+            Log.i("ZEROCOOL", "Using " + provider + " provider");
+            locationManager.requestLocationUpdates(provider, LOCATION_UPDATE_TIME,
+                    LOCATION_MIN_DISTANCE_UPDATE, locationListener);
+        } else
+            Log.e("ZEROCOOL", "The provider " + provider + " is not available!");
+        /*Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        saveLocationToPreferences(location);*/
     }
 }
