@@ -340,12 +340,16 @@ public class Event implements Cardable {
      */
     @Override
     public String getAccentInfo() {
+        String day = Integer.valueOf(getStartDate().get(GregorianCalendar.DAY_OF_MONTH)).toString();
+        String month = Integer.valueOf((getStartDate().get(GregorianCalendar.MONTH)) + 1).toString();
+        String year = Integer.valueOf(getStartDate().get(GregorianCalendar.YEAR)).toString();
+        return year + "-" + month + "-" + day;
+
         /*GregorianCalendar date = getStartDate();
         Context context = HomeActivity.getContext();
         String [] array = context.getResources().getStringArray(R.array.month);
         String month = array[date.get(GregorianCalendar.MONTH)];
         String day = Integer.valueOf(date.get(GregorianCalendar.DAY_OF_MONTH)).toString();
         return day + " " + month;*/
-        return null;
     }
 }

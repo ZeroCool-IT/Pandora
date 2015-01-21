@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +25,6 @@ import java.util.List;
 
 import it.zerocool.batmacaana.dialog.WarningDialog;
 import it.zerocool.batmacaana.model.Cardable;
-import it.zerocool.batmacaana.model.Eat;
 import it.zerocool.batmacaana.model.Place;
 import it.zerocool.batmacaana.utilities.Constraints;
 import it.zerocool.batmacaana.utilities.ParsingUtilities;
@@ -71,6 +71,15 @@ public class ContentFragment extends Fragment {
         rvContent.setLayoutManager(new LinearLayoutManager(getActivity()));
         int id = getArguments().getInt(FRAG_SECTION_ID);
         searchResults = getData(getActivity(), id);
+/*        rvContent.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        openDetailsActivity(position);
+
+                    }
+                })
+        );*/
 
 
 //        rvContent.setAdapter(adapter);
@@ -80,6 +89,12 @@ public class ContentFragment extends Fragment {
 
 
     }
+
+    private void openDetailsActivity(int position) {
+        Bundle args = new Bundle();
+        Gson gson = new Gson();
+    }
+
 
     private void readCurrentLocationFromPreferences() {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(NavigationDrawerFragment.PREF_FILE_NAME, Context.MODE_PRIVATE);
@@ -92,18 +107,6 @@ public class ContentFragment extends Fragment {
 
     }
 
-    private List<Cardable> getData(Context context) {
-        List<Cardable> data = new ArrayList<Cardable>();
-        int[] imagery = {R.drawable.im_restaurant, R.drawable.im_pizza, R.drawable.im_pub, R.drawable.im_pizza_grill, R.drawable.im_fastfood, R.drawable.im_holycow, R.drawable.im_bakery, R.drawable.im_brunch};
-        String[] places = context.getResources().getStringArray(R.array.content_test_array);
-        for (int i = 0; i < places.length; i++) {
-            Eat current = new Eat(i);
-            current.setName(places[i]);
-            current.setImage(Integer.valueOf(imagery[i]).toString());
-            data.add(current);
-        }
-        return data;
-    }
 
     private List<Cardable> getData(Context context, int typeID) {
         String uri = null;

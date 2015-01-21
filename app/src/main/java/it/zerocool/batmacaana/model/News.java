@@ -190,12 +190,16 @@ public class News implements Cardable {
      */
     @Override
     public String getAccentInfo() {
+        String day = Integer.valueOf(getDate().get(GregorianCalendar.DAY_OF_MONTH)).toString();
+        String month = Integer.valueOf((getDate().get(GregorianCalendar.MONTH)) + 1).toString();
+        String year = Integer.valueOf(getDate().get(GregorianCalendar.YEAR)).toString();
+        return year + "-" + month + "-" + day;
+
         /*GregorianCalendar date = getDate();
         Context context = HomeActivity.getContext();
         String [] array = context.getResources().getStringArray(R.array.month);
         String month = array[date.get(GregorianCalendar.MONTH)];
         String day = Integer.valueOf(date.get(GregorianCalendar.DAY_OF_MONTH)).toString();
         return day + " " + month;*/
-        return null;
     }
 }

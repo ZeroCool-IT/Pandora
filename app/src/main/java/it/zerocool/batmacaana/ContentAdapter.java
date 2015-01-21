@@ -1,19 +1,25 @@
 package it.zerocool.batmacaana;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import it.zerocool.batmacaana.model.Cardable;
+import it.zerocool.batmacaana.model.Event;
+import it.zerocool.batmacaana.model.News;
+import it.zerocool.batmacaana.utilities.ParsingUtilities;
 
 /**
  * Created by Marco on 11/01/2015.
@@ -80,6 +86,14 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         holder.header.setText(current.getHeader());
         holder.subHeader.setText(current.getSubheader());
         String accent = current.getAccentInfo();
+        if (current instanceof News || current instanceof Event) {
+            GregorianCalendar date = ParsingUtilities.parseDate(accent);
+            accent = date.get(GregorianCalendar.DAY_OF_MONTH) +
+                    "\n" +
+                    context.getResources().getStringArray(R.array.month)[date.get(GregorianCalendar.MONTH)] +
+                    "\n" +
+                    date.get(GregorianCalendar.YEAR);
+        }
         if (accent == null) {
             accent = "N/A";
         }
@@ -91,8 +105,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
                 placeholder(R.drawable.im_placeholeder).
                 error(R.drawable.im_noimage).
                 into(holder.imagery);
-
-        //TODO retrieve image from web
     }
 
     /**
@@ -117,6 +129,20 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
         public ContentViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Toast.makeText(context, "Touched card " + (contentItems.get(getPosition())).getHeader(), Toast.LENGTH_SHORT).show();
+/*                    Bundle args = new Bundle();
+                    args.putString("TEST", contentItems.get(getPosition()).getHeader());*/
+                    Intent intent = new Intent(context, DetailsActivity.class);
+                    intent.putExtra("TEST", contentItems.get(getPosition()).getHeader());
+                    context.startActivity(intent);
+
+
+                }
+            });
             header = (TextView) itemView.findViewById(R.id.content_header);
             subHeader = (TextView) itemView.findViewById(R.id.content_subheader);
             imagery = (ImageView) itemView.findViewById(R.id.content_imagery);
