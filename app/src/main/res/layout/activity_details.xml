@@ -4,4 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="it.zerocool.batmacaana.DetailsActivity"
-    tools:ignore="MergeRootFrame" />
+    tools:ignore="MergeRootFrame">
+
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar" />
+    </RelativeLayout>
+
+</FrameLayout>

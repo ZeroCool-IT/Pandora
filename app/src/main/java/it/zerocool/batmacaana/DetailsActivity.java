@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+
+import it.zerocool.batmacaana.utilities.Constraints;
 
 
 public class DetailsActivity extends ActionBarActivity {
@@ -20,17 +18,31 @@ public class DetailsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        header = intent.getStringExtra("TEST");
         setContentView(R.layout.activity_details);
-        PlaceholderFragment frag = new PlaceholderFragment();
+        Fragment frag = chooseFragment(intent.getIntExtra(Constraints.TYPE_ARG, 0));
         Bundle args = new Bundle();
-        args.putString("TEST", header);
+        args.putString(Constraints.JSON_ARG, intent.getStringExtra(Constraints.JSON_ARG));
         frag.setArguments(args);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, frag)
                     .commit();
         }
+    }
+
+    private Fragment chooseFragment(int type) {
+        Fragment f = null;
+        switch (type) {
+            case Constraints.TYPE_PLACE:
+                f = new PlaceFragment();
+                break;
+            case Constraints.TYPE_NEWS:
+                f = new NewsFragment();
+                break;
+            case Constraints.TYPE_EVENT:
+                f = new EventFragment();
+        }
+        return f;
     }
 
 
@@ -56,9 +68,9 @@ public class DetailsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
+/*    *//**
      * A placeholder fragment containing a simple view.
-     */
+     *//*
     public static class PlaceholderFragment extends Fragment {
 
         private TextView tvTest;
@@ -71,9 +83,24 @@ public class DetailsActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_details, container, false);
             tvTest = (TextView) rootView.findViewById(R.id.detailsTv);
-            String header = getArguments().getString("TEST");
-            tvTest.setText(header);
+            String object = getArguments().getString(Constraints.JSON_ARG);
+            int type = getArguments().getInt(Constraints.TYPE_ARG);
+            Cardable test = null;
+            switch (type) {
+                case Constraints.TYPE_PLACE:
+                    Place p = ParsingUtilities.parseSinglePlace(object);
+                    test = p;
+                    break;
+                case Constraints.TYPE_NEWS:
+                    News n = ParsingUtilities.parseSingleNews(object);
+                    test = n;
+                    break;
+                case  Constraints.TYPE_EVENT:
+                    Event e = ParsingUtilities.parseSingleEvent(object);
+                    test = e;
+            }
+            tvTest.setText(test.getHeader());
             return rootView;
         }
-    }
+    }*/
 }

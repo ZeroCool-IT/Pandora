@@ -50,6 +50,7 @@ public class Event implements Cardable {
 
     /**
      * Set an integer representing the type of th object
+     *
      * @param type is the type to set
      */
     public void setType(int type) {
@@ -386,10 +387,10 @@ public class Event implements Cardable {
     /**
      * Get an Integer representing the type of the object
      *
-     * @return an Integer representing the type of th object
+     * @return an Integer representing the type of the object
      */
     @Override
     public int getType() {
-        return type;
+        return Constraints.TYPE_EVENT;
     }
 }

@@ -50,7 +50,7 @@ public class ParsingUtilities {
                 result.set(GregorianCalendar.YEAR, Integer.parseInt(toSet));
                 toSet = tokenizer.nextToken();
                 result.set(GregorianCalendar.MONTH, Integer.parseInt(toSet) - 1);
-                tokenizer.nextToken();
+                toSet = tokenizer.nextToken();
                 result.set(GregorianCalendar.DAY_OF_MONTH, Integer.parseInt(toSet));
             }
             return result;
@@ -318,6 +318,7 @@ public class ParsingUtilities {
                     JSONObject toBuild = data.getJSONObject(i);
                     int id = Integer.parseInt(toBuild.getString("NEWS_ID"));
                     News n = new News(id);
+                    n.setJson(toBuild.toString());
                     n.setTitle(toBuild.getString("NAME"));
                     n.setBody(toBuild.getString("DESCRIPTION"));
                     n.setDate(toBuild.getString("DATE"));

@@ -23,12 +23,16 @@ public class Constraints {
     public static final int CONNECTION_ERROR = 0;
     public static final int NO_RESULTS = 1;
 
-    //Places types
+    //Object types
+    public static final int TYPE_PLACE = 0;
     public static final int TYPE_TOSEE = 1;
     public static final int TYPE_EAT = 2;
     public static final int TYPE_SLEEP = 3;
     public static final int TYPE_SERVICE = 4;
     public static final int TYPE_SHOP = 5;
+    public static final int TYPE_EVENT = 6;
+    public static final int TYPE_NEWS = 7;
+
 
     //Navigation Drawer Fragments
     public static final int TOSEE = 0;
@@ -75,10 +79,13 @@ public class Constraints {
     public static final int DEC_26 = 11;
 
 
-    //Latidude and longitude tags for Shared Preferences
+    //Latitude and longitude tags for Shared Preferences
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
 
+    //Bundle and args tag
+    public static final String JSON_ARG = "json";
+    public static final String TYPE_ARG = "type";
 
     /**
      *

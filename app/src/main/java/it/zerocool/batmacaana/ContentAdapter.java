@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -19,6 +18,7 @@ import java.util.List;
 import it.zerocool.batmacaana.model.Cardable;
 import it.zerocool.batmacaana.model.Event;
 import it.zerocool.batmacaana.model.News;
+import it.zerocool.batmacaana.utilities.Constraints;
 import it.zerocool.batmacaana.utilities.ParsingUtilities;
 
 /**
@@ -133,11 +133,10 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(context, "Touched card " + (contentItems.get(getPosition())).getHeader(), Toast.LENGTH_SHORT).show();
-/*                    Bundle args = new Bundle();
-                    args.putString("TEST", contentItems.get(getPosition()).getHeader());*/
+//                    Toast.makeText(context, "Touched card " + (contentItems.get(getPosition())).getHeader(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, DetailsActivity.class);
-                    intent.putExtra("TEST", contentItems.get(getPosition()).getHeader());
+                    intent.putExtra(Constraints.JSON_ARG, contentItems.get(getPosition()).getJson());
+                    intent.putExtra(Constraints.TYPE_ARG, contentItems.get(getPosition()).getType());
                     context.startActivity(intent);
 
 

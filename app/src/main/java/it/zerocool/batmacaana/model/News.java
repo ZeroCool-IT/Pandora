@@ -42,6 +42,7 @@ public class News implements Cardable {
 
     /**
      * Set an Integer representing the type of the object
+     *
      * @param type is the type to set
      */
     public void setType(int type) {
@@ -214,13 +215,6 @@ public class News implements Cardable {
         String month = Integer.valueOf((getDate().get(GregorianCalendar.MONTH)) + 1).toString();
         String year = Integer.valueOf(getDate().get(GregorianCalendar.YEAR)).toString();
         return year + "-" + month + "-" + day;
-
-        /*GregorianCalendar date = getDate();
-        Context context = HomeActivity.getContext();
-        String [] array = context.getResources().getStringArray(R.array.month);
-        String month = array[date.get(GregorianCalendar.MONTH)];
-        String day = Integer.valueOf(date.get(GregorianCalendar.DAY_OF_MONTH)).toString();
-        return day + " " + month;*/
     }
 
     /**
@@ -236,11 +230,11 @@ public class News implements Cardable {
     /**
      * Get an Integer representing the type of the object
      *
-     * @return an Integer representing the type of th object
+     * @return an Integer representing the type of the object
      */
     @Override
     public int getType() {
-        return type;
+        return Constraints.TYPE_NEWS;
     }
 
 

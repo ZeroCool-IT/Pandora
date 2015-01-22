@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="24dp"
+    android:layout_marginTop="@dimen/content_recycler_top_margin"
+    tools:context="it.zerocool.batmacaana.PlaceFragment">
+
+
+    <!-- sample xml -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <it.zerocool.batmacaana.ExpandableTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/placeTVTest"
+                android:layout_below="@+id/imageView" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/im_placeholeder"
+                android:layout_alignParentTop="true" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <!--    <com.ms.square.android.expandabletextview.ExpandableTextView
+            android:id="@+id/placeTVTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            expandableTextView:maxCollapsedLines="8"
+            expandableTextView:animDuration="200">
+            <TextView
+                android:id="@id/expandable_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textSize="16sp"
+                android:textColor="#666666" />
+            <ImageButton
+                android:id="@id/expand_collapse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_gravity="right|bottom"
+                android:background="@android:color/transparent"/>
+        </com.ms.square.android.expandabletextview.ExpandableTextView>-->
+
+    <!-- TODO: Update blank fragment layout -->
+    <!--<TextView
+        android:id="@+id/placeTVTest"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />-->
+
+</RelativeLayout>

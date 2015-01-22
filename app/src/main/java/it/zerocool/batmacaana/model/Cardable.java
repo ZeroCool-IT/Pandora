@@ -49,7 +49,7 @@ public interface Cardable {
     /**
      * Get an Integer representing the type of the object
      *
-     * @return an Integer representing the type of th object
+     * @return an Integer representing the type of the object
      */
     public int getType();
 }
