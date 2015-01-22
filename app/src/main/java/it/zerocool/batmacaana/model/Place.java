@@ -26,6 +26,7 @@ public class Place implements Cardable {
     protected String name;
     protected String image;
     protected String fsqrLink;
+    protected int type;
 
 
     protected LinkedList<String> tags;
@@ -34,6 +35,8 @@ public class Place implements Cardable {
     protected TimeCard timeCard;
     protected Location location;
     protected float distanceFromCurrentPosition;
+    protected String json;
+
 
     /**
      * Public constructor
@@ -59,6 +62,14 @@ public class Place implements Cardable {
         this.id = id;
     }
 
+
+    /**
+     * Set an integer representing the type of the object
+     * @param type is the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
 
     /**
      * @return the name of the place
@@ -231,6 +242,16 @@ public class Place implements Cardable {
         this.distanceFromCurrentPosition = distanceFromCurrentPosition;
     }
 
+
+    /**
+     * Set a JSON representation fo the place
+     *
+     * @param json is the JSON representing the object
+     */
+    public void setJson(String json) {
+        this.json = json;
+    }
+
     /**
      * Redefine equals: 2 places are equals if their ids are equals
      */
@@ -298,4 +319,26 @@ public class Place implements Cardable {
         return res;
 
     }
+
+    /**
+     * Get a JSON String representing the object
+     *
+     * @return a JSON String representing the object
+     */
+    @Override
+    public String getJson() {
+        return json;
+    }
+
+    /**
+     * Get an Integer representing the type of the object
+     *
+     * @return an Integer representing the type of th object
+     */
+    @Override
+    public int getType() {
+        return type;
+    }
+
+
 }

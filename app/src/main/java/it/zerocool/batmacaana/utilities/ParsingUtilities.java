@@ -116,8 +116,10 @@ public class ParsingUtilities {
                         default:
                             break;
                     }
+                    p.setType(type);
+                    p.setJson(toBuild.toString());
                     p.setName(toBuild.getString("NAME"));
-                    p.setDescription("DESCRIPTION");
+                    p.setDescription(toBuild.getString("DESCRIPTION"));
                     p.setImage(toBuild.getString("IMAGE"));
                     p.setTagsFromCSV(toBuild.getString("TAGS"));
                     ContactCard c = new ContactCard();
@@ -154,7 +156,70 @@ public class ParsingUtilities {
             Log.e("Coordinate conversion exception", e.getMessage());
         }
         return result;
+    }
 
+    /**
+     * Build a single place object from json string
+     *
+     * @param json is the JSON string
+     * @return the place object
+     */
+    public static Place parseSinglePlace(String json) {
+        try {
+            JSONObject toBuild = new JSONObject(json);
+            int type = Integer.parseInt(toBuild.getString("TYPE"));
+            int id = Integer.parseInt((toBuild.getString("LUOGO_ID")));
+            Place p = null;
+            switch (type) {
+                case Constraints.TYPE_TOSEE:
+                    p = new ToSee(id);
+                    break;
+                case Constraints.TYPE_EAT:
+                    p = new Eat(id);
+                    break;
+                case Constraints.TYPE_SLEEP:
+                    p = new Sleep(id);
+                    break;
+                case Constraints.TYPE_SERVICE:
+                    p = new Service(id);
+                    break;
+                case Constraints.TYPE_SHOP:
+                    p = new Shop(id);
+                    break;
+                default:
+                    break;
+            }
+            p.setType(type);
+            p.setJson(toBuild.toString());
+            p.setName(toBuild.getString("NAME"));
+            p.setDescription(toBuild.getString("DESCRIPTION"));
+            p.setImage(toBuild.getString("IMAGE"));
+            p.setTagsFromCSV(toBuild.getString("TAGS"));
+            ContactCard c = new ContactCard();
+            c.setAddress(toBuild.getString("ADDRESS"));
+            c.setEmail(toBuild.getString("EMAIL"));
+            c.setUrl(toBuild.getString("URL"));
+            c.setTelephone(toBuild.getString("TELEPHONENUMBER"));
+            p.setContact(c);
+            Location l = new Location("");
+            String latitude = toBuild.getString("LATITUDE");
+            String longitude = toBuild.getString("LONGITUDE");
+            l.setLatitude(Location.convert(latitude));
+            l.setLongitude(Location.convert(longitude));
+            p.setLocation(l);
+            TimeCard t = new TimeCard();
+            t.setAmOpening(toBuild.getString("AMOPENING"));
+            t.setAmClosing(toBuild.getString("AMCLOSING"));
+            t.setPmOpening(toBuild.getString("PMOPENING"));
+            t.setPmClosing(toBuild.getString("PMCLOSING"));
+            t.setClosingDaysFromCSV(toBuild.getString("CLOSINGDAYS"));
+            t.setNotes(toBuild.getString("NOTES"));
+            p.setTimeCard(t);
+            return p;
+        } catch (JSONException e) {
+            Log.e("JSON Exception", e.getMessage());
+        }
+        return null;
     }
 
 
@@ -174,6 +239,8 @@ public class ParsingUtilities {
                     JSONObject toBuild = data.getJSONObject(i);
                     int id = Integer.parseInt(toBuild.getString("EVENTO_ID"));
                     Event e = new Event(id);
+                    e.setJson(toBuild.toString());
+                    e.setType(toBuild.getInt("TYPE"));
                     e.setName(toBuild.getString("NAME"));
                     e.setDescription(toBuild.getString("DESCRIPTION"));
                     ContactCard c = new ContactCard();
@@ -197,6 +264,41 @@ public class ParsingUtilities {
             Log.e("JSON Exception", e.getMessage());
         }
         return result;
+    }
+
+    /**
+     * Build a single Event object from a JSON String
+     *
+     * @param json is the JSON string
+     * @return an Event object
+     */
+    public static Event parseSingleEvent(String json) {
+        try {
+            JSONObject toBuild = new JSONObject(json);
+            int id = Integer.parseInt(toBuild.getString("EVENTO_ID"));
+            Event e = new Event(id);
+            e.setJson(toBuild.toString());
+            e.setType(toBuild.getInt("TYPE"));
+            e.setName(toBuild.getString("NAME"));
+            e.setDescription(toBuild.getString("DESCRIPTION"));
+            ContactCard c = new ContactCard();
+            c.setAddress(toBuild.getString("ADDRESS"));
+            c.setEmail(toBuild.getString("EMAIL"));
+            c.setTelephone(toBuild.getString("TELEPHONENUMBER"));
+            c.setUrl(toBuild.getString("URL"));
+            e.setContact(c);
+            e.setImage(toBuild.getString("IMAGE"));
+            e.setTagsFromCSV(toBuild.getString("TAGS"));
+            e.setStartDate(toBuild.getString("FROMDATE"));
+            e.setEndDate(toBuild.getString("UNTILDATE"));
+            e.setStartHour(toBuild.getString("FROMHOUR"));
+            e.setEndHour(toBuild.getString("UNTILHOUR"));
+            //TODO Location
+            return e;
+        } catch (JSONException e) {
+            Log.e("JSON Exception", e.getMessage());
+        }
+        return null;
     }
 
 
@@ -228,6 +330,29 @@ public class ParsingUtilities {
             Log.e("JSON Exception", e.getMessage());
         }
         return result;
+    }
+
+    /**
+     * Build a single News object from a JSON String
+     *
+     * @param json is the JSON string
+     * @return an News object
+     */
+    public static News parseSingleNews(String json) {
+        try {
+            JSONObject toBuild = new JSONObject(json);
+            int id = Integer.parseInt(toBuild.getString("NEWS_ID"));
+            News n = new News(id);
+            n.setTitle(toBuild.getString("NAME"));
+            n.setBody(toBuild.getString("DESCRIPTION"));
+            n.setDate(toBuild.getString("DATE"));
+            n.setImage(toBuild.getString("IMAGE"));
+            n.setUrl(toBuild.getString("URL"));
+            return n;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

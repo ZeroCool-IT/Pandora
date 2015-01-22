@@ -25,6 +25,8 @@ public class Event implements Cardable {
 
     protected int id;
     protected String name;
+    protected int type;
+    protected String json;
     protected GregorianCalendar startDate;
     protected GregorianCalendar endDate;
     protected GregorianCalendar startHour;
@@ -44,6 +46,24 @@ public class Event implements Cardable {
     public Event(int id) {
         this.id = id;
         this.tags = new LinkedList<String>();
+    }
+
+    /**
+     * Set an integer representing the type of th object
+     * @param type is the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
+
+
+    /**
+     * Set a string representing the object
+     *
+     * @param json is the json string to set
+     */
+    public void setJson(String json) {
+        this.json = json;
     }
 
 
@@ -112,7 +132,7 @@ public class Event implements Cardable {
     /**
      * @return the end date of the event
      */
-    public GregorianCalendar getgetEndDate() {
+    public GregorianCalendar getEndDate() {
         return endDate;
     }
 
@@ -351,5 +371,25 @@ public class Event implements Cardable {
         String month = array[date.get(GregorianCalendar.MONTH)];
         String day = Integer.valueOf(date.get(GregorianCalendar.DAY_OF_MONTH)).toString();
         return day + " " + month;*/
+    }
+
+    /**
+     * Get a JSON String representing the object
+     *
+     * @return a JSON String representing the object
+     */
+    @Override
+    public String getJson() {
+        return json;
+    }
+
+    /**
+     * Get an Integer representing the type of the object
+     *
+     * @return an Integer representing the type of th object
+     */
+    @Override
+    public int getType() {
+        return type;
     }
 }

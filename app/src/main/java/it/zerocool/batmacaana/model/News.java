@@ -18,6 +18,8 @@ import it.zerocool.batmacaana.utilities.ParsingUtilities;
 public class News implements Cardable {
 
     protected int id;
+    protected int type;
+    protected String json;
     protected String title;
     protected String body;
     protected GregorianCalendar date;
@@ -36,6 +38,24 @@ public class News implements Cardable {
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * Set an Integer representing the type of the object
+     * @param type is the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
+
+
+    /**
+     * Set a JSON String representing the object
+     *
+     * @param json is the JSON String to set
+     */
+    public void setJson(String json) {
+        this.json = json;
     }
 
     /**
@@ -202,4 +222,26 @@ public class News implements Cardable {
         String day = Integer.valueOf(date.get(GregorianCalendar.DAY_OF_MONTH)).toString();
         return day + " " + month;*/
     }
+
+    /**
+     * Get a JSON String representing the object
+     *
+     * @return a JSON String representing the object
+     */
+    @Override
+    public String getJson() {
+        return json;
+    }
+
+    /**
+     * Get an Integer representing the type of the object
+     *
+     * @return an Integer representing the type of th object
+     */
+    @Override
+    public int getType() {
+        return type;
+    }
+
+
 }

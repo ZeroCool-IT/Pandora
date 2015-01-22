@@ -38,4 +38,18 @@ public interface Cardable {
      * @return a String representing the accent information of the card
      */
     public String getAccentInfo();
+
+    /**
+     * Get a JSON String representing the object
+     *
+     * @return a JSON String representing the object
+     */
+    public String getJson();
+
+    /**
+     * Get an Integer representing the type of the object
+     *
+     * @return an Integer representing the type of th object
+     */
+    public int getType();
 }
