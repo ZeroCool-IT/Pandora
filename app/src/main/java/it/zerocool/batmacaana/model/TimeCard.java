@@ -221,5 +221,27 @@ public class TimeCard {
         this.notes = notes;
     }
 
+    public String toString() {
+        String amOp, amCl, pmOp, pmCl;
+        if (getAmOpening() != null && getAmClosing() != null) {
+            amOp = Integer.valueOf(getAmOpening().get(GregorianCalendar.HOUR_OF_DAY)).toString();
+            amCl = Integer.valueOf(getAmClosing().get(GregorianCalendar.HOUR_OF_DAY)).toString();
+        } else {
+            amOp = "N/A";
+            amCl = "N/A";
+        }
+        if (getPmOpening() != null && getPmClosing() != null) {
+            pmOp = Integer.valueOf(getPmOpening().get(GregorianCalendar.HOUR_OF_DAY)).toString();
+            pmCl = Integer.valueOf(getPmClosing().get(GregorianCalendar.HOUR_OF_DAY)).toString();
+        } else {
+            pmOp = "N/A";
+            pmCl = "N/A";
+        }
+
+        return "AM: " + amOp + " - " + amCl + " PM: " + pmOp + " - " + pmCl;
+
+
+    }
+
 
 }

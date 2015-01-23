@@ -37,4 +37,5 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
     </style>
+
 </resources>

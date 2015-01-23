@@ -10,4 +10,5 @@
         <item name="android:fontFamily">@string/font_fontFamily_medium</item>
 
     </style>
+
 </resources>

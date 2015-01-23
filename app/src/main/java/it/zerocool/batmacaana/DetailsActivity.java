@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,12 +14,18 @@ import it.zerocool.batmacaana.utilities.Constraints;
 public class DetailsActivity extends ActionBarActivity {
 
     private String header;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
         setContentView(R.layout.activity_details);
+
+
+        Intent intent = getIntent();
+        toolbar = (Toolbar) findViewById(R.id.appbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         Fragment frag = chooseFragment(intent.getIntExtra(Constraints.TYPE_ARG, 0));
         Bundle args = new Bundle();
         args.putString(Constraints.JSON_ARG, intent.getStringExtra(Constraints.JSON_ARG));
