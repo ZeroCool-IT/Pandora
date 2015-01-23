@@ -78,14 +78,13 @@
 
 
         <ImageView
-            android:layout_weight="1"
             android:id="@+id/content_imagery"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="195dp"
             android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             android:contentDescription="@string/iv_card_imagery"
-            android:scaleType="centerInside"
-            android:src="@drawable/im_broken_imagery" />
+            android:src="@drawable/im_placeholeder" />
 
     </LinearLayout>
 
