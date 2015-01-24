@@ -5,10 +5,17 @@
  */
 package it.zerocool.batmacaana.model;
 
+import android.text.TextUtils;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
+import it.zerocool.batmacaana.R;
+import it.zerocool.batmacaana.utilities.ApplicationContextProvider;
 import it.zerocool.batmacaana.utilities.Constraints;
 import it.zerocool.batmacaana.utilities.ParsingUtilities;
 
@@ -221,27 +228,70 @@ public class TimeCard {
         this.notes = notes;
     }
 
-    public String toString() {
-        String amOp, amCl, pmOp, pmCl;
-        if (getAmOpening() != null && getAmClosing() != null) {
-            amOp = Integer.valueOf(getAmOpening().get(GregorianCalendar.HOUR_OF_DAY)).toString();
-            amCl = Integer.valueOf(getAmClosing().get(GregorianCalendar.HOUR_OF_DAY)).toString();
-        } else {
-            amOp = "N/A";
-            amCl = "N/A";
+    public String openAMtoString() {
+        String amOp, amCl, res = null;
+        if (getAmClosing() != null && getAmOpening() != null) {
+            DecimalFormat format = new DecimalFormat("00");
+            amOp = format.format(getAmOpening().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
+            amCl = format.format(getAmClosing().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
+            //            amOp = Integer.valueOf(getAmOpening().get(GregorianCalendar.HOUR_OF_DAY)).toString();
+//            amCl = Integer.valueOf(getAmClosing().get(GregorianCalendar.HOUR_OF_DAY)).toString();
+            res = "AM: " + amOp + " - " + amCl;
         }
-        if (getPmOpening() != null && getPmClosing() != null) {
-            pmOp = Integer.valueOf(getPmOpening().get(GregorianCalendar.HOUR_OF_DAY)).toString();
-            pmCl = Integer.valueOf(getPmClosing().get(GregorianCalendar.HOUR_OF_DAY)).toString();
-        } else {
-            pmOp = "N/A";
-            pmCl = "N/A";
+        return res;
+    }
+
+    public String openPMtoString() {
+        String pmOp, pmCl, res = null;
+        if (getPmClosing() != null && getPmOpening() != null) {
+            DecimalFormat format = new DecimalFormat("00");
+            pmOp = format.format(getPmOpening().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
+//            pmOp =  Integer.valueOf(getPmOpening().get(GregorianCalendar.HOUR_OF_DAY)).toString();
+            pmCl = format.format(getPmClosing().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
+//            pmCl = Integer.valueOf(getPmClosing().get(GregorianCalendar.HOUR_OF_DAY)).toString();
+            res = "PM: " + pmOp + " - " + pmCl;
         }
+        return res;
+    }
 
-        return "AM: " + amOp + " - " + amCl + " PM: " + pmOp + " - " + pmCl;
-
+    public String closingDayToString() {
+        String res = null;
+        if (!getClosingDays().isEmpty()) {
+            String[] days = ApplicationContextProvider.getContext().getResources().getStringArray(R.array.day_of_week);
+            Iterator<GregorianCalendar> it = getClosingDays().iterator();
+            List<String> result = new ArrayList<>();
+            while (it.hasNext()) {
+                result.add(days[it.next().get(GregorianCalendar.DAY_OF_WEEK)]);
+            }
+            res = ApplicationContextProvider.getContext().getResources().getString(R.string.closed) + " " + TextUtils.join(", ", result);
+        }
+        return res;
 
     }
 
+    public String toString() {
+        if (openAMtoString() != null || openPMtoString() != null || getNotes() != null || !getClosingDays().isEmpty()) {
+            String res = "";
+            if (openAMtoString() != null) {
+                res += openAMtoString() + "\n";
+            }
+            if (openPMtoString() != null) {
+                res += openPMtoString() + "\n";
+            }
+            if (closingDayToString() != null) {
+                res += closingDayToString() + "\n";
+            }
+            if (getNotes() != null) {
+                res += getNotes();
+            }
+            if (res != Constraints.EMPTY_VALUE) {
+                return res;
+            }
+        }
+        return null;
 
+    }
 }
+
+
+

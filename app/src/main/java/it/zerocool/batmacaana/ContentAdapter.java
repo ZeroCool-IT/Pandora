@@ -99,7 +99,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         }
         holder.accent.setText(accent);
 
-        String imgUri = "http://www.ilmiositodemo.altervista.org/app/images/big/" + current.getImagery();
+        String imgUri = Constraints.URI_IMAGE_BIG + current.getImagery();
         Picasso.with(context).
                 load(imgUri).
                 resize(1080, 608).

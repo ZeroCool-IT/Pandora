@@ -143,7 +143,6 @@ public class ParsingUtilities {
                     t.setNotes(toBuild.getString("NOTES"));
                     p.setTimeCard(t);
                     LocationUtilities.setPlaceDistance(p, currentLocation);
-                    Log.i("ZEROCOOL", p.getName() + ": " + Float.valueOf(p.getDistanceFromCurrentPosition()).toString());
                     result.add(p);
 
 

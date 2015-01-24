@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name=".utilities.ApplicationContextProvider"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -22,10 +23,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:icon="@drawable/ic_glass_logo"
-            android:label="@string/title_activity_main"></activity>
-        <activity
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
             android:parentActivityName=".HomeActivity">
@@ -34,5 +31,6 @@
                 android:value="it.zerocool.batmacaana.HomeActivity" />
         </activity>
     </application>
+
 
 </manifest>

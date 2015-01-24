@@ -10,4 +10,5 @@
     <color name="transparent_bg">#00FFFFFF</color>
     <color name="light_primary_color">#B2DFDB</color>
     <color name="action_button_text">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
 </resources>

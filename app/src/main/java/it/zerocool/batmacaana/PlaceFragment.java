@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.shamanland.fab.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import it.zerocool.batmacaana.model.Place;
 import it.zerocool.batmacaana.utilities.Constraints;
@@ -31,7 +34,7 @@ import static android.os.Build.VERSION;
 public class PlaceFragment extends Fragment implements View.OnClickListener {
 
 
-    private com.ms.square.android.expandabletextview.ExpandableTextView tvDescription;
+    private ExpandableTextView tvDescription;
     private Place targetPlace;
     private ImageView ivPlace;
     private LinearLayout buttonLayout;
@@ -40,10 +43,18 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
     private TextView phoneTv;
     private TextView mailTv;
     private TextView linkTv;
+    private TextView tagTv;
     private Button phoneActionButton;
     private Button urlActionButton;
     private Button mailActionButton;
     private FloatingActionButton floatingActionButton;
+    private LinearLayout timecardLayout;
+    private LinearLayout addressLayout;
+    private LinearLayout phoneLayout;
+    private LinearLayout mailLayout;
+    private LinearLayout linkLayout;
+    private LinearLayout tagLayout;
+    private LinearLayout descriptionLayout;
 
     public PlaceFragment() {
         // Required empty public constructor
@@ -63,16 +74,24 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
 
         //Bind widget
         buttonLayout = (LinearLayout) layout.findViewById(R.id.button_layout);
-        tvDescription = (com.ms.square.android.expandabletextview.ExpandableTextView) layout.findViewById(R.id.description_tv);
+        tvDescription = (ExpandableTextView) layout.findViewById(R.id.description_tv);
         timecardTv = (TextView) layout.findViewById(R.id.timecard_tv);
         addressTv = (TextView) layout.findViewById(R.id.address_tv);
         phoneTv = (TextView) layout.findViewById(R.id.phone_tv);
         mailTv = (TextView) layout.findViewById(R.id.mail_tv);
         linkTv = (TextView) layout.findViewById(R.id.link_tv);
+        tagTv = (TextView) layout.findViewById(R.id.tag_tv);
         phoneActionButton = (Button) layout.findViewById(R.id.phoneButton);
         urlActionButton = (Button) layout.findViewById(R.id.urlButton);
         mailActionButton = (Button) layout.findViewById(R.id.mailButton);
         floatingActionButton = (FloatingActionButton) layout.findViewById(R.id.floatingButton);
+        timecardLayout = (LinearLayout) layout.findViewById(R.id.timecard_layout);
+        addressLayout = (LinearLayout) layout.findViewById(R.id.address_layout);
+        phoneLayout = (LinearLayout) layout.findViewById(R.id.phone_layout);
+        mailLayout = (LinearLayout) layout.findViewById(R.id.mail_layout);
+        linkLayout = (LinearLayout) layout.findViewById(R.id.link_layout);
+        tagLayout = (LinearLayout) layout.findViewById(R.id.tag_layout);
+        descriptionLayout = (LinearLayout) layout.findViewById(R.id.description_layout);
 
         //Listener
         phoneActionButton.setOnClickListener(this);
@@ -88,7 +107,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
         //Load imagery and change colors
         ivPlace = (ImageView) layout.findViewById(R.id.imageView);
         LoadBitmapTask task = new LoadBitmapTask();
-        task.execute("http://www.ilmiositodemo.altervista.org/app/images/big/" + p.getImage());
+        task.execute(Constraints.URI_IMAGE_BIG + p.getImage());
 
         //Fill fields
         fillFields(p);
@@ -98,28 +117,52 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
     }
 
     private void fillFields(Place p) {
-        tvDescription.setText(p.getDescription());
-        timecardTv.setText(p.getTimeCard().toString());
+        if (p.getDescription() != null)
+            tvDescription.setText(p.getDescription());
+        else
+            descriptionLayout.setVisibility(View.GONE);
+        if (p.getTimeCard().toString() != null) {
+            timecardTv.setText(p.getTimeCard().toString());
+        } else {
+            timecardLayout.setVisibility(View.GONE);
+        }
         if (p.getContact().getAddress() != null) {
             addressTv.setText(p.getContact().getAddress());
         } else {
+            addressLayout.setVisibility(View.GONE);
             addressTv.setText("N/A");
         }
         if (p.getContact().getTelephone() != null) {
             phoneTv.setText(p.getContact().getTelephone());
         } else {
+            phoneLayout.setVisibility(View.GONE);
             phoneTv.setText("N/A");
         }
         if (p.getContact().getEmail() != null) {
             mailTv.setText(p.getContact().getEmail());
         } else {
+            mailLayout.setVisibility(View.GONE);
             mailTv.setText("N/A");
         }
         if (p.getContact().getUrl() != null) {
             linkTv.setText(p.getContact().getUrl());
         } else {
+            linkLayout.setVisibility(View.GONE);
             linkTv.setText("N/A");
         }
+        if (!p.getTags().isEmpty()) {
+            String tags = TextUtils.join(", ", p.getTags());
+            tagTv.setText(tags);
+        } else
+            tagLayout.setVisibility(View.GONE);
+/*        List<String> tags = targetPlace.getTags();
+        Iterator<String> iterator = tags.iterator();
+        while (iterator.hasNext()) {
+            TextView tv = (TextView) View.inflate(getActivity(), R.layout.textview_tag, null);
+//            tv.setBackgroundColor(palette.getVibrantColor(R.color.primaryColor));
+            tv.setText(iterator.next());
+            tagLayout.addView(tv);
+        }*/
 
     }
 
@@ -153,7 +196,9 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
                 intent.setData(Uri.parse(uri));
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                     startActivity(intent);
-                }
+                } else
+                    Toast.makeText(getActivity(), R.string.no_dial_app, Toast.LENGTH_SHORT).show();
+
             } else
                 Toast.makeText(getActivity(), R.string.no_phone_available, Toast.LENGTH_SHORT).show();
 
@@ -161,22 +206,17 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
         } else if (v.getId() == R.id.mailButton) {
             String mail = targetPlace.getContact().getEmail();
             if (mail != null) {
-                /*Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.putExtra(Intent.EXTRA_EMAIL, mail);
-                intent.setType("text/plain");
-                startActivity(Intent.createChooser(intent, "Send Email"));*/
-
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setData(Uri.parse("mailto:")); // only email apps should handle this
                 intent.setType("*/*");
                 String[] addresses = new String[1];
                 addresses[0] = targetPlace.getContact().getEmail();
                 intent.putExtra(Intent.EXTRA_EMAIL, addresses);
-//                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-//                intent.putExtra(Intent.EXTRA_STREAM, attachment);
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                     startActivity(intent);
-                }
+                } else
+                    Toast.makeText(getActivity(), R.string.no_mail_app, Toast.LENGTH_SHORT).show();
+
             } else
                 Toast.makeText(getActivity(), R.string.no_email_available, Toast.LENGTH_SHORT).show();
         } else if (v.getId() == R.id.urlButton) {
@@ -186,7 +226,9 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
                 intent.setData(Uri.parse(url));
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                     startActivity(intent);
-                }
+                } else
+                    Toast.makeText(getActivity(), R.string.no_browser_app, Toast.LENGTH_SHORT).show();
+
             } else
                 Toast.makeText(getActivity(), R.string.no_url_available, Toast.LENGTH_SHORT).show();
 
@@ -198,7 +240,10 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
                 String uri = "geo:0,0?q=" + lat + "," + lon + "(" + targetPlace.getName() + ")";
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(uri));
-                startActivity(intent);
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                } else
+                    Toast.makeText(getActivity(), R.string.no_map_app, Toast.LENGTH_SHORT).show();
             }
 
 
@@ -240,7 +285,14 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
          */
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            setBitmap(bitmap);
+            if (bitmap != null) {
+                setBitmap(bitmap);
+            } else
+                Picasso.with(getActivity()).
+                        load(R.drawable.im_noimage).
+                        placeholder(R.drawable.im_placeholeder).
+                        into(ivPlace);
+
         }
     }
 

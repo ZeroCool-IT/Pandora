@@ -55,7 +55,7 @@ public class LocationWarningDialog extends DialogFragment {
                 startActivity(viewIntent);
             }
         });
-        builder.setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.dialog_button_ignore, new DialogInterface.OnClickListener() {
             /**
              * This method will be invoked when a button in the dialog is clicked.
              *

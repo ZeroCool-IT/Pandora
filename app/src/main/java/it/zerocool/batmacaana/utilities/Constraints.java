@@ -53,6 +53,7 @@ public class Constraints {
     public static final String URI_SHOP = "http://www.ilmiositodemo.altervista.org/app/json/shop.php?user=";
     public static final String URI_NEWS = "http://www.ilmiositodemo.altervista.org/app/json/news.php?user=";
     public static final String URI_EVENT = "http://www.ilmiositodemo.altervista.org/app/json/eventi.php?user=";
+    public static final String URI_IMAGE_BIG = "http://www.ilmiositodemo.altervista.org/app/images/big/";
 
 
     //Week Days

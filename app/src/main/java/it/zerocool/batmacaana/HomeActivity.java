@@ -22,7 +22,6 @@ import it.zerocool.batmacaana.utilities.Constraints;
 
 public class HomeActivity extends ActionBarActivity {
 
-    public static final String PREF_LOCATION = "location";
     public static final int LOCATION_UPDATE_TIME = 120000;
     public static final int LOCATION_MIN_DISTANCE_UPDATE = 100;
     private Toolbar toolbar;
@@ -149,8 +148,4 @@ public class HomeActivity extends ActionBarActivity {
         saveLocationToPreferences(location);*/
     }
 
-    public static Context getContext() {
-
-        return getContext();
-    }
 }
