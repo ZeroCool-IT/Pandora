@@ -84,7 +84,7 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:contentDescription="@string/iv_card_imagery"
-            android:src="@drawable/im_placeholeder" />
+            android:src="@drawable/im_placeholder" />
 
     </LinearLayout>
 

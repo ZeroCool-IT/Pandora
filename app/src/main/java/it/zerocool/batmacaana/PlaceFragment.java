@@ -168,7 +168,13 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
 
     public void setBitmap(Bitmap bitmap) {
         ivPlace.setImageBitmap(bitmap);
-        Palette.generateAsync(bitmap, PaletteListener.newInstance(this));
+        Picasso.with(getActivity()).
+                load(Constraints.URI_IMAGE_BIG + targetPlace.getImage()).
+                placeholder(R.drawable.im_placeholder).
+                error(R.drawable.im_noimage).
+                into(ivPlace);
+        ;
+        Palette.generateAsync(bitmap, PlacePaletteListener.newInstance(this));
 
     }
 
@@ -290,7 +296,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
             } else
                 Picasso.with(getActivity()).
                         load(R.drawable.im_noimage).
-                        placeholder(R.drawable.im_placeholeder).
+                        placeholder(R.drawable.im_placeholder).
                         into(ivPlace);
 
         }

@@ -8,7 +8,7 @@
     <dimen name="fragment_details_top_margin">50dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="action_button_lr_padding">24dp</dimen>
+    <dimen name="action_button_lr_padding">16dp</dimen>
     <dimen name="action_button_td_padding">8dp</dimen>
 
 </resources>

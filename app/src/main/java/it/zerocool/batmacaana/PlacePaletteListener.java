@@ -4,15 +4,15 @@ import android.support.v7.graphics.Palette;
 
 import java.lang.ref.WeakReference;
 
-class PaletteListener implements Palette.PaletteAsyncListener {
+class PlacePaletteListener implements Palette.PaletteAsyncListener {
     private final WeakReference<PlaceFragment> activityWeakReference;
 
-    public static PaletteListener newInstance(PlaceFragment activity) {
+    public static PlacePaletteListener newInstance(PlaceFragment activity) {
         WeakReference<PlaceFragment> activityWeakReference = new WeakReference<PlaceFragment>(activity);
-        return new PaletteListener(activityWeakReference);
+        return new PlacePaletteListener(activityWeakReference);
     }
 
-    PaletteListener(WeakReference<PlaceFragment> activityWeakReference) {
+    PlacePaletteListener(WeakReference<PlaceFragment> activityWeakReference) {
         this.activityWeakReference = activityWeakReference;
     }
 

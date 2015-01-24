@@ -25,6 +25,7 @@
     <string name="call">Call</string>
     <string name="url">Url</string>
     <string name="email">E-Mail</string>
+    <string name="map">Map</string>
     <string name="no_phone_available">No phone number available!</string>
     <string name="no_email_available">No email address available!</string>
     <string name="no_url_available">No website available!</string>
