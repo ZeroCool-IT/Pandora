@@ -103,6 +103,10 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
         Place p = ParsingUtilities.parseSinglePlace(getArguments().getString(Constraints.JSON_ARG));
         targetPlace = p;
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(p.getName());
+        if (!p.getTags().isEmpty()) {
+            String tags = TextUtils.join(", ", p.getTags());
+            ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(tags);
+        }
 
         //Load imagery and change colors
         ivPlace = (ImageView) layout.findViewById(R.id.imageView);

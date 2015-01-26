@@ -7,11 +7,12 @@ package it.zerocool.batmacaana.model;
 
 import android.text.TextUtils;
 
-import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import it.zerocool.batmacaana.R;
@@ -228,32 +229,45 @@ public class TimeCard {
         this.notes = notes;
     }
 
+
+    /**
+     * @return a String representing AM opening hours
+     */
     public String openAMtoString() {
         String amOp, amCl, res = null;
         if (getAmClosing() != null && getAmOpening() != null) {
-            DecimalFormat format = new DecimalFormat("00");
-            amOp = format.format(getAmOpening().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
-            amCl = format.format(getAmClosing().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
-            //            amOp = Integer.valueOf(getAmOpening().get(GregorianCalendar.HOUR_OF_DAY)).toString();
-//            amCl = Integer.valueOf(getAmClosing().get(GregorianCalendar.HOUR_OF_DAY)).toString();
+//            DecimalFormat format = new DecimalFormat("00");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+//            amOp = format.format(getAmOpening().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
+//            amCl = format.format(getAmClosing().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
+            amOp = dateFormat.format(getAmOpening().getTime());
+            amCl = dateFormat.format(getAmClosing().getTime());
+
             res = "AM: " + amOp + " - " + amCl;
         }
         return res;
     }
 
+    /**
+     * @return a String representing PM opening hours
+     */
     public String openPMtoString() {
         String pmOp, pmCl, res = null;
         if (getPmClosing() != null && getPmOpening() != null) {
-            DecimalFormat format = new DecimalFormat("00");
-            pmOp = format.format(getPmOpening().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
-//            pmOp =  Integer.valueOf(getPmOpening().get(GregorianCalendar.HOUR_OF_DAY)).toString();
-            pmCl = format.format(getPmClosing().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
-//            pmCl = Integer.valueOf(getPmClosing().get(GregorianCalendar.HOUR_OF_DAY)).toString();
+//            DecimalFormat format = new DecimalFormat("00");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+//            pmOp = format.format(getPmOpening().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
+//            pmCl = format.format(getPmClosing().get(GregorianCalendar.HOUR_OF_DAY)) + ":00";
+            pmOp = dateFormat.format(getPmOpening().getTime());
+            pmCl = dateFormat.format(getPmClosing().getTime());
             res = "PM: " + pmOp + " - " + pmCl;
         }
         return res;
     }
 
+    /**
+     * @return a String representing place closing days
+     */
     public String closingDayToString() {
         String res = null;
         if (!getClosingDays().isEmpty()) {
@@ -269,6 +283,9 @@ public class TimeCard {
 
     }
 
+    /**
+     * @return a string representing the time card of the place
+     */
     public String toString() {
         if (openAMtoString() != null || openPMtoString() != null || getNotes() != null || !getClosingDays().isEmpty()) {
             String res = "";

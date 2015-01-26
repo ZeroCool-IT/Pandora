@@ -12,14 +12,10 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import it.zerocool.batmacaana.model.Cardable;
-import it.zerocool.batmacaana.model.Event;
-import it.zerocool.batmacaana.model.News;
 import it.zerocool.batmacaana.utilities.Constraints;
-import it.zerocool.batmacaana.utilities.ParsingUtilities;
 
 /**
  * Created by Marco on 11/01/2015.
@@ -86,19 +82,11 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         holder.header.setText(current.getHeader());
         holder.subHeader.setText(current.getSubheader());
         String accent = current.getAccentInfo();
-        if (current instanceof News || current instanceof Event) {
-            GregorianCalendar date = ParsingUtilities.parseDate(accent);
-            accent = date.get(GregorianCalendar.DAY_OF_MONTH) +
-                    "\n" +
-                    context.getResources().getStringArray(R.array.month)[date.get(GregorianCalendar.MONTH)] +
-                    "\n" +
-                    date.get(GregorianCalendar.YEAR);
+        if (accent != null) {
+            holder.accent.setText(accent);
+        } else {
+            holder.accent.setVisibility(View.GONE);
         }
-        if (accent == null) {
-            accent = "N/A";
-        }
-        holder.accent.setText(accent);
-
         String imgUri = Constraints.URI_IMAGE_BIG + current.getImagery();
         Picasso.with(context).
                 load(imgUri).

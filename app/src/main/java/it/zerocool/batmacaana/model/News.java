@@ -5,7 +5,9 @@
  */
 package it.zerocool.batmacaana.model;
 
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import it.zerocool.batmacaana.utilities.Constraints;
 import it.zerocool.batmacaana.utilities.ParsingUtilities;
@@ -211,10 +213,15 @@ public class News implements Cardable {
      */
     @Override
     public String getAccentInfo() {
-        String day = Integer.valueOf(getDate().get(GregorianCalendar.DAY_OF_MONTH)).toString();
-        String month = Integer.valueOf((getDate().get(GregorianCalendar.MONTH)) + 1).toString();
-        String year = Integer.valueOf(getDate().get(GregorianCalendar.YEAR)).toString();
-        return year + "-" + month + "-" + day;
+        Locale l = Locale.getDefault();
+        SimpleDateFormat dateFormat;
+        if (l.equals(Locale.ITALY)) {
+            dateFormat = new SimpleDateFormat("dd\nMMM", l);
+        } else {
+            dateFormat = new SimpleDateFormat("MMM\ndd", l);
+        }
+        String result = dateFormat.format(getDate().getTime());
+        return result;
     }
 
     /**

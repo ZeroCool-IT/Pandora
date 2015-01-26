@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
@@ -23,6 +24,9 @@ import android.widget.Toast;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.shamanland.fab.FloatingActionButton;
 import com.squareup.picasso.Picasso;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import it.zerocool.batmacaana.model.Event;
 import it.zerocool.batmacaana.utilities.Constraints;
@@ -44,6 +48,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
     private Button phoneActionButton;
     private Button urlActionButton;
     private Button mailActionButton;
+    private Button mapActionButton;
     private FloatingActionButton floatingActionButton;
     private LinearLayout timecardLayout;
     private LinearLayout addressLayout;
@@ -81,6 +86,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         phoneActionButton = (Button) layout.findViewById(R.id.phoneButton);
         urlActionButton = (Button) layout.findViewById(R.id.urlButton);
         mailActionButton = (Button) layout.findViewById(R.id.mailButton);
+        mapActionButton = (Button) layout.findViewById(R.id.mapButton);
         floatingActionButton = (FloatingActionButton) layout.findViewById(R.id.floatingButton);
         timecardLayout = (LinearLayout) layout.findViewById(R.id.timecard_layout);
         addressLayout = (LinearLayout) layout.findViewById(R.id.address_layout);
@@ -95,11 +101,16 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         urlActionButton.setOnClickListener(this);
         mailActionButton.setOnClickListener(this);
         floatingActionButton.setOnClickListener(this);
+        mapActionButton.setOnClickListener(this);
 
         //Args read
         Event e = ParsingUtilities.parseSingleEvent(getArguments().getString(Constraints.JSON_ARG));
         targetEvent = e;
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(e.getName());
+        if (!e.getTags().isEmpty()) {
+            String tags = TextUtils.join(", ", e.getTags());
+            ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(tags);
+        }
 
         //Load imagery and change colors
         ivEvent = (ImageView) layout.findViewById(R.id.imageView);
@@ -118,13 +129,18 @@ public class EventFragment extends Fragment implements View.OnClickListener {
             tvDescription.setText(e.getDescription());
         else
             descriptionLayout.setVisibility(View.GONE);
-        /*if (p.getTimeCard().toString() != null) {
-            timecardTv.setText(p.getTimeCard().toString());
+        if (e.eventTimeToString() != null) {
+            timecardTv.setText(e.eventTimeToString());
         } else {
             timecardLayout.setVisibility(View.GONE);
-        }*/
+        }
         if (e.getContact().getAddress() != null) {
-            addressTv.setText(e.getContact().getAddress());
+            String place = "";
+            if (e.getPlace() != null) {
+                place += e.getPlace() + "\n";
+            }
+            place += e.getContact().getAddress();
+            addressTv.setText(place);
         } else {
             addressLayout.setVisibility(View.GONE);
             addressTv.setText("N/A");
@@ -229,6 +245,32 @@ public class EventFragment extends Fragment implements View.OnClickListener {
 
 
         } else if (v.getId() == R.id.floatingButton) {
+
+            Intent intent = new Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.Events.TITLE, targetEvent.getName());
+            if (targetEvent.getLocation() != null) {
+                intent.putExtra(CalendarContract.Events.EVENT_LOCATION, targetEvent.getLocation());
+            }
+            if (targetEvent.getStartDate() != null) {
+                GregorianCalendar start = targetEvent.getStartDate();
+                if (targetEvent.getStartHour() != null) {
+                    start.set(GregorianCalendar.HOUR_OF_DAY, targetEvent.getStartHour().get(Calendar.HOUR_OF_DAY));
+                    start.set(GregorianCalendar.MINUTE, targetEvent.getStartHour().get(Calendar.MINUTE));
+                }
+                intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start.getTimeInMillis());
+                if (targetEvent.getEndDate() != null) {
+                    GregorianCalendar end = targetEvent.getEndDate();
+                    if (targetEvent.getEndDate() != null) {
+                        end.set(Calendar.HOUR_OF_DAY, targetEvent.getEndHour().get(Calendar.HOUR_OF_DAY));
+                        end.set(Calendar.MINUTE, targetEvent.getEndHour().get(Calendar.MINUTE));
+                    }
+                    intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end.getTimeInMillis());
+                }
+            }
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivity(intent);
+            }
             /*if (targetPlace.getLocation() != null) {
                 String lat = Double.valueOf(targetPlace.getLocation().getLatitude()).toString();
                 String lon = Double.valueOf(targetPlace.getLocation().getLongitude()).toString();
@@ -241,6 +283,26 @@ public class EventFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getActivity(), R.string.no_map_app, Toast.LENGTH_SHORT).show();
             }*/
 
+
+        } else if (v.getId() == R.id.mapButton) {
+            String uri = "geo:0,0?q=";
+            if (targetEvent.getLocation() != null || targetEvent.getContact().getAddress() != null) {
+                if (targetEvent.getLocation() != null) {
+                    String lat = Double.valueOf(targetEvent.getLocation().getLatitude()).toString();
+                    String lon = Double.valueOf(targetEvent.getLocation().getLongitude()).toString();
+                    uri += lat + "," + lon;
+                } else if (targetEvent.getContact().getAddress() != null) {
+                    String res = targetEvent.getContact().getAddress() + ", 00032 Carpineto Romano";
+                    res = Uri.encode(res);
+                    uri += res;
+                }
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(uri));
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                } else
+                    Toast.makeText(getActivity(), R.string.no_map_app, Toast.LENGTH_SHORT).show();
+            }
 
         }
     }

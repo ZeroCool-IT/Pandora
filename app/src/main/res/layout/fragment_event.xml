@@ -155,7 +155,7 @@
                     android:id="@+id/timecard_layout"
                     android:paddingTop="8dp"
                     android:layout_below="@id/description_layout"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <ImageView
                         android:layout_width="wrap_content"

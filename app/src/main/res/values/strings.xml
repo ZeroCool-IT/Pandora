@@ -31,6 +31,8 @@
     <string name="no_url_available">No website available!</string>
     <string name="title_activity_details">DetailsActivity</string>
     <string name="closed">Closed:</string>
+    <string name="from">From:</string>
+    <string name="to">To:</string>
     <string name="no_mail_app">There is no email app on the device!</string>
     <string name="no_map_app">There is no map app on the device!</string>
     <string name="no_browser_app">There is no web browser app on the device!</string>

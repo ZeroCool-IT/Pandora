@@ -8,8 +8,8 @@ android {
         applicationId "it.zerocool.batmacaana"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 8
-        versionName "0.08a"
+        versionCode 9
+        versionName "0.09a"
     }
     buildTypes {
         release {

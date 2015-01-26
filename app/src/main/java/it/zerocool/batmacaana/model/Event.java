@@ -5,14 +5,19 @@
  */
 package it.zerocool.batmacaana.model;
 
+import android.content.Context;
 import android.location.Location;
 import android.text.TextUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
+import it.zerocool.batmacaana.R;
+import it.zerocool.batmacaana.utilities.ApplicationContextProvider;
 import it.zerocool.batmacaana.utilities.Constraints;
 import it.zerocool.batmacaana.utilities.ParsingUtilities;
 
@@ -31,6 +36,7 @@ public class Event implements Cardable {
     protected GregorianCalendar endDate;
     protected GregorianCalendar startHour;
     protected GregorianCalendar endHour;
+    protected String place;
     protected String image;
     protected LinkedList<String> tags;
     protected String description;
@@ -204,6 +210,24 @@ public class Event implements Cardable {
         setEndHour(g);
     }
 
+    /**
+     * @return The name of the place of the event
+     */
+    public String getPlace() {
+        return place;
+    }
+
+    /**
+     * Set the name of the place of the event
+     *
+     * @param place is the place of the event to set
+     */
+    public void setPlace(String place) {
+        if (!place.equals(Constraints.EMPTY_VALUE)) {
+            this.place = place;
+        } else
+            this.place = null;
+    }
 
     /**
      * @return the image of the event
@@ -355,23 +379,90 @@ public class Event implements Cardable {
     }
 
     /**
+     * @return Event start date to String
+     */
+    public String startDateToString() {
+        if (startDate != null) {
+            Locale l = Locale.getDefault();
+            if (startHour != null) {
+                GregorianCalendar res = getStartDate();
+                res.set(GregorianCalendar.HOUR_OF_DAY, getStartHour().get(Calendar.HOUR_OF_DAY));
+                res.set(GregorianCalendar.MINUTE, getStartHour().get(Calendar.MINUTE));
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ITALY);
+                java.text.DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance(java.text.DateFormat.LONG, java.text.DateFormat.SHORT);
+//                DateFormat dateFormat = DateFormat.getDateTimeInstance();
+                String result = dateFormat.format(res.getTime());
+                return result;
+            } else {
+                java.text.DateFormat dateFormat = SimpleDateFormat.getDateInstance(java.text.DateFormat.LONG);
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", l);
+                String result = dateFormat.format(getStartDate().getTime());
+                return result;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return Event end date to String
+     */
+    public String endDateToString() {
+        if (endDate != null) {
+            Locale l = Locale.getDefault();
+            if (endHour != null) {
+                GregorianCalendar res = getEndDate();
+                res.set(GregorianCalendar.HOUR_OF_DAY, getEndHour().get(Calendar.HOUR_OF_DAY));
+                res.set(GregorianCalendar.MINUTE, getEndHour().get(Calendar.MINUTE));
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd  HH:mm", l);
+                java.text.DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance(java.text.DateFormat.LONG, java.text.DateFormat.SHORT);
+//                DateFormat dateFormat = DateFormat.getDateTimeInstance();
+                String result = dateFormat.format(res.getTime());
+                return result;
+            } else {
+                java.text.DateFormat dateFormat = SimpleDateFormat.getDateInstance(java.text.DateFormat.LONG);
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", l);
+                String result = dateFormat.format(getEndDate().getTime());
+                return result;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Event time String representation
+     *
+     * @return a String with event start and end time
+     */
+    public String eventTimeToString() {
+        Context context = ApplicationContextProvider.getContext();
+        if (startDateToString() != null) {
+            String res = startDateToString();
+            if (endDateToString() != null) {
+                res = context.getResources().getString(R.string.from) + " " + res;
+                res += "\n" + context.getResources().getString(R.string.to) + " " +
+                        endDateToString();
+            }
+            return res;
+        }
+        return null;
+    }
+
+    /**
      * Get the accent info, if any
      *
      * @return a String representing the accent information of the card
      */
     @Override
     public String getAccentInfo() {
-        String day = Integer.valueOf(getStartDate().get(GregorianCalendar.DAY_OF_MONTH)).toString();
-        String month = Integer.valueOf((getStartDate().get(GregorianCalendar.MONTH)) + 1).toString();
-        String year = Integer.valueOf(getStartDate().get(GregorianCalendar.YEAR)).toString();
-        return year + "-" + month + "-" + day;
-
-        /*GregorianCalendar date = getStartDate();
-        Context context = HomeActivity.getContext();
-        String [] array = context.getResources().getStringArray(R.array.month);
-        String month = array[date.get(GregorianCalendar.MONTH)];
-        String day = Integer.valueOf(date.get(GregorianCalendar.DAY_OF_MONTH)).toString();
-        return day + " " + month;*/
+        Locale l = Locale.getDefault();
+        SimpleDateFormat dateFormat;
+        if (l.equals(Locale.ITALY)) {
+            dateFormat = new SimpleDateFormat("dd\nMMM", Locale.getDefault());
+        } else {
+            dateFormat = new SimpleDateFormat("MMM\ndd", Locale.getDefault());
+        }
+        String result = dateFormat.format(getStartDate().getTime());
+        return result;
     }
 
     /**

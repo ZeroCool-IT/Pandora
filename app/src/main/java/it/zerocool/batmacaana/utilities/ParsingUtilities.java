@@ -242,6 +242,7 @@ public class ParsingUtilities {
                     e.setType(toBuild.getInt("TYPE"));
                     e.setName(toBuild.getString("NAME"));
                     e.setDescription(toBuild.getString("DESCRIPTION"));
+                    e.setPlace(toBuild.getString("PLACE"));
                     ContactCard c = new ContactCard();
                     c.setAddress(toBuild.getString("ADDRESS"));
                     c.setEmail(toBuild.getString("EMAIL"));
@@ -280,6 +281,7 @@ public class ParsingUtilities {
             e.setType(toBuild.getInt("TYPE"));
             e.setName(toBuild.getString("NAME"));
             e.setDescription(toBuild.getString("DESCRIPTION"));
+            e.setPlace(toBuild.getString("PLACE"));
             ContactCard c = new ContactCard();
             c.setAddress(toBuild.getString("ADDRESS"));
             c.setEmail(toBuild.getString("EMAIL"));
