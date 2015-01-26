@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
     private Button urlActionButton;
     private Button mailActionButton;
     private Button mapActionButton;
+    private ImageButton fullScreenButton;
     private FloatingActionButton floatingActionButton;
     private LinearLayout timecardLayout;
     private LinearLayout addressLayout;
@@ -87,6 +89,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         urlActionButton = (Button) layout.findViewById(R.id.urlButton);
         mailActionButton = (Button) layout.findViewById(R.id.mailButton);
         mapActionButton = (Button) layout.findViewById(R.id.mapButton);
+        fullScreenButton = (ImageButton) layout.findViewById(R.id.fullscreenButton);
         floatingActionButton = (FloatingActionButton) layout.findViewById(R.id.floatingButton);
         timecardLayout = (LinearLayout) layout.findViewById(R.id.timecard_layout);
         addressLayout = (LinearLayout) layout.findViewById(R.id.address_layout);
@@ -104,6 +107,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         mailActionButton.setOnClickListener(this);
         floatingActionButton.setOnClickListener(this);
         mapActionButton.setOnClickListener(this);
+        fullScreenButton.setOnClickListener(this);
         ivEvent.setOnClickListener(this);
 
         //Args read
@@ -308,12 +312,12 @@ public class EventFragment extends Fragment implements View.OnClickListener {
             if (targetEvent.getImage() != null) {
                 Intent intent = new Intent(getActivity(), FullscreenActivity.class);
                 intent.putExtra(Constraints.IMAGE, targetEvent.getImage());
-                intent.putExtra(Constraints.TITLE, targetEvent.getName());
-                if (!targetEvent.getTags().isEmpty()) {
-                    String tags = TextUtils.join(", ", targetEvent.getTags());
-                    intent.putExtra(Constraints.SUBTITLE, tags);
-
-                }
+                startActivity(intent);
+            }
+        } else if (v.getId() == R.id.fullscreenButton) {
+            if (targetEvent.getImage() != null) {
+                Intent intent = new Intent(getActivity(), FullscreenActivity.class);
+                intent.putExtra(Constraints.IMAGE, targetEvent.getImage());
                 startActivity(intent);
             }
         }
