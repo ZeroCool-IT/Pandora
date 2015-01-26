@@ -88,6 +88,9 @@ public class Constraints {
     //Bundle and args tag
     public static final String JSON_ARG = "json";
     public static final String TYPE_ARG = "type";
+    public static final String IMAGE = "image";
+    public static final String TITLE = "title";
+    public static final String SUBTITLE = "subtitle";
 
     /**
      *

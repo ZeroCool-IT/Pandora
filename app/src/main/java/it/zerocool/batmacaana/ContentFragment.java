@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,28 +70,10 @@ public class ContentFragment extends Fragment {
         rvContent.setLayoutManager(new LinearLayoutManager(getActivity()));
         int id = getArguments().getInt(FRAG_SECTION_ID);
         searchResults = getData(getActivity(), id);
-/*        rvContent.addOnItemTouchListener(
-                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        openDetailsActivity(position);
-
-                    }
-                })
-        );*/
-
-
-//        rvContent.setAdapter(adapter);
-
 
         return layout;
 
 
-    }
-
-    private void openDetailsActivity(int position) {
-        Bundle args = new Bundle();
-        Gson gson = new Gson();
     }
 
 
@@ -170,6 +151,54 @@ public class ContentFragment extends Fragment {
         return searchResults;
     }
 
+    /**
+     * Called when the Fragment is no longer resumed.  This is generally
+     * tied to {@link Activity#onPause() Activity.onPause} of the containing
+     * Activity's lifecycle.
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        task.cancel(true);
+
+    }
+
+    /**
+     * Called when the view previously created by {@link #onCreateView} has
+     * been detached from the fragment.  The next time the fragment needs
+     * to be displayed, a new view will be created.  This is called
+     * after {@link #onStop()} and before {@link #onDestroy()}.  It is called
+     * <em>regardless</em> of whether {@link #onCreateView} returned a
+     * non-null view.  Internally it is called after the view's state has
+     * been saved but before it has been removed from its parent.
+     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        task.cancel(true);
+    }
+
+    /**
+     * Called when the Fragment is no longer started.  This is generally
+     * tied to {@link Activity#onStop() Activity.onStop} of the containing
+     * Activity's lifecycle.
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        task.cancel(true);
+    }
+
+    /**
+     * Called when the fragment is no longer in use.  This is called
+     * after {@link #onStop()} and before {@link #onDetach()}.
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        task.cancel(true);
+    }
+
     private class RetrieveDataAsyncTask extends AsyncTask<String, Void, List<Cardable>> {
 
         /**
@@ -191,12 +220,16 @@ public class ContentFragment extends Fragment {
             String uri = params[0];
             List<Cardable> res = null;
             int type = Integer.parseInt(params[1]);
+            if (isCancelled())
+                return null;
             try {
                 InputStream is = RequestUtilities.requestInputStream(uri);
                 String json = RequestUtilities.inputStreamToString(is);
+                if (isCancelled())
+                    return null;
                 switch (type) {
                     case Constraints.PLACE:
-                        Log.i("ZEROCOOL", "Current position: " + currentLocation.toString());
+                        Log.i("ZCLOG", "Current position: " + currentLocation.toString());
                         res = ParsingUtilities.parsePlaceFromJSON(json, currentLocation);
                         ArrayList<Place> temp = (ArrayList) res;
                         Collections.sort(temp, new PlaceComparator());
@@ -208,10 +241,12 @@ public class ContentFragment extends Fragment {
                     case Constraints.EVENT:
                         res = ParsingUtilities.parseEventFromJSON(json);
                 }
+                if (isCancelled())
+                    return null;
                 return res;
 
             } catch (IOException e) {
-                Log.e("ZEROCOOL TASK", e.getMessage());
+                Log.e("ZCLOG TASK", e.getMessage());
                 e.printStackTrace();
             }
             return res;
@@ -243,7 +278,7 @@ public class ContentFragment extends Fragment {
                 fm.beginTransaction()
                         .replace(R.id.content_frame, f)
                         .commit();
-                Log.i("ZEROCOOL", "No results!");
+                Log.i("ZCLOG", "No results!");
 
             } else if (cardables == null) {
                 String title = getResources().getString(R.string.dialog_title_uhoh);
@@ -260,11 +295,29 @@ public class ContentFragment extends Fragment {
                 fm.beginTransaction()
                         .replace(R.id.content_frame, f)
                         .commit();
-                Log.e("ZEROCOOL TASK ERROR", "Failed to get results");
+                Log.e("ZCLOG TASK ERROR", "Failed to get results");
             } else {
                 adapter = new ContentAdapter(getActivity(), cardables);
                 rvContent.setAdapter(adapter);
             }
+        }
+
+        /**
+         * <p>Applications should preferably override {@link #onCancelled(Object)}.
+         * This method is invoked by the default implementation of
+         * {@link #onCancelled(Object)}.</p>
+         * <p/>
+         * <p>Runs on the UI thread after {@link #cancel(boolean)} is invoked and
+         * {@link #doInBackground(Object[])} has finished.</p>
+         *
+         * @see #onCancelled(Object)
+         * @see #cancel(boolean)
+         * @see #isCancelled()
+         */
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            Log.i("ZCLOG", "onCancelled() called");
         }
 
         /**

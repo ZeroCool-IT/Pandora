@@ -95,6 +95,8 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         linkLayout = (LinearLayout) layout.findViewById(R.id.link_layout);
         tagLayout = (LinearLayout) layout.findViewById(R.id.tag_layout);
         descriptionLayout = (LinearLayout) layout.findViewById(R.id.description_layout);
+        ivEvent = (ImageView) layout.findViewById(R.id.imageView);
+
 
         //Listener
         phoneActionButton.setOnClickListener(this);
@@ -102,6 +104,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         mailActionButton.setOnClickListener(this);
         floatingActionButton.setOnClickListener(this);
         mapActionButton.setOnClickListener(this);
+        ivEvent.setOnClickListener(this);
 
         //Args read
         Event e = ParsingUtilities.parseSingleEvent(getArguments().getString(Constraints.JSON_ARG));
@@ -113,7 +116,6 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         }
 
         //Load imagery and change colors
-        ivEvent = (ImageView) layout.findViewById(R.id.imageView);
         LoadBitmapTask task = new LoadBitmapTask();
         task.execute(Constraints.URI_IMAGE_MEDIUM + e.getImage());
 
@@ -302,6 +304,18 @@ public class EventFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getActivity(), R.string.no_map_app, Toast.LENGTH_SHORT).show();
             }
 
+        } else if (v.getId() == R.id.imageView) {
+            if (targetEvent.getImage() != null) {
+                Intent intent = new Intent(getActivity(), FullscreenActivity.class);
+                intent.putExtra(Constraints.IMAGE, targetEvent.getImage());
+                intent.putExtra(Constraints.TITLE, targetEvent.getName());
+                if (!targetEvent.getTags().isEmpty()) {
+                    String tags = TextUtils.join(", ", targetEvent.getTags());
+                    intent.putExtra(Constraints.SUBTITLE, tags);
+
+                }
+                startActivity(intent);
+            }
         }
     }
 

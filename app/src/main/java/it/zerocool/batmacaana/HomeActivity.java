@@ -63,8 +63,32 @@ public class HomeActivity extends ActionBarActivity {
         if (locationManager != null && locationListener != null) {
             locationManager.removeUpdates(locationListener);
         }
-        Log.i("ZEROCOOL", "onResume() called");
+        Log.i("ZCLOG", "onResume() called");
         requestLocationServices();
+    }
+
+    /**
+     * Dispatch onPause() to fragments.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("ZCLOG", "onPause() called");
+        locationManager.removeUpdates(locationListener);
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i("ZCLOG", "onStop() called");
+        super.onStop();
+        locationManager.removeUpdates(locationListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("ZCLOG", "onStop() called");
+        locationManager.removeUpdates(locationListener);
     }
 
     @Override
@@ -130,20 +154,20 @@ public class HomeActivity extends ActionBarActivity {
 
             @Override
             public void onProviderEnabled(String provider) {
-                Log.w("ZEROCOOL", "The provider " + provider + " is enabled!");
+                Log.w("ZCLOG", "The provider " + provider + " is enabled!");
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                Log.w("ZEROCOOL", "The provider " + provider + " is disabled!");
+                Log.w("ZCLOG", "The provider " + provider + " is disabled!");
             }
         };
         if (provider != null && locationManager.getAllProviders().contains(provider)) {
-            Log.i("ZEROCOOL", "Using " + provider + " provider");
+            Log.i("ZCLOG", "Using " + provider + " provider");
             locationManager.requestLocationUpdates(provider, LOCATION_UPDATE_TIME,
                     LOCATION_MIN_DISTANCE_UPDATE, locationListener);
         } else
-            Log.e("ZEROCOOL", "The provider " + provider + " is not available!");
+            Log.e("ZCLOG", "The provider " + provider + " is not available!");
         /*Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         saveLocationToPreferences(location);*/
     }

@@ -30,7 +30,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.zerocool.batmacaana.HomeActivity" />
         </activity>
+        <activity
+            android:name=".FullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen"
+            android:parentActivityName=".DetailsActivity"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.zerocool.batmacaana.DetailsActivity" />
+        </activity>
     </application>
-
 
 </manifest>

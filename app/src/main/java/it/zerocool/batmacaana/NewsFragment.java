@@ -67,9 +67,12 @@ public class NewsFragment extends Fragment implements View.OnClickListener {
         linkLayout = (LinearLayout) layout.findViewById(R.id.link_layout);
         tagLayout = (LinearLayout) layout.findViewById(R.id.tag_layout);
         bodyLayout = (LinearLayout) layout.findViewById(R.id.description_layout);
+        ivNews = (ImageView) layout.findViewById(R.id.imageView);
+
 
         //Listener
         urlActionButton.setOnClickListener(this);
+        ivNews.setOnClickListener(this);
 
 
         //Args read
@@ -81,7 +84,6 @@ public class NewsFragment extends Fragment implements View.OnClickListener {
         }
 
         //Load imagery and change colors
-        ivNews = (ImageView) layout.findViewById(R.id.imageView);
         LoadBitmapTask task = new LoadBitmapTask();
         task.execute(Constraints.URI_IMAGE_MEDIUM + n.getImage());
 
@@ -150,8 +152,10 @@ public class NewsFragment extends Fragment implements View.OnClickListener {
 
             } else
                 Toast.makeText(getActivity(), R.string.no_url_available, Toast.LENGTH_SHORT).show();
-
-
+        } else if (v.getId() == R.id.imageView) {
+            Intent intent = new Intent(getActivity(), FullscreenActivity.class);
+            intent.putExtra(Constraints.IMAGE, targetNews.getImage());
+            startActivity(intent);
         }
     }
 
