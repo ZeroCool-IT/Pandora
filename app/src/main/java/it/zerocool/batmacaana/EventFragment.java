@@ -175,8 +175,6 @@ public class EventFragment extends Fragment implements View.OnClickListener {
 //        ivEvent.setImageBitmap(bitmap);
         Picasso.with(getActivity()).
                 load(Constraints.URI_IMAGE_MEDIUM + targetEvent.getImage()).
-                resize(540, 960).
-                centerCrop().
                 error(R.drawable.im_noimage).
                 into(ivEvent);
         Palette.generateAsync(bitmap, EventPaletteListener.newInstance(this));

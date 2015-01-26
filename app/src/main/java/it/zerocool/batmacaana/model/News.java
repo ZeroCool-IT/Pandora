@@ -5,9 +5,12 @@
  */
 package it.zerocool.batmacaana.model;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 import it.zerocool.batmacaana.utilities.Constraints;
 import it.zerocool.batmacaana.utilities.ParsingUtilities;
@@ -27,12 +30,15 @@ public class News implements Cardable {
     protected GregorianCalendar date;
     protected String image;
     protected String url;
+    protected LinkedList<String> tags;
+
 
     /**
      * Public constructor
      */
     public News(int id) {
         this.id = id;
+        tags = new LinkedList<String>();
     }
 
     /**
@@ -125,6 +131,48 @@ public class News implements Cardable {
         GregorianCalendar g = ParsingUtilities.parseDate(date);
         setDate(g);
 
+    }
+
+    public String getDateToString() {
+        if (getDate() != null) {
+            DateFormat dateFormat = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM);
+            return dateFormat.format(getDate().getTime());
+        } else
+            return null;
+    }
+
+    /**
+     * @return the tags list
+     */
+    public LinkedList<String> getTags() {
+        return tags;
+    }
+
+
+    /**
+     * @param tags the tags list to set
+     */
+    public void setTags(LinkedList<String> tags) {
+        this.tags = tags;
+    }
+
+    /**
+     * Add the tags to tags' list from a string in CSV format
+     *
+     * @param csv is the string in CSV format
+     */
+    public void setTagsFromCSV(String csv) {
+        if (csv != null && !csv.equals(Constraints.EMPTY_VALUE)) {
+            StringTokenizer tokenizer = new StringTokenizer(csv, ",");
+            while (tokenizer.hasMoreTokens()) {
+                String toAdd = tokenizer.nextToken();
+                toAdd = toAdd.trim();
+                toAdd = toAdd.substring(0, 1).toUpperCase(Locale.ITALY) + toAdd.substring(1);
+                if (!getTags().contains(toAdd)) {
+                    getTags().add(toAdd);
+                }
+            }
+        }
     }
 
     /**

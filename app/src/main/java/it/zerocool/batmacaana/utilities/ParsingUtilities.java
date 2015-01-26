@@ -325,6 +325,7 @@ public class ParsingUtilities {
                     n.setDate(toBuild.getString("DATE"));
                     n.setImage(toBuild.getString("IMAGE"));
                     n.setUrl(toBuild.getString("URL"));
+                    n.setTagsFromCSV(toBuild.getString("TAGS"));
                     result.add(n);
                 }
             }
@@ -350,6 +351,7 @@ public class ParsingUtilities {
             n.setDate(toBuild.getString("DATE"));
             n.setImage(toBuild.getString("IMAGE"));
             n.setUrl(toBuild.getString("URL"));
+            n.setTagsFromCSV(toBuild.getString("TAGS"));
             return n;
         } catch (JSONException e) {
             e.printStackTrace();
