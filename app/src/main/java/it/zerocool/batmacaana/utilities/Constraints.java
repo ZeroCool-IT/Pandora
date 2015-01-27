@@ -55,6 +55,8 @@ public class Constraints {
     public static final String URI_EVENT = "http://www.ilmiositodemo.altervista.org/app/json/eventi.php?user=";
     public static final String URI_IMAGE_BIG = "http://www.ilmiositodemo.altervista.org/app/images/big/";
     public static final String URI_IMAGE_MEDIUM = "http://www.ilmiositodemo.altervista.org/app/images/big/";
+    public static final String URI_SEARCH1 = "http://www.ilmiositodemo.altervista.org/app/json/cerca.php?user=";
+    public static final String URI_SEARCH2 = "&stringa=";
 
 
     //Week Days

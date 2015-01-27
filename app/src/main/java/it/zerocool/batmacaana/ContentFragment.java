@@ -159,7 +159,9 @@ public class ContentFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        task.cancel(true);
+        if (task != null) {
+            task.cancel(true);
+        }
 
     }
 
@@ -175,7 +177,9 @@ public class ContentFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        task.cancel(true);
+        if (task != null) {
+            task.cancel(true);
+        }
     }
 
     /**
@@ -186,7 +190,9 @@ public class ContentFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        task.cancel(true);
+        if (task != null) {
+            task.cancel(true);
+        }
     }
 
     /**
@@ -196,7 +202,9 @@ public class ContentFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        task.cancel(true);
+        if (task != null) {
+            task.cancel(true);
+        }
     }
 
     private class RetrieveDataAsyncTask extends AsyncTask<String, Void, List<Cardable>> {

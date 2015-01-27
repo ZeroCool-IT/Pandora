@@ -1,5 +1,7 @@
 package it.zerocool.batmacaana;
 
+import android.animation.LayoutTransition;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Criteria;
@@ -13,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import java.util.List;
 
@@ -33,7 +37,7 @@ public class HomeActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        //requestLocationServices();
+        requestLocationServices();
 
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
@@ -95,6 +99,19 @@ public class HomeActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home, menu);
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(true);
+        //Get the ID for the search bar LinearLayout
+        int searchBarId = searchView.getContext().getResources().getIdentifier("android:id/search_bar", null, null);
+        //Get the search bar Linearlayout
+        LinearLayout searchBar = (LinearLayout) searchView.findViewById(searchBarId);
+        //Give the Linearlayout a transition animation.
+        searchBar.setLayoutTransition(new LayoutTransition());
         return true;
     }
 

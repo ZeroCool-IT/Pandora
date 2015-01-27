@@ -22,6 +22,7 @@ import it.zerocool.batmacaana.model.Eat;
 import it.zerocool.batmacaana.model.Event;
 import it.zerocool.batmacaana.model.News;
 import it.zerocool.batmacaana.model.Place;
+import it.zerocool.batmacaana.model.SearchResult;
 import it.zerocool.batmacaana.model.Service;
 import it.zerocool.batmacaana.model.Shop;
 import it.zerocool.batmacaana.model.Sleep;
@@ -357,6 +358,29 @@ public class ParsingUtilities {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static ArrayList<SearchResult> parseSearchResultsFromJSON(String json) {
+        ArrayList<SearchResult> result = new ArrayList<SearchResult>();
+        try {
+            JSONObject reader = new JSONObject(json);
+            JSONArray data = reader.getJSONArray("Trovati");
+            if (data != null) {
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject toBuild = data.getJSONObject(i);
+                    SearchResult sr = new SearchResult();
+                    sr.setId(toBuild.getInt("LUOGO_ID"));
+                    sr.setType(toBuild.getInt("TYPE"));
+                    sr.setTagsFromCSV(toBuild.getString("TAGS"));
+                    sr.setDescription(toBuild.getString("DESCRIPTION"));
+                    sr.setheader(toBuild.getString("NAME"));
+                    result.add(sr);
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("JSON Exception", e.getMessage());
+        }
+        return result;
     }
 
     /**
