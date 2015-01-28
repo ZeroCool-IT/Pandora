@@ -7,12 +7,14 @@ package it.zerocool.batmacaana;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import it.zerocool.batmacaana.utilities.Constraints;
+import it.zerocool.batmacaana.utilities.SearchHistoryProvider;
 
 
 public class SearchResultsActivity extends ActionBarActivity {
@@ -35,6 +37,9 @@ public class SearchResultsActivity extends ActionBarActivity {
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                    SearchHistoryProvider.AUTHORITY, SearchHistoryProvider.MODE);
+            suggestions.saveRecentQuery(query, null);
             Bundle args = new Bundle();
             args.putString(Constraints.QUERY, query);
             SearchResultsFragment frag = new SearchResultsFragment();
