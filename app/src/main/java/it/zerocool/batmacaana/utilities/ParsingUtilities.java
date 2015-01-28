@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 /**
  * Project: Pandora
  * File it.zerocool.batmacaana.utility/ParsingUtilities.java
@@ -35,6 +39,13 @@ import it.zerocool.batmacaana.model.ToSee;
  * @author Marco Battisti
  */
 public class ParsingUtilities {
+
+    /**
+     * There isn't a public constructor, it's an utility class!
+     */
+    private ParsingUtilities() {
+        // Private constructor
+    }
 
     /**
      * Build a GregorianCalendar date from a String (YYYY-mm-DD format)
@@ -79,7 +90,6 @@ public class ParsingUtilities {
         }
         return null;
     }
-
 
     /**
      * Build an ArrayList containing Place objects from a string in JSON format
@@ -222,7 +232,6 @@ public class ParsingUtilities {
         return null;
     }
 
-
     /**
      * Build an ArrayList containing Event objects from a string in JSON format
      *
@@ -303,7 +312,6 @@ public class ParsingUtilities {
         return null;
     }
 
-
     /**
      * Build an ArrayList containing News objects from a string in JSON format
      *
@@ -352,7 +360,7 @@ public class ParsingUtilities {
             n.setDate(toBuild.getString("DATE"));
             n.setImage(toBuild.getString("IMAGE"));
             n.setUrl(toBuild.getString("URL"));
-            n.setTagsFromCSV(toBuild.getString("TAGS"));
+            n.setTagsFromCSV(toBuild.optString("TAGS", ""));
             return n;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -383,11 +391,19 @@ public class ParsingUtilities {
         return result;
     }
 
-    /**
-     * There isn't a public constructor, it's an utility class!
-     */
-    private ParsingUtilities() {
-        // TODO Auto-generated constructor stub
+    public static String parseSingleResult(String json) {
+        String result = null;
+        try {
+            JSONObject reader = new JSONObject(json);
+            JSONArray data = reader.getJSONArray("Trovato");
+            if (data != null) {
+                JSONObject toBuild = data.getJSONObject(0);
+                result = toBuild.toString();
+            }
+        } catch (JSONException e) {
+            Log.e("JSON Exception", e.getMessage());
+        }
+        return result;
     }
 
 }

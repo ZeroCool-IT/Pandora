@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 /**
  * Project: Pandora
  * File it.zerocool.batmacaana.utility/Contraints.java
@@ -11,6 +15,7 @@ package it.zerocool.batmacaana.utilities;
  * @author Marco Battisti
  */
 public class Constraints {
+
 
     //USER ID
     public static final int USER_ID = 594;
@@ -57,6 +62,9 @@ public class Constraints {
     public static final String URI_IMAGE_MEDIUM = "http://www.ilmiositodemo.altervista.org/app/images/big/";
     public static final String URI_SEARCH1 = "http://www.ilmiositodemo.altervista.org/app/json/cerca.php?user=";
     public static final String URI_SEARCH2 = "&stringa=";
+    public static final String OBJECT_SEARCH1 = "http://www.ilmiositodemo.altervista.org/app/json/cercadettaglio.php?user=";
+    public static final String OBJECT_SEARCH2 = "&id=";
+    public static final String OBJECT_SEARCH3 = "&type=";
 
 
     //Week Days

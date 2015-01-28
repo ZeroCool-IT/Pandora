@@ -78,7 +78,7 @@ public class SearchResultsFragment extends Fragment {
                         .getString(R.string.results) + query);
 
         String uri = Constraints.URI_SEARCH1
-                + "594"
+                + Constraints.USER_ID
                 + Constraints.URI_SEARCH2
                 + Uri.encode(query);
         if (RequestUtilities.isOnline(getActivity())) {
@@ -133,7 +133,7 @@ public class SearchResultsFragment extends Fragment {
 
 
             if (searchResults != null && !searchResults.isEmpty()) {
-                SearchAdapter adapter = new SearchAdapter(context, searchResults);
+                SearchAdapter adapter = new SearchAdapter(context, searchResults, getFragmentManager());
                 rvResults.setAdapter(adapter);
             } else {
                 String title, message;

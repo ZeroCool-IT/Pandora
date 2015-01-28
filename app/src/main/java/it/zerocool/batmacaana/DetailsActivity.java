@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 package it.zerocool.batmacaana;
 
 import android.content.Intent;
@@ -40,6 +44,21 @@ public class DetailsActivity extends ActionBarActivity {
         Fragment f = null;
         switch (type) {
             case Constraints.TYPE_PLACE:
+                f = new PlaceFragment();
+                break;
+            case Constraints.TYPE_TOSEE:
+                f = new PlaceFragment();
+                break;
+            case Constraints.TYPE_SLEEP:
+                f = new PlaceFragment();
+                break;
+            case Constraints.TYPE_EAT:
+                f = new PlaceFragment();
+                break;
+            case Constraints.TYPE_SERVICE:
+                f = new PlaceFragment();
+                break;
+            case Constraints.TYPE_SHOP:
                 f = new PlaceFragment();
                 break;
             case Constraints.TYPE_NEWS:
