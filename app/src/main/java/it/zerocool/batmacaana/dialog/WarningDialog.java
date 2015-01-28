@@ -1,9 +1,12 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 package it.zerocool.batmacaana.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
@@ -16,12 +19,12 @@ public class WarningDialog extends DialogFragment {
 
     private String title;
     private String message;
-    private Drawable icon;
     private AlertDialog.Builder builder;
+    private boolean killActivity;
 
     public static final String TITLE = "title";
     public static final String MESSAGE = "message";
-    public static final String ICON = "icon";
+    public static final String KILL = "kill";
 
 
     public WarningDialog() {
@@ -36,13 +39,16 @@ public class WarningDialog extends DialogFragment {
                 AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
         title = getArguments().getString(TITLE);
         message = getArguments().getString(MESSAGE);
-        icon = getActivity().getResources().getDrawable(getArguments().getInt(ICON));
-        builder.setIcon(icon);
+        killActivity = getArguments().getBoolean(KILL);
+
         builder.setTitle(title);
         builder.setMessage(message);
         builder.setPositiveButton(R.string.dialog_button_ok,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        if (killActivity) {
+                            getActivity().finish();
+                        }
                     }
                 });
         // Create the AlertDialog object and return it

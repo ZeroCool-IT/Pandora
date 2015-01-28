@@ -13,7 +13,6 @@ import it.zerocool.batmacaana.utilities.Constraints;
 
 public class DetailsActivity extends ActionBarActivity {
 
-    private String header;
     private Toolbar toolbar;
 
     @Override
@@ -74,40 +73,4 @@ public class DetailsActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-/*    *//**
-     * A placeholder fragment containing a simple view.
-     *//*
-    public static class PlaceholderFragment extends Fragment {
-
-        private TextView tvTest;
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-            tvTest = (TextView) rootView.findViewById(R.id.detailsTv);
-            String object = getArguments().getString(Constraints.JSON_ARG);
-            int type = getArguments().getInt(Constraints.TYPE_ARG);
-            Cardable test = null;
-            switch (type) {
-                case Constraints.TYPE_PLACE:
-                    Place p = ParsingUtilities.parseSinglePlace(object);
-                    test = p;
-                    break;
-                case Constraints.TYPE_NEWS:
-                    News n = ParsingUtilities.parseSingleNews(object);
-                    test = n;
-                    break;
-                case  Constraints.TYPE_EVENT:
-                    Event e = ParsingUtilities.parseSingleEvent(object);
-                    test = e;
-            }
-            tvTest.setText(test.getHeader());
-            return rootView;
-        }
-    }*/
 }

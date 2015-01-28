@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 package it.zerocool.batmacaana;
 
 import android.content.Context;
@@ -134,7 +138,6 @@ public class ContentFragment extends Fragment {
             Bundle arguments = new Bundle();
             arguments.putString(WarningDialog.TITLE, title);
             arguments.putString(WarningDialog.MESSAGE, message);
-            arguments.putInt(WarningDialog.ICON, R.drawable.ic_error_red_36dp);
             dialog.setArguments(arguments);
             dialog.show(getFragmentManager(), "No Connection warning");
             Bundle fallbackArgs = new Bundle();
@@ -295,7 +298,6 @@ public class ContentFragment extends Fragment {
                 Bundle arguments = new Bundle();
                 arguments.putString(WarningDialog.TITLE, title);
                 arguments.putString(WarningDialog.MESSAGE, message);
-                arguments.putInt(WarningDialog.ICON, R.drawable.ic_error_red_36dp);
                 dialog.setArguments(arguments);
                 dialog.show(getFragmentManager(), "Error retrieving data");
                 args.putInt(ContentFallbackFragment.FALLBACK_TYPE_ARG, Constraints.CONNECTION_ERROR);

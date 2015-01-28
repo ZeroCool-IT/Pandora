@@ -93,6 +93,7 @@ public class Constraints {
     public static final String IMAGE = "image";
     public static final String TITLE = "title";
     public static final String SUBTITLE = "subtitle";
+    public static final String QUERY = "query";
 
     /**
      *
