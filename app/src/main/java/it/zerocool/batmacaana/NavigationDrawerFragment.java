@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 package it.zerocool.batmacaana;
 
 import android.content.Context;
@@ -47,6 +51,38 @@ public class NavigationDrawerFragment extends Fragment {
     public NavigationDrawerFragment() {
     }
 
+    public static List<DrawerItem> getData(Context context) {
+        List<DrawerItem> data = new ArrayList<DrawerItem>();
+        int[] icons = {R.drawable.ic_beenhere_grey600_24dp,
+                R.drawable.ic_event_note_grey600_24dp,
+                R.drawable.ic_local_restaurant_grey600_24dp,
+                R.drawable.ic_local_hotel_grey600_24dp,
+                R.drawable.ic_newspaper_grey600_24dp,
+                R.drawable.ic_local_mall_grey600_24dp,
+                R.drawable.ic_directions_train_grey600_24dp,
+                R.drawable.ic_local_library_grey600_24dp};
+        String[] titles = context.getResources().getStringArray(R.array.drawer_list);
+        for (int i = 0; i < titles.length && i < icons.length; i++) {
+            DrawerItem current = new DrawerItem();
+            current.iconID = icons[i];
+            current.title = titles[i];
+            data.add(current);
+        }
+        return data;
+    }
+
+    public static void saveToPreferences(Context context, String preferenceName, String preferenceValue) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(preferenceName, preferenceValue);
+        editor.apply();
+    }
+
+    public static String readFromPreferences(Context context, String preferenceName, String preferenceValue) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(preferenceName, preferenceValue);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,33 +107,14 @@ public class NavigationDrawerFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         selectItem(position);
-//                        drawSelected(view);
+                        unselectView(previousSelected);
+                        selectView(view);
 
                     }
                 })
         );
 
         return layout;
-    }
-
-    public static List<DrawerItem> getData(Context context) {
-        List<DrawerItem> data = new ArrayList<DrawerItem>();
-        int[] icons = {R.drawable.ic_beenhere_grey600_24dp,
-                R.drawable.ic_event_note_grey600_24dp,
-                R.drawable.ic_local_restaurant_grey600_24dp,
-                R.drawable.ic_local_hotel_grey600_24dp,
-                R.drawable.ic_newspaper_grey600_24dp,
-                R.drawable.ic_local_mall_grey600_24dp,
-                R.drawable.ic_directions_train_grey600_24dp,
-                R.drawable.ic_local_library_grey600_24dp};
-        String[] titles = context.getResources().getStringArray(R.array.drawer_list);
-        for (int i = 0; i < titles.length && i < icons.length; i++) {
-            DrawerItem current = new DrawerItem();
-            current.iconID = icons[i];
-            current.title = titles[i];
-            data.add(current);
-        }
-        return data;
     }
 
     public void setUp(int fragmentID, DrawerLayout drawerLayout, final Toolbar toolbar) {
@@ -134,8 +151,6 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerLayout.openDrawer(containerView);
         }
         selectItem(Constraints.TOSEE);
-
-
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerLayout.post(new Runnable() {
             @Override
@@ -146,19 +161,6 @@ public class NavigationDrawerFragment extends Fragment {
 
 
     }
-
-    public static void saveToPreferences(Context context, String preferenceName, String preferenceValue) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(preferenceName, preferenceValue);
-        editor.apply();
-    }
-
-    public static String readFromPreferences(Context context, String preferenceName, String preferenceValue) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(preferenceName, preferenceValue);
-    }
-
 
     private void selectItem(int position) {
         if (position != Constraints.ABOUT) {
@@ -171,20 +173,33 @@ public class NavigationDrawerFragment extends Fragment {
                     .replace(R.id.content_frame, f)
                     .commit();
             getActivity().setTitle(getResources().getStringArray(R.array.drawer_list)[position]);
-//        drawSelected(view);
             mDrawerLayout.closeDrawers();
         } else {
             //TODO About fragment
         }
     }
 
-    private void drawSelected(View view) {
-        TextView prevTv = (TextView) previousSelected.findViewById(R.id.listText);
-        prevTv.setTextColor(getResources().getColor(R.color.text87));
-        TextView tv = (TextView) view.findViewById(R.id.listText);
-        tv.setTextColor(getResources().getColor(R.color.primaryColor));
-        previousSelected = view;
+//    private void drawSelected(View view) {
+//        TextView prevTv = (TextView) previousSelected.findViewById(R.id.listText);
+//        prevTv.setTextColor(getResources().getColor(R.color.text87));
+//        TextView tv = (TextView) view.findViewById(R.id.listText);
+//        tv.setTextColor(getResources().getColor(R.color.primaryColor));
+//        previousSelected = view;
+//    }
+
+    private void selectView(View v) {
+        TextView title = (TextView) v.findViewById(R.id.listText);
+        title.setTextColor(getResources().getColor(R.color.primaryColor));
+        v.setBackgroundColor(getResources().getColor(R.color.selected_item));
+        previousSelected = v;
     }
 
+    private void unselectView(View v) {
+        if (v != null) {
+            TextView title = (TextView) v.findViewById(R.id.listText);
+            title.setTextColor(getResources().getColor(R.color.primary_text_color));
+            v.setBackgroundColor(getResources().getColor(R.color.transparent_bg));
+        }
 
+    }
 }

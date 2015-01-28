@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 apply plugin: 'com.android.application'
 
 android {
@@ -8,8 +12,8 @@ android {
         applicationId "it.zerocool.batmacaana"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 11
-        versionName "0.11a"
+        versionCode 12
+        versionName "0.12a"
     }
     buildTypes {
         release {

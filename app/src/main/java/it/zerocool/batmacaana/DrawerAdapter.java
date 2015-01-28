@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 package it.zerocool.batmacaana;
 
 import android.content.Context;
@@ -7,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,9 +20,10 @@ import java.util.List;
  */
 public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerViewHolder> {
 
+    List<DrawerItem> drawerItems = Collections.emptyList();
     private Context context;
     private LayoutInflater inflater;
-    List<DrawerItem> drawerItems = Collections.emptyList();
+    private View previousSelected;
 
 
     public DrawerAdapter(Context context, List<DrawerItem> data) {
@@ -58,15 +62,33 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.listText);
             icon = (ImageView) itemView.findViewById(R.id.listIcon);
-            icon.setOnClickListener(this);
+//            icon.setOnClickListener(this);
+//            itemView.setOnClickListener(this);
 
 
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(context, "Item clicked at " + getPosition(), Toast.LENGTH_SHORT).show();
+            title.setTextColor(context.getResources().getColor(R.color.primaryColor));
+            unselectView(previousSelected);
+            selectView(v);
+            previousSelected = v;
+        }
 
+        private void selectView(View v) {
+            TextView title = (TextView) v.findViewById(R.id.listText);
+            title.setTextColor(context.getResources().getColor(R.color.white));
+            v.setBackgroundColor(context.getResources().getColor(R.color.primaryColor));
+            previousSelected = v;
+        }
+
+        private void unselectView(View v) {
+            if (v != null) {
+                TextView title = (TextView) v.findViewById(R.id.listText);
+                title.setTextColor(context.getResources().getColor(R.color.primary_text_color));
+                v.setBackgroundColor(context.getResources().getColor(R.color.transparent_bg));
+            }
         }
     }
 }
