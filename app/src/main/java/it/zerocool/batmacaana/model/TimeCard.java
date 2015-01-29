@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 /**
  * Project: Pandora
  * File: it.zerocool.batmacaana.model/TimeCard.java
@@ -50,6 +54,15 @@ public class TimeCard {
         return amOpening;
     }
 
+    /**
+     * Set the place AM opening from String
+     *
+     * @param amOpening the AM opening hour to set
+     */
+    public void setAmOpening(String amOpening) {
+        GregorianCalendar g = ParsingUtilities.parseHour(amOpening);
+        setAmOpening(g);
+    }
 
     /**
      * Set the place AM opening
@@ -61,31 +74,10 @@ public class TimeCard {
     }
 
     /**
-     * Set the place AM opening from String
-     *
-     * @param amOpening the AM opening hour to set
-     */
-    public void setAmOpening(String amOpening) {
-        GregorianCalendar g = ParsingUtilities.parseHour(amOpening);
-        setAmOpening(g);
-    }
-
-
-    /**
      * @return the AM closing hour
      */
     public GregorianCalendar getAmClosing() {
         return amClosing;
-    }
-
-
-    /**
-     * Set the place AM closing
-     *
-     * @param amClosing AM closing hour to set
-     */
-    public void setAmClosing(GregorianCalendar amClosing) {
-        this.amClosing = amClosing;
     }
 
     /**
@@ -98,22 +90,20 @@ public class TimeCard {
         setAmClosing(g);
     }
 
+    /**
+     * Set the place AM closing
+     *
+     * @param amClosing AM closing hour to set
+     */
+    public void setAmClosing(GregorianCalendar amClosing) {
+        this.amClosing = amClosing;
+    }
 
     /**
      * @return the PM opening hour
      */
     public GregorianCalendar getPmOpening() {
         return pmOpening;
-    }
-
-
-    /**
-     * Set the place PM opening
-     *
-     * @param pmOpening the PM opening hour to set
-     */
-    public void setPmOpening(GregorianCalendar pmOpening) {
-        this.pmOpening = pmOpening;
     }
 
     /**
@@ -126,22 +116,20 @@ public class TimeCard {
         setPmOpening(g);
     }
 
+    /**
+     * Set the place PM opening
+     *
+     * @param pmOpening the PM opening hour to set
+     */
+    public void setPmOpening(GregorianCalendar pmOpening) {
+        this.pmOpening = pmOpening;
+    }
 
     /**
      * @return the PM closing hour
      */
     public GregorianCalendar getPmClosing() {
         return pmClosing;
-    }
-
-
-    /**
-     * Set the place PM closing
-     *
-     * @param pmClosing the PM closing hour to set
-     */
-    public void setPmClosing(GregorianCalendar pmClosing) {
-        this.pmClosing = pmClosing;
     }
 
     /**
@@ -154,6 +142,14 @@ public class TimeCard {
         setPmClosing(g);
     }
 
+    /**
+     * Set the place PM closing
+     *
+     * @param pmClosing the PM closing hour to set
+     */
+    public void setPmClosing(GregorianCalendar pmClosing) {
+        this.pmClosing = pmClosing;
+    }
 
     /**
      * @return the closing days list
@@ -271,11 +267,11 @@ public class TimeCard {
     public String closingDayToString() {
         String res = null;
         if (!getClosingDays().isEmpty()) {
-            String[] days = ApplicationContextProvider.getContext().getResources().getStringArray(R.array.day_of_week);
             Iterator<GregorianCalendar> it = getClosingDays().iterator();
             List<String> result = new ArrayList<>();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
             while (it.hasNext()) {
-                result.add(days[it.next().get(GregorianCalendar.DAY_OF_WEEK)]);
+                result.add(dateFormat.format(it.next().getTime()));
             }
             res = ApplicationContextProvider.getContext().getResources().getString(R.string.closed) + " " + TextUtils.join(", ", result);
         }

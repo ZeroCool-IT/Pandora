@@ -47,14 +47,19 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
     @Override
     public DrawerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if (viewType != Constraints.VIEW_STATE_SELECTED) {
-            view = inflater.inflate(R.layout.drawer_row, parent, false);
-        } else {
+        if (viewType == Constraints.VIEW_STATE_SELECTED) {
             view = inflater.inflate(R.layout.drawer_row_selected, parent, false);
             previousSelected = view;
+        } else if (viewType == Constraints.NAV_DRAWER_SUBHEADER) {
+            view = inflater.inflate(R.layout.drawer_row_subheader, parent, false);
+        } else if (viewType == Constraints.ABOUT) {
+            view = inflater.inflate(R.layout.drawer_row_last_main, parent, false);
+        } else if (viewType == Constraints.OFFLINE) {
+            view = inflater.inflate(R.layout.drawer_row_offline_toggle, parent, false);
+        } else {
+            view = inflater.inflate(R.layout.drawer_row, parent, false);
         }
-        DrawerViewHolder holder = new DrawerViewHolder(view);
-        return holder;
+        return new DrawerViewHolder(view);
     }
 
     @Override
@@ -84,9 +89,16 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
     @Override
     public int getItemViewType(int position) {
         SharedPreferences sp = SharedPreferencesProvider.getSharedPreferences(context);
-        int defaultView = sp.getInt(Constraints.KEY_USER_DEFAULT_START_VIEW, 0);
+        final int defaultView = sp.getInt(Constraints.KEY_USER_DEFAULT_START_VIEW, 0);
+
         if (position == defaultView)
             return Constraints.VIEW_STATE_SELECTED;
+        else if (position == Constraints.NAV_DRAWER_SUBHEADER)
+            return Constraints.NAV_DRAWER_SUBHEADER;
+        else if (position == Constraints.ABOUT)
+            return Constraints.ABOUT;
+        else if (position == Constraints.OFFLINE)
+            return Constraints.OFFLINE;
         return super.getItemViewType(position);
     }
 
@@ -124,24 +136,40 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
 
         @Override
         public void onClick(View v) {
+            int position = getPosition();
             selectItem(getPosition());
-            unselectView(previousSelected);
-            selectView(v);
+            if (position != Constraints.SETTINGS && position != Constraints.UPDATE && position != Constraints.SUBHEADER && position != Constraints.OFFLINE) {
+                unselectView(previousSelected);
+                selectView(v);
+            }
         }
 
         public void selectItem(int position) {
-            if (position != Constraints.ABOUT) {
-                ContentFragment f = new ContentFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constraints.FRAG_SECTION_ID, position);
-                f.setArguments(bundle);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.content_frame, f)
-                        .commit();
-                ((ActionBarActivity) context).setTitle(context.getResources().getStringArray(R.array.drawer_list)[position]);
-                drawerLayout.closeDrawers();
-            } else {
-                //TODO About fragment
+
+            switch (position) {
+                case Constraints.ABOUT:
+                    break;
+                case Constraints.SUBHEADER:
+                    break;
+                case Constraints.FAVORITE:
+                    break;
+                case Constraints.SETTINGS:
+                    break;
+                case Constraints.OFFLINE:
+                    break;
+                case Constraints.UPDATE:
+                    break;
+                default:
+                    ContentFragment f = new ContentFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constraints.FRAG_SECTION_ID, position);
+                    f.setArguments(bundle);
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame, f)
+                            .commit();
+                    ((ActionBarActivity) context).setTitle(context.getResources().getStringArray(R.array.drawer_list)[position]);
+                    drawerLayout.closeDrawers();
+                    break;
             }
         }
 

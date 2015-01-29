@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright ZeroApp(c) 2015. All right reserved.
   -->
 
@@ -18,5 +17,6 @@
     <color name="white">#FFFFFF</color>
     <color name="black_overlay">#66000000</color>
     <color name="selected_item">#14000000</color>
+    <color name="divider">#1f000000</color>
 
 </resources>

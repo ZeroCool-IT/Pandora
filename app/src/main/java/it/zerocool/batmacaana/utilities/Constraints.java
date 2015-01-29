@@ -48,6 +48,13 @@ public class Constraints {
     public static final int SHOP = 5;
     public static final int SERVICES = 6;
     public static final int ABOUT = 7;
+    public static final int SUBHEADER = 8;
+    public static final int FAVORITE = 9;
+    public static final int SETTINGS = 10;
+    public static final int OFFLINE = 11;
+    public static final int UPDATE = 12;
+
+    //Place
     public static final int PLACE = 8;
 
     //Requests URI
@@ -117,6 +124,7 @@ public class Constraints {
 
     //Others
     public static final int VIEW_STATE_SELECTED = 1;
+    public static final int NAV_DRAWER_SUBHEADER = 8;
 
     /**
      * Private constructor
