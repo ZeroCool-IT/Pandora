@@ -38,8 +38,9 @@
         <activity
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
-            android:parentActivityName=".HomeActivity">
-            <meta-data
+            android:parentActivityName=".HomeActivity"
+            android:screenOrientation="portrait">
+        <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.zerocool.batmacaana.HomeActivity" />
         </activity>
@@ -56,8 +57,9 @@
         <activity
             android:name=".SearchResultsActivity"
             android:label="@string/title_activity_search_results"
-            android:parentActivityName=".HomeActivity">
-            <meta-data
+            android:parentActivityName=".HomeActivity"
+            android:screenOrientation="portrait">
+        <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.zerocool.batmacaana.HomeActivity" />
             <intent-filter>

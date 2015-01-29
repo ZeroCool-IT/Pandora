@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 package it.zerocool.batmacaana;
 
 import android.content.Intent;
@@ -313,13 +317,16 @@ public class EventFragment extends Fragment implements View.OnClickListener {
                 Intent intent = new Intent(getActivity(), FullscreenActivity.class);
                 intent.putExtra(Constraints.IMAGE, targetEvent.getImage());
                 startActivity(intent);
-            }
+            } else
+                Toast.makeText(getActivity(), R.string.no_image, Toast.LENGTH_SHORT).show();
+
         } else if (v.getId() == R.id.fullscreenButton) {
             if (targetEvent.getImage() != null) {
                 Intent intent = new Intent(getActivity(), FullscreenActivity.class);
                 intent.putExtra(Constraints.IMAGE, targetEvent.getImage());
                 startActivity(intent);
-            }
+            } else
+                Toast.makeText(getActivity(), R.string.no_image, Toast.LENGTH_SHORT).show();
         }
     }
 

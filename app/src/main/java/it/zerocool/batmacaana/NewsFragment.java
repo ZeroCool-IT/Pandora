@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 package it.zerocool.batmacaana;
 
 import android.content.Intent;
@@ -157,13 +161,19 @@ public class NewsFragment extends Fragment implements View.OnClickListener {
             } else
                 Toast.makeText(getActivity(), R.string.no_url_available, Toast.LENGTH_SHORT).show();
         } else if (v.getId() == R.id.imageView) {
-            Intent intent = new Intent(getActivity(), FullscreenActivity.class);
-            intent.putExtra(Constraints.IMAGE, targetNews.getImage());
-            startActivity(intent);
+            if (targetNews.getImage() != null) {
+                Intent intent = new Intent(getActivity(), FullscreenActivity.class);
+                intent.putExtra(Constraints.IMAGE, targetNews.getImage());
+                startActivity(intent);
+            } else
+                Toast.makeText(getActivity(), R.string.no_image, Toast.LENGTH_SHORT).show();
         } else if (v.getId() == R.id.fullscreenButton) {
-            Intent intent = new Intent(getActivity(), FullscreenActivity.class);
-            intent.putExtra(Constraints.IMAGE, targetNews.getImage());
-            startActivity(intent);
+            if (targetNews.getImage() != null) {
+                Intent intent = new Intent(getActivity(), FullscreenActivity.class);
+                intent.putExtra(Constraints.IMAGE, targetNews.getImage());
+                startActivity(intent);
+            } else
+                Toast.makeText(getActivity(), R.string.no_image, Toast.LENGTH_SHORT).show();
         }
     }
 
