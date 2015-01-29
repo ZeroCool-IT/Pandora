@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 package it.zerocool.batmacaana;
 
 import android.animation.LayoutTransition;
@@ -22,12 +26,11 @@ import java.util.List;
 
 import it.zerocool.batmacaana.dialog.LocationWarningDialog;
 import it.zerocool.batmacaana.utilities.Constraints;
+import it.zerocool.batmacaana.utilities.SharedPreferencesProvider;
 
 
 public class HomeActivity extends ActionBarActivity {
 
-    public static final int LOCATION_UPDATE_TIME = 120000;
-    public static final int LOCATION_MIN_DISTANCE_UPDATE = 100;
     private Toolbar toolbar;
     private LocationWarningDialog dialog;
     private LocationManager locationManager;
@@ -47,6 +50,11 @@ public class HomeActivity extends ActionBarActivity {
 
         NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
+        SharedPreferences sp = SharedPreferencesProvider.getSharedPreferences(this);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(Constraints.KEY_USER_DEFAULT_START_VIEW, 0);
+        editor.apply();
+
     }
 
     /**
@@ -131,7 +139,7 @@ public class HomeActivity extends ActionBarActivity {
     }
 
     private void saveLocationToPreferences(Location location) {
-        SharedPreferences sharedPreferences = getSharedPreferences(NavigationDrawerFragment.PREF_FILE_NAME,
+        SharedPreferences sharedPreferences = getSharedPreferences(Constraints.PREF_FILE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         double latitude = location.getLatitude();
@@ -181,8 +189,8 @@ public class HomeActivity extends ActionBarActivity {
         };
         if (provider != null && locationManager.getAllProviders().contains(provider)) {
             Log.i("ZCLOG", "Using " + provider + " provider");
-            locationManager.requestLocationUpdates(provider, LOCATION_UPDATE_TIME,
-                    LOCATION_MIN_DISTANCE_UPDATE, locationListener);
+            locationManager.requestLocationUpdates(provider, Constraints.LOCATION_UPDATE_TIME,
+                    Constraints.LOCATION_MIN_DISTANCE_UPDATE, locationListener);
         } else
             Log.e("ZCLOG", "The provider " + provider + " is not available!");
         /*Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);

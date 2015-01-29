@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 package it.zerocool.batmacaana;
 
 import android.os.Bundle;
@@ -21,9 +25,6 @@ import it.zerocool.batmacaana.utilities.Constraints;
  */
 public class ContentFallbackFragment extends Fragment {
 
-
-    public static final String FALLBACK_TYPE_ARG = "fallback";
-    public static final String FALLBACK_REFRESH_ARG = "refresh";
     private ImageButton btRefresh;
 
     public ContentFallbackFragment() {
@@ -41,7 +42,7 @@ public class ContentFallbackFragment extends Fragment {
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_content_fallback, container, false);
 
-        int type = getArguments().getInt(FALLBACK_TYPE_ARG);
+        int type = getArguments().getInt(Constraints.FALLBACK_TYPE_ARG);
 
         if (type == Constraints.CONNECTION_ERROR) {
             layout = inflater.inflate(R.layout.fragment_content_fallback_error, container, false);
@@ -51,7 +52,7 @@ public class ContentFallbackFragment extends Fragment {
                 public void onClick(View v) {
                     ContentFragment f = new ContentFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putInt(NavigationDrawerFragment.FRAG_SECTION_ID, getArguments().getInt(FALLBACK_REFRESH_ARG)
+                    bundle.putInt(Constraints.FRAG_SECTION_ID, getArguments().getInt(Constraints.FALLBACK_REFRESH_ARG)
                     );
                     f.setArguments(bundle);
                     FragmentManager fm = getFragmentManager();

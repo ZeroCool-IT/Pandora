@@ -18,22 +18,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import it.zerocool.batmacaana.utilities.Constraints;
+import it.zerocool.batmacaana.utilities.SharedPreferencesProvider;
 
 
 /**
  *
  */
 public class NavigationDrawerFragment extends Fragment {
-
-    public static final String PREF_FILE_NAME = "preference";
-    public static final String KEY_USER_LEARNED_DRAWER = "user_learned_drawer";
-    public static final String FRAG_SECTION_ID = "frag_section_id";
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -42,6 +38,7 @@ public class NavigationDrawerFragment extends Fragment {
     private View containerView;
     private RecyclerView recyclerView;
     private View previousSelected;
+    private LinearLayoutManager linearLayoutManager;
 
     private DrawerAdapter adapter;
 
@@ -71,22 +68,11 @@ public class NavigationDrawerFragment extends Fragment {
         return data;
     }
 
-    public static void saveToPreferences(Context context, String preferenceName, String preferenceValue) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(preferenceName, preferenceValue);
-        editor.apply();
-    }
-
-    public static String readFromPreferences(Context context, String preferenceName, String preferenceValue) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(preferenceName, preferenceValue);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUserLearnedDrawer = Boolean.valueOf(readFromPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, "false"));
+        mUserLearnedDrawer = Boolean.valueOf(SharedPreferencesProvider.readFromPreferences(getActivity(), Constraints.KEY_USER_LEARNED_DRAWER, "false"));
         if (savedInstanceState != null) {
             mFromSavedInstanceState = true;
         }
@@ -99,10 +85,11 @@ public class NavigationDrawerFragment extends Fragment {
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
 
 
-        adapter = new DrawerAdapter(getActivity(), getData(getActivity()));
+        adapter = new DrawerAdapter(getActivity(), getData(getActivity()), getActivity().getSupportFragmentManager());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addOnItemTouchListener(
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
+/*        recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
@@ -112,14 +99,17 @@ public class NavigationDrawerFragment extends Fragment {
 
                     }
                 })
-        );
-
+        );*/
+        /*View v = recyclerView.getChildAt(0);
+        int i = linearLayoutManager.getChildCount();
+        int j = recyclerView.getChildCount();*/
         return layout;
     }
 
     public void setUp(int fragmentID, DrawerLayout drawerLayout, final Toolbar toolbar) {
         containerView = getActivity().findViewById(fragmentID);
         mDrawerLayout = drawerLayout;
+        adapter.setDrawerLayout(mDrawerLayout);
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close) {
 
             @Override
@@ -133,7 +123,7 @@ public class NavigationDrawerFragment extends Fragment {
                 super.onDrawerOpened(drawerView);
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
-                    saveToPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, mUserLearnedDrawer + "");
+                    SharedPreferencesProvider.saveToPreferences(getActivity(), Constraints.KEY_USER_LEARNED_DRAWER, mUserLearnedDrawer + "");
                     getActivity().invalidateOptionsMenu();
 
                 }
@@ -150,7 +140,9 @@ public class NavigationDrawerFragment extends Fragment {
         if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
             mDrawerLayout.openDrawer(containerView);
         }
-        selectItem(Constraints.TOSEE);
+        SharedPreferences sp = SharedPreferencesProvider.getSharedPreferences(getActivity());
+        int defaultView = sp.getInt(Constraints.KEY_USER_DEFAULT_START_VIEW, 0);
+        selectItem(defaultView);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerLayout.post(new Runnable() {
             @Override
@@ -166,7 +158,7 @@ public class NavigationDrawerFragment extends Fragment {
         if (position != Constraints.ABOUT) {
             ContentFragment f = new ContentFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt(FRAG_SECTION_ID, position);
+            bundle.putInt(Constraints.FRAG_SECTION_ID, position);
             f.setArguments(bundle);
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction()
@@ -187,7 +179,7 @@ public class NavigationDrawerFragment extends Fragment {
 //        previousSelected = view;
 //    }
 
-    private void selectView(View v) {
+/*    private void selectView(View v) {
         TextView title = (TextView) v.findViewById(R.id.listText);
         title.setTextColor(getResources().getColor(R.color.primaryColor));
         v.setBackgroundColor(getResources().getColor(R.color.selected_item));
@@ -201,5 +193,5 @@ public class NavigationDrawerFragment extends Fragment {
             v.setBackgroundColor(getResources().getColor(R.color.transparent_bg));
         }
 
-    }
+    }*/
 }

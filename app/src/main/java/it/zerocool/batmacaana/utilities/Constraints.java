@@ -102,12 +102,26 @@ public class Constraints {
     public static final String TITLE = "title";
     public static final String SUBTITLE = "subtitle";
     public static final String QUERY = "query";
+    public static final String FRAG_SECTION_ID = "frag_section_id";
+    public static final String FALLBACK_TYPE_ARG = "fallback";
+    public static final String FALLBACK_REFRESH_ARG = "refresh";
+
+    //Shared Preferences
+    public static final String PREF_FILE_NAME = "preference";
+    public static final String KEY_USER_LEARNED_DRAWER = "user_learned_drawer";
+    public static final String KEY_USER_DEFAULT_START_VIEW = "user_default_view";
+
+    //Location Constraints
+    public static final int LOCATION_UPDATE_TIME = 120000;
+    public static final int LOCATION_MIN_DISTANCE_UPDATE = 100;
+
+    //Others
+    public static final int VIEW_STATE_SELECTED = 1;
 
     /**
-     *
+     * Private constructor
      */
     private Constraints() {
-        // TODO Auto-generated constructor stub
     }
 
 }

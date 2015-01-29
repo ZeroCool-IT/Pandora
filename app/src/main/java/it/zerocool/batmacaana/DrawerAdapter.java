@@ -5,6 +5,11 @@
 package it.zerocool.batmacaana;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +20,9 @@ import android.widget.TextView;
 import java.util.Collections;
 import java.util.List;
 
+import it.zerocool.batmacaana.utilities.Constraints;
+import it.zerocool.batmacaana.utilities.SharedPreferencesProvider;
+
 /**
  * Created by Marco on 05/01/2015.
  */
@@ -24,18 +32,27 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
     private Context context;
     private LayoutInflater inflater;
     private View previousSelected;
+    private FragmentManager fragmentManager;
+    private DrawerLayout drawerLayout;
 
 
-    public DrawerAdapter(Context context, List<DrawerItem> data) {
+    public DrawerAdapter(Context context, List<DrawerItem> data, FragmentManager fm) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.drawerItems = data;
+        this.fragmentManager = fm;
 
     }
 
     @Override
     public DrawerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.drawer_row, parent, false);
+        View view;
+        if (viewType != Constraints.VIEW_STATE_SELECTED) {
+            view = inflater.inflate(R.layout.drawer_row, parent, false);
+        } else {
+            view = inflater.inflate(R.layout.drawer_row_selected, parent, false);
+            previousSelected = view;
+        }
         DrawerViewHolder holder = new DrawerViewHolder(view);
         return holder;
     }
@@ -52,6 +69,46 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         return drawerItems.size();
     }
 
+    /**
+     * Return the view type of the item at <code>position</code> for the purposes
+     * of view recycling.
+     * <p/>
+     * <p>The default implementation of this method returns 0, making the assumption of
+     * a single view type for the adapter. Unlike ListView adapters, types need not
+     * be contiguous. Consider using id resources to uniquely identify item view types.
+     *
+     * @param position position to query
+     * @return integer value identifying the type of the view needed to represent the item at
+     * <code>position</code>. Type codes need not be contiguous.
+     */
+    @Override
+    public int getItemViewType(int position) {
+        SharedPreferences sp = SharedPreferencesProvider.getSharedPreferences(context);
+        int defaultView = sp.getInt(Constraints.KEY_USER_DEFAULT_START_VIEW, 0);
+        if (position == defaultView)
+            return Constraints.VIEW_STATE_SELECTED;
+        return super.getItemViewType(position);
+    }
+
+    private void selectView(View v) {
+        TextView title = (TextView) v.findViewById(R.id.listText);
+        title.setTextColor(context.getResources().getColor(R.color.primaryColor));
+        v.setBackgroundColor(context.getResources().getColor(R.color.selected_item));
+        previousSelected = v;
+    }
+
+    private void unselectView(View v) {
+        if (v != null) {
+            TextView title = (TextView) v.findViewById(R.id.listText);
+            title.setTextColor(context.getResources().getColor(R.color.primary_text_color));
+            v.setBackgroundColor(context.getResources().getColor(R.color.transparent_bg));
+        }
+    }
+
+    public void setDrawerLayout(DrawerLayout dl) {
+        this.drawerLayout = dl;
+    }
+
 
     class DrawerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -60,35 +117,35 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
 
         public DrawerViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             title = (TextView) itemView.findViewById(R.id.listText);
             icon = (ImageView) itemView.findViewById(R.id.listIcon);
-//            icon.setOnClickListener(this);
-//            itemView.setOnClickListener(this);
-
-
         }
 
         @Override
         public void onClick(View v) {
-            title.setTextColor(context.getResources().getColor(R.color.primaryColor));
+            selectItem(getPosition());
             unselectView(previousSelected);
             selectView(v);
-            previousSelected = v;
         }
 
-        private void selectView(View v) {
-            TextView title = (TextView) v.findViewById(R.id.listText);
-            title.setTextColor(context.getResources().getColor(R.color.white));
-            v.setBackgroundColor(context.getResources().getColor(R.color.primaryColor));
-            previousSelected = v;
-        }
-
-        private void unselectView(View v) {
-            if (v != null) {
-                TextView title = (TextView) v.findViewById(R.id.listText);
-                title.setTextColor(context.getResources().getColor(R.color.primary_text_color));
-                v.setBackgroundColor(context.getResources().getColor(R.color.transparent_bg));
+        public void selectItem(int position) {
+            if (position != Constraints.ABOUT) {
+                ContentFragment f = new ContentFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt(Constraints.FRAG_SECTION_ID, position);
+                f.setArguments(bundle);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, f)
+                        .commit();
+                ((ActionBarActivity) context).setTitle(context.getResources().getStringArray(R.array.drawer_list)[position]);
+                drawerLayout.closeDrawers();
+            } else {
+                //TODO About fragment
             }
         }
+
     }
 }
+
+

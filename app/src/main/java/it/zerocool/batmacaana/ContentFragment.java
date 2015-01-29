@@ -37,8 +37,6 @@ import it.zerocool.batmacaana.utilities.RequestUtilities;
 
 public class ContentFragment extends Fragment {
 
-    public static String FRAG_SECTION_ID = "frag_section_id";
-
     private RecyclerView rvContent;
     private ContentAdapter adapter;
     private RetrieveDataAsyncTask task;
@@ -72,7 +70,7 @@ public class ContentFragment extends Fragment {
         progressBar = (ProgressBarCircularIndeterminate) layout.findViewById(R.id.progressBar);
         rvContent = (RecyclerView) layout.findViewById(R.id.content_recycler_view);
         rvContent.setLayoutManager(new LinearLayoutManager(getActivity()));
-        int id = getArguments().getInt(FRAG_SECTION_ID);
+        int id = getArguments().getInt(Constraints.FRAG_SECTION_ID);
         searchResults = getData(getActivity(), id);
 
         return layout;
@@ -82,7 +80,7 @@ public class ContentFragment extends Fragment {
 
 
     private void readCurrentLocationFromPreferences() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(NavigationDrawerFragment.PREF_FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Constraints.PREF_FILE_NAME, Context.MODE_PRIVATE);
         String latitude = sharedPreferences.getString(Constraints.LATITUDE, "41.604742");
         String longitude = sharedPreferences.getString(Constraints.LONGITUDE, "13.081480");
         Location current = new Location("");
@@ -141,8 +139,8 @@ public class ContentFragment extends Fragment {
             dialog.setArguments(arguments);
             dialog.show(getFragmentManager(), "No Connection warning");
             Bundle fallbackArgs = new Bundle();
-            fallbackArgs.putInt(ContentFallbackFragment.FALLBACK_TYPE_ARG, Constraints.CONNECTION_ERROR);
-            fallbackArgs.putInt(ContentFallbackFragment.FALLBACK_REFRESH_ARG, getArguments().getInt(FRAG_SECTION_ID));
+            fallbackArgs.putInt(Constraints.FALLBACK_TYPE_ARG, Constraints.CONNECTION_ERROR);
+            fallbackArgs.putInt(Constraints.FALLBACK_REFRESH_ARG, getArguments().getInt(Constraints.FRAG_SECTION_ID));
             ContentFallbackFragment f = new ContentFallbackFragment();
             f.setArguments(fallbackArgs);
             FragmentManager fm = getFragmentManager();
@@ -279,12 +277,12 @@ public class ContentFragment extends Fragment {
             progressBar.setVisibility(View.INVISIBLE);
             rvContent.setVisibility(View.VISIBLE);
             Bundle args = new Bundle();
-            args.putInt(ContentFallbackFragment.FALLBACK_REFRESH_ARG, getArguments().getInt(FRAG_SECTION_ID));
+            args.putInt(Constraints.FALLBACK_REFRESH_ARG, getArguments().getInt(Constraints.FRAG_SECTION_ID));
             ContentFallbackFragment f = new ContentFallbackFragment();
             FragmentManager fm = getFragmentManager();
 
             if (cardables != null && cardables.isEmpty()) {
-                args.putInt(ContentFallbackFragment.FALLBACK_TYPE_ARG, Constraints.NO_RESULTS);
+                args.putInt(Constraints.FALLBACK_TYPE_ARG, Constraints.NO_RESULTS);
                 f.setArguments(args);
                 fm.beginTransaction()
                         .replace(R.id.content_frame, f)
@@ -300,7 +298,7 @@ public class ContentFragment extends Fragment {
                 arguments.putString(WarningDialog.MESSAGE, message);
                 dialog.setArguments(arguments);
                 dialog.show(getFragmentManager(), "Error retrieving data");
-                args.putInt(ContentFallbackFragment.FALLBACK_TYPE_ARG, Constraints.CONNECTION_ERROR);
+                args.putInt(Constraints.FALLBACK_TYPE_ARG, Constraints.CONNECTION_ERROR);
                 f.setArguments(args);
                 fm.beginTransaction()
                         .replace(R.id.content_frame, f)
