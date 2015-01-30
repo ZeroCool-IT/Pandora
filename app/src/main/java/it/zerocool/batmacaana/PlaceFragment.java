@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 package it.zerocool.batmacaana;
 
 import android.content.Intent;
@@ -7,10 +11,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -34,6 +43,7 @@ import static android.os.Build.VERSION;
 public class PlaceFragment extends Fragment implements View.OnClickListener {
 
 
+    private ShareActionProvider shareActionProvider;
     private ExpandableTextView tvDescription;
     private Place targetPlace;
     private ImageView ivPlace;
@@ -47,6 +57,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
     private Button phoneActionButton;
     private Button urlActionButton;
     private Button mailActionButton;
+    private Button favoriteButton;
     private FloatingActionButton floatingActionButton;
     private LinearLayout timecardLayout;
     private LinearLayout addressLayout;
@@ -63,6 +74,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
     }
 
@@ -84,6 +96,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
         phoneActionButton = (Button) layout.findViewById(R.id.phoneButton);
         urlActionButton = (Button) layout.findViewById(R.id.urlButton);
         mailActionButton = (Button) layout.findViewById(R.id.mailButton);
+        favoriteButton = (Button) layout.findViewById(R.id.favoriteButton);
         floatingActionButton = (FloatingActionButton) layout.findViewById(R.id.floatingButton);
         timecardLayout = (LinearLayout) layout.findViewById(R.id.timecard_layout);
         addressLayout = (LinearLayout) layout.findViewById(R.id.address_layout);
@@ -98,6 +111,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
         urlActionButton.setOnClickListener(this);
         mailActionButton.setOnClickListener(this);
         floatingActionButton.setOnClickListener(this);
+        favoriteButton.setOnClickListener(this);
 
         //Args read
         Place p = ParsingUtilities.parseSinglePlace(getArguments().getString(Constraints.JSON_ARG));
@@ -192,6 +206,67 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
+     * Initialize the contents of the Activity's standard options menu.  You
+     * should place your menu items in to <var>menu</var>.  For this method
+     * to be called, you must have first called {@link #setHasOptionsMenu}.  See
+     * {@link Activity#onCreateOptionsMenu(android.view.Menu) Activity.onCreateOptionsMenu}
+     * for more information.
+     *
+     * @param menu     The options menu in which you place your items.
+     * @param inflater
+     * @see #setHasOptionsMenu
+     * @see #onPrepareOptionsMenu
+     * @see #onOptionsItemSelected
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.menu_details, menu);
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void setShareIntent(Intent shareIntent) {
+        if (shareActionProvider != null) {
+            shareActionProvider.setShareIntent(shareIntent);
+        }
+    }
+
+    /**
+     * This hook is called whenever an item in your options menu is selected.
+     * The default implementation simply returns false to have the normal
+     * processing happen (calling the item's Runnable or sending a message to
+     * its Handler as appropriate).  You can use this method for any items
+     * for which you would like to do processing without those other
+     * facilities.
+     * <p/>
+     * <p>Derived classes should call through to the base class for it to
+     * perform the default menu handling.
+     *
+     * @param item The menu item that was selected.
+     * @return boolean Return false to allow normal menu processing to
+     * proceed, true to consume it here.
+     * @see #onCreateOptionsMenu
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_item_share) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            String message = getResources().getString(R.string.share_place_message) +
+                    targetPlace.getName();
+            intent.putExtra(Intent.EXTRA_TEXT, message);
+            intent.setType("text/plain");
+            setShareIntent(intent);
+            startActivity(Intent.createChooser(intent, getString(R.string.share)));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
      * Called when a view has been clicked.
      *
      * @param v The view that was clicked.
@@ -255,9 +330,19 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
                 } else
                     Toast.makeText(getActivity(), R.string.no_map_app, Toast.LENGTH_SHORT).show();
             }
+        } else if (v.getId() == R.id.favoriteButton) {
+            if (targetPlace.isFavorite()) {
+                favoriteButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.ic_favorite_outline_grey600_36dp), null, null);
+                targetPlace.setFavorite(false);
+                buttonLayout.invalidate();
+            } else {
+                favoriteButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.ic_favorite_grey600_36dp), null, null);
+                targetPlace.setFavorite(true);
+                buttonLayout.invalidate();
 
-
+            }
         }
+
 
     }
 

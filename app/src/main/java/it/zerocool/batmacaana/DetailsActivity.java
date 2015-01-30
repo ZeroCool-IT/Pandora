@@ -74,9 +74,13 @@ public class DetailsActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_details, menu);
+//        getMenuInflater().inflate(R.menu.menu_details, menu);
+//
+//        MenuItem item = menu.findItem(R.id.menu_item_share);
+//        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -86,9 +90,13 @@ public class DetailsActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.menu_item_share) {
+//            Intent intent = new Intent();
+//            intent.setAction(Intent.ACTION_SEND);
+//            String message = getResources().getString(R.string.share_message) +
+//
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

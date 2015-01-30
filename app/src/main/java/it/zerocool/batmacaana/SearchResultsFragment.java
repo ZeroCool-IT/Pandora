@@ -148,7 +148,6 @@ public class SearchResultsFragment extends Fragment {
                 } else {
                     title = getResources().getString(R.string.dialog_title_uhoh);
                     message = getResources().getString(R.string.dialog_message_error);
-//                    args.putInt(WarningDialog.ICON, R.drawable.ic_error_red_36dp);
                     Log.e("ZCLOG TASK ERROR", "Failed to get results");
 
                 }

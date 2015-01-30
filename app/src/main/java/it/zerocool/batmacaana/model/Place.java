@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 /**
  * Project: Pandora
  * File it.zerocool.batmacaana.model/Place.java
@@ -27,6 +31,7 @@ public class Place implements Cardable {
     protected String image;
     protected String fsqrLink;
     protected int type;
+    protected boolean favorite;
 
 
     protected LinkedList<String> tags;
@@ -44,6 +49,7 @@ public class Place implements Cardable {
     public Place(int id) {
         this.id = id;
         this.tags = new LinkedList<String>();
+        favorite = false;
     }
 
 
@@ -62,23 +68,12 @@ public class Place implements Cardable {
         this.id = id;
     }
 
-
-    /**
-     * Set an integer representing the type of the object
-     *
-     * @param type is the type to set
-     */
-    public void setType(int type) {
-        this.type = type;
-    }
-
     /**
      * @return the name of the place
      */
     public String getName() {
         return name;
     }
-
 
     /**
      * @param name the name  of the place to set
@@ -87,14 +82,12 @@ public class Place implements Cardable {
         this.name = name;
     }
 
-
     /**
      * @return the image of the place
      */
     public String getImage() {
         return image;
     }
-
 
     /**
      * @param image the image of the place to set
@@ -106,14 +99,12 @@ public class Place implements Cardable {
             this.image = null;
     }
 
-
     /**
      * @return the link to 4square
      */
     public String getFsqrLink() {
         return fsqrLink;
     }
-
 
     /**
      * @param fsqrLink the 4square link to set
@@ -125,6 +116,21 @@ public class Place implements Cardable {
             this.fsqrLink = null;
     }
 
+    /**
+     * @return true if the place is in the favorite list, false otherwise
+     */
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    /**
+     * Change the state of the place, favorite or not
+     *
+     * @param favorite true if the place is favorite, false otherwise
+     */
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
 
     /**
      * @return the tags list
@@ -132,7 +138,6 @@ public class Place implements Cardable {
     public LinkedList<String> getTags() {
         return tags;
     }
-
 
     /**
      * @param tags the tags list to set
@@ -160,14 +165,12 @@ public class Place implements Cardable {
         }
     }
 
-
     /**
      * @return the description of the place
      */
     public String getDescription() {
         return description;
     }
-
 
     /**
      * @param description the description of the place to set
@@ -179,14 +182,12 @@ public class Place implements Cardable {
             this.description = null;
     }
 
-
     /**
      * @return the contact card of the place
      */
     public ContactCard getContact() {
         return contact;
     }
-
 
     /**
      * @param contact the contact card of the place to set
@@ -195,14 +196,12 @@ public class Place implements Cardable {
         this.contact = contact;
     }
 
-
     /**
      * @return the timeCard
      */
     public TimeCard getTimeCard() {
         return timeCard;
     }
-
 
     /**
      * @param timeCard the timeCard to set
@@ -211,14 +210,12 @@ public class Place implements Cardable {
         this.timeCard = timeCard;
     }
 
-
     /**
      * @return the location of the place
      */
     public Location getLocation() {
         return location;
     }
-
 
     /**
      * @param location is the location of the place to set
@@ -243,16 +240,6 @@ public class Place implements Cardable {
         this.distanceFromCurrentPosition = distanceFromCurrentPosition;
     }
 
-
-    /**
-     * Set a JSON representation fo the place
-     *
-     * @param json is the JSON representing the object
-     */
-    public void setJson(String json) {
-        this.json = json;
-    }
-
     /**
      * Redefine equals: 2 places are equals if their ids are equals
      */
@@ -266,7 +253,6 @@ public class Place implements Cardable {
         }
         return false;
     }
-
 
     /**
      * Get the header title of the item
@@ -332,6 +318,15 @@ public class Place implements Cardable {
     }
 
     /**
+     * Set a JSON representation fo the place
+     *
+     * @param json is the JSON representing the object
+     */
+    public void setJson(String json) {
+        this.json = json;
+    }
+
+    /**
      * Get an Integer representing the type of the object
      *
      * @return an Integer representing the type of the object
@@ -339,6 +334,15 @@ public class Place implements Cardable {
     @Override
     public int getType() {
         return Constraints.TYPE_PLACE;
+    }
+
+    /**
+     * Set an integer representing the type of the object
+     *
+     * @param type is the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
     }
 
 
