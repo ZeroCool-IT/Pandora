@@ -1,5 +1,10 @@
+<!--
+  ~ Copyright ZeroApp(c) 2015. All right reserved.
+  -->
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fullscreen_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_primary_color"
@@ -10,9 +15,9 @@
          TextureView, etc. -->
 
     <ImageView
+        android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fullscreen_content"
         android:keepScreenOn="true" />
 
     <!-- This FrameLayout insets its children based on system windows using
@@ -30,13 +35,13 @@
             android:layout_gravity="bottom|center_horizontal"
             android:background="@color/black_overlay"
             android:orientation="horizontal"
-            tools:ignore="UselessParent"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:ignore="UselessParent">
 
             <com.gc.materialdesign.views.ButtonFlat
+                android:id="@+id/dummy_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/dummy_button"
                 android:text="@string/back" />
 
         </LinearLayout>

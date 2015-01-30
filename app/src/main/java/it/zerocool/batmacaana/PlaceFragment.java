@@ -15,6 +15,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -66,6 +67,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
     private LinearLayout linkLayout;
     private LinearLayout tagLayout;
     private LinearLayout descriptionLayout;
+    private Toolbar toolbar;
 
     public PlaceFragment() {
         // Required empty public constructor
@@ -105,6 +107,7 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
         linkLayout = (LinearLayout) layout.findViewById(R.id.link_layout);
         tagLayout = (LinearLayout) layout.findViewById(R.id.tag_layout);
         descriptionLayout = (LinearLayout) layout.findViewById(R.id.description_layout);
+        toolbar = (Toolbar) layout.findViewById(R.id.appbar);
 
         //Listener
         phoneActionButton.setOnClickListener(this);
@@ -197,10 +200,38 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
     }
 
     public void setPalette(Palette palette) {
+//        ActionBar ab =  ((ActionBarActivity) getActivity()).getSupportActionBar();
+//        ObjectAnimator colorFade = ObjectAnimator.ofObject(ab, "backgroundDrawable", new ArgbEvaluator(), Color.argb(255, 255, 255, 255), 0xff000000);
+//        colorFade.setDuration(7000);
+//        colorFade.start();
+//        final Handler handler = new Handler();
+
+
+        /*(new Thread(){
+            @Override
+            public void run(){
+                for(int i=0; i<255; i++){
+                    handler.post(new Runnable(){
+                        public void run(){
+                            ((ActionBarActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(palette.getVibrantColor(R.color.primaryColor)));
+                        }
+                    });
+                    // next will pause the thread for some time
+                    try{ sleep(10); }
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } { break; }
+                }
+            }
+        }).start();*/
+
         ((ActionBarActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(palette.getVibrantColor(R.color.primaryColor)));
         if (VERSION.SDK_INT >= 21) {
             getActivity().getWindow().setStatusBarColor(palette.getDarkVibrantColor(R.color.primaryColor));
         }
+/*        ObjectAnimator objectAnimator = ObjectAnimator.ofObject(buttonLayout, "backgroundColor", new ArgbEvaluator(), Color.argb(255, 0, 150, 136), palette.getLightMutedColor(R.color.primaryColor));
+        objectAnimator.setDuration(2500);
+        objectAnimator.start();*/
         buttonLayout.setBackgroundColor(palette.getLightMutedColor(R.color.primaryColor));
 
     }

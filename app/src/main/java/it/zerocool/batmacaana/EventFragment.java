@@ -68,6 +68,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
     private LinearLayout linkLayout;
     private LinearLayout tagLayout;
     private LinearLayout descriptionLayout;
+    private Palette palette;
 
     private ShareActionProvider shareActionProvider;
 
@@ -201,6 +202,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
     }
 
     public void setPalette(Palette palette) {
+        this.palette = palette;
         ((ActionBarActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(palette.getVibrantColor(R.color.primaryColor)));
         if (Build.VERSION.SDK_INT >= 21) {
             getActivity().getWindow().setStatusBarColor(palette.getDarkVibrantColor(R.color.primaryColor));
@@ -278,7 +280,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
                 intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start.getTimeInMillis());
                 if (targetEvent.getEndDate() != null) {
                     GregorianCalendar end = targetEvent.getEndDate();
-                    if (targetEvent.getEndDate() != null) {
+                    if (targetEvent.getEndHour() != null) {
                         end.set(Calendar.HOUR_OF_DAY, targetEvent.getEndHour().get(Calendar.HOUR_OF_DAY));
                         end.set(Calendar.MINUTE, targetEvent.getEndHour().get(Calendar.MINUTE));
                     }
@@ -321,21 +323,15 @@ public class EventFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getActivity(), R.string.no_map_app, Toast.LENGTH_SHORT).show();
             }
 
-        } else if (v.getId() == R.id.imageView) {
+        } else if (v.getId() == R.id.imageView || v.getId() == R.id.fullscreenButton) {
             if (targetEvent.getImage() != null) {
                 Intent intent = new Intent(getActivity(), FullscreenActivity.class);
                 intent.putExtra(Constraints.IMAGE, targetEvent.getImage());
+                intent.putExtra("COLOR", palette.getLightVibrantColor(R.color.primaryColor));
                 startActivity(intent);
             } else
                 Toast.makeText(getActivity(), R.string.no_image, Toast.LENGTH_SHORT).show();
 
-        } else if (v.getId() == R.id.fullscreenButton) {
-            if (targetEvent.getImage() != null) {
-                Intent intent = new Intent(getActivity(), FullscreenActivity.class);
-                intent.putExtra(Constraints.IMAGE, targetEvent.getImage());
-                startActivity(intent);
-            } else
-                Toast.makeText(getActivity(), R.string.no_image, Toast.LENGTH_SHORT).show();
         }
     }
 

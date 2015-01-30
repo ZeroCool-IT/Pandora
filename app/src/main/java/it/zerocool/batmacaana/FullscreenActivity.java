@@ -77,6 +77,7 @@ public class FullscreenActivity extends Activity {
      */
     private SystemUiHider mSystemUiHider;
     private ImageView fullScreenIv;
+//    private FrameLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,10 @@ public class FullscreenActivity extends Activity {
         Intent intent = getIntent();
 
         fullScreenIv = (ImageView) findViewById(R.id.fullscreen_content);
+//        layout = (FrameLayout) findViewById(R.id.fullscreen_layout);
+//        ColorDrawable color = new ColorDrawable();
+//        color.setColor(intent.getIntExtra("COLOR", R.color.primaryColor));
+//        layout.setBackgroundColor(color.getColor());
         Picasso.with(this)
                 .load(Constraints.URI_IMAGE_BIG +
                         intent.getStringExtra(Constraints.IMAGE))
