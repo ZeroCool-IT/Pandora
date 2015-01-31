@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 /**
  * Project: Pandora
  * File it.zerocool.batmacaana.utility/RequestUtilities.java
@@ -37,6 +41,12 @@ public class RequestUtilities {
 
     private static final int BUFFER_SIZE = 8;
     private static final String ENCODING = "UTF-8";
+
+    /**
+     * Private constructor
+     */
+    private RequestUtilities() {
+    }
 
     /**
      * Calls HTTP GET method for retrieving InputStream from web
@@ -149,12 +159,6 @@ public class RequestUtilities {
         boolean isConnected = activeNetwork != null
                 && activeNetwork.isConnectedOrConnecting();
         return isConnected;
-    }
-
-    /**
-     * Private constructor
-     */
-    private RequestUtilities() {
     }
 
 }

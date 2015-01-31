@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 /**
  * Project: Pandora
  * File: it.zerocool.batmacaana.model/News.java
@@ -49,25 +53,6 @@ public class News implements Cardable {
     }
 
     /**
-     * Set an Integer representing the type of the object
-     *
-     * @param type is the type to set
-     */
-    public void setType(int type) {
-        this.type = type;
-    }
-
-
-    /**
-     * Set a JSON String representing the object
-     *
-     * @param json is the JSON String to set
-     */
-    public void setJson(String json) {
-        this.json = json;
-    }
-
-    /**
      * @param id the id to set
      */
     public void setId(int id) {
@@ -116,13 +101,6 @@ public class News implements Cardable {
     }
 
     /**
-     * @param date the date of the news to set
-     */
-    public void setDate(GregorianCalendar date) {
-        this.date = date;
-    }
-
-    /**
      * Set the news date parsing infos from String
      *
      * @param date it's the start date to set (YYYY-mm-DD format)
@@ -131,6 +109,13 @@ public class News implements Cardable {
         GregorianCalendar g = ParsingUtilities.parseDate(date);
         setDate(g);
 
+    }
+
+    /**
+     * @param date the date of the news to set
+     */
+    public void setDate(GregorianCalendar date) {
+        this.date = date;
     }
 
     public String getDateToString() {
@@ -147,7 +132,6 @@ public class News implements Cardable {
     public LinkedList<String> getTags() {
         return tags;
     }
-
 
     /**
      * @param tags the tags list to set
@@ -283,6 +267,15 @@ public class News implements Cardable {
     }
 
     /**
+     * Set a JSON String representing the object
+     *
+     * @param json is the JSON String to set
+     */
+    public void setJson(String json) {
+        this.json = json;
+    }
+
+    /**
      * Get an Integer representing the type of the object
      *
      * @return an Integer representing the type of the object
@@ -290,6 +283,15 @@ public class News implements Cardable {
     @Override
     public int getType() {
         return Constraints.TYPE_NEWS;
+    }
+
+    /**
+     * Set an Integer representing the type of the object
+     *
+     * @param type is the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
     }
 
 

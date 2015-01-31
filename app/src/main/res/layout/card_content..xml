@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright ZeroApp(c) 2015. All right reserved.
+  -->
+
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content_card"
@@ -17,62 +21,62 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="8dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingLeft="8dp">
 
             <TextView
-                android:paddingTop="16dp"
-                android:paddingLeft="8dp"
-                android:paddingBottom="4dp"
-                android:paddingRight="16dp"
                 android:id="@+id/content_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Header"
-                android:textSize="18sp"
-                android:textColor="@color/primary_text_color"
-                android:fontFamily="sans-serif"
-                android:ellipsize="end"
-                android:maxLines="2"
                 android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/content_accent"
                 android:layout_toRightOf="@+id/content_accent"
-                android:layout_toEndOf="@+id/content_accent" />
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:paddingBottom="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
+                android:text="Header"
+                android:textColor="@color/primary_text_color"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/content_subheader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/content_header"
+                android:layout_toEndOf="@+id/content_accent"
+                android:layout_toRightOf="@+id/content_accent"
+                android:layout_weight="1"
+                android:ellipsize="end"
                 android:gravity="center"
-                android:text="Tag"
-                android:paddingTop="4dp"
+                android:maxLines="1"
+                android:paddingBottom="16dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:ellipsize="end"
-                android:textColor="@color/secondary_text_color"
-                android:maxLines="1"
-                android:layout_weight="1"
-                android:layout_below="@+id/content_header"
-                android:layout_toRightOf="@+id/content_accent"
-                android:layout_toEndOf="@+id/content_accent" />
+                android:paddingTop="4dp"
+                android:text="Tag"
+                android:textColor="@color/secondary_text_color" />
 
             <TextView
+                android:id="@+id/content_accent"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/circular_textview"
+                android:elevation="5dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="10,1 Km"
-                android:background="@drawable/circular_textview"
                 android:textColor="@color/secondary_text_color"
-                android:id="@+id/content_accent"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:gravity="center"
-                android:fontFamily="sans-serif"
-                android:textStyle="bold"
                 android:textSize="13sp"
-                android:elevation="5dp" />
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -82,8 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="195dp"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
             android:contentDescription="@string/iv_card_imagery"
+            android:scaleType="centerCrop"
             android:src="@drawable/im_placeholder" />
 
     </LinearLayout>

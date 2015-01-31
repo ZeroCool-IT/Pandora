@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright ZeroApp(c) 2015. All right reserved.
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,18 +18,18 @@
         <ImageView
             android:layout_width="280dp"
             android:layout_height="140dp"
-            android:layout_marginTop="@dimen/drawer_margin_top"
-            android:src="@drawable/im_logo"
             android:layout_marginBottom="16dp"
-            android:scaleType="fitCenter" />
+            android:layout_marginTop="@dimen/drawer_margin_top"
+            android:scaleType="fitCenter"
+            android:src="@drawable/im_logo" />
 
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/containerDrawerImage"
         android:id="@+id/drawerList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/containerDrawerImage">
 
     </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright ZeroApp(c) 2015. All right reserved.
+  -->
+
 <resources>
 
     <style name="FullscreenTheme" parent="android:Theme.Holo">

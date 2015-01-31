@@ -1,9 +1,13 @@
+<!--
+  ~ Copyright ZeroApp(c) 2015. All right reserved.
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginTop="@dimen/content_recycler_top_margin"
+    android:orientation="vertical"
     tools:context="it.zerocool.batmacaana.ContentFragment">
 
 
@@ -17,7 +21,7 @@
         android:id="@+id/progressBar"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@color/primaryColor"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:background="@color/primaryColor" />
 </RelativeLayout>

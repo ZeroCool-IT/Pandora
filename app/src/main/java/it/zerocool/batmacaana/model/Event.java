@@ -1,3 +1,7 @@
+/*
+ * Copyright ZeroApp(c) 2015. All right reserved.
+ */
+
 /**
  * Project: Pandora
  * File: it.zerocool.batmacaana.model/Event.java
@@ -55,32 +59,11 @@ public class Event implements Cardable {
     }
 
     /**
-     * Set an integer representing the type of th object
-     *
-     * @param type is the type to set
-     */
-    public void setType(int type) {
-        this.type = type;
-    }
-
-
-    /**
-     * Set a string representing the object
-     *
-     * @param json is the json string to set
-     */
-    public void setJson(String json) {
-        this.json = json;
-    }
-
-
-    /**
      * @return the id of the event
      */
     public int getId() {
         return id;
     }
-
 
     /**
      * @param id the id to set
@@ -89,14 +72,12 @@ public class Event implements Cardable {
         this.id = id;
     }
 
-
     /**
      * @return the name of the event
      */
     public String getName() {
         return name;
     }
-
 
     /**
      * @param name the name of the event to set
@@ -108,20 +89,11 @@ public class Event implements Cardable {
             this.name = null;
     }
 
-
     /**
      * @return the start date of the event
      */
     public GregorianCalendar getStartDate() {
         return startDate;
-    }
-
-
-    /**
-     * @param date the start date of the event to set
-     */
-    public void setStartDate(GregorianCalendar date) {
-        this.startDate = date;
     }
 
     /**
@@ -135,20 +107,18 @@ public class Event implements Cardable {
 
     }
 
+    /**
+     * @param date the start date of the event to set
+     */
+    public void setStartDate(GregorianCalendar date) {
+        this.startDate = date;
+    }
 
     /**
      * @return the end date of the event
      */
     public GregorianCalendar getEndDate() {
         return endDate;
-    }
-
-
-    /**
-     * @param endDate is the end date of the event to set
-     */
-    public void setEndDate(GregorianCalendar endDate) {
-        this.endDate = endDate;
     }
 
     /**
@@ -163,17 +133,17 @@ public class Event implements Cardable {
     }
 
     /**
+     * @param endDate is the end date of the event to set
+     */
+    public void setEndDate(GregorianCalendar endDate) {
+        this.endDate = endDate;
+    }
+
+    /**
      * @return the start hour of the event
      */
     public GregorianCalendar getStartHour() {
         return startHour;
-    }
-
-    /**
-     * @param startHour the start hour of the event to set
-     */
-    public void setStartHour(GregorianCalendar startHour) {
-        this.startHour = startHour;
     }
 
     /**
@@ -187,17 +157,17 @@ public class Event implements Cardable {
     }
 
     /**
+     * @param startHour the start hour of the event to set
+     */
+    public void setStartHour(GregorianCalendar startHour) {
+        this.startHour = startHour;
+    }
+
+    /**
      * @return the start hour of the event
      */
     public GregorianCalendar getEndHour() {
         return endHour;
-    }
-
-    /**
-     * @param endHour the end hour of the event to set
-     */
-    public void setEndHour(GregorianCalendar endHour) {
-        this.endHour = endHour;
     }
 
     /**
@@ -208,6 +178,13 @@ public class Event implements Cardable {
     public void setEndHour(String endHour) {
         GregorianCalendar g = ParsingUtilities.parseHour(endHour);
         setEndHour(g);
+    }
+
+    /**
+     * @param endHour the end hour of the event to set
+     */
+    public void setEndHour(GregorianCalendar endHour) {
+        this.endHour = endHour;
     }
 
     /**
@@ -236,7 +213,6 @@ public class Event implements Cardable {
         return image;
     }
 
-
     /**
      * @param image the image  of the event to set
      */
@@ -247,14 +223,12 @@ public class Event implements Cardable {
             this.image = null;
     }
 
-
     /**
      * @return the tags list of the event
      */
     public LinkedList<String> getTags() {
         return tags;
     }
-
 
     /**
      * @param tags the tags list of the event to set
@@ -283,14 +257,12 @@ public class Event implements Cardable {
         }
     }
 
-
     /**
      * @return the description of the event
      */
     public String getDescription() {
         return description;
     }
-
 
     /**
      * @param description the description of the event to set
@@ -302,14 +274,12 @@ public class Event implements Cardable {
             this.description = null;
     }
 
-
     /**
      * @return the location of the event
      */
     public Location getLocation() {
         return location;
     }
-
 
     /**
      * @param location the location of the event to set
@@ -318,14 +288,12 @@ public class Event implements Cardable {
         this.location = location;
     }
 
-
     /**
      * @return the contact card of the event
      */
     public ContactCard getContact() {
         return contact;
     }
-
 
     /**
      * @param contact the contact card of the event to set
@@ -476,6 +444,15 @@ public class Event implements Cardable {
     }
 
     /**
+     * Set a string representing the object
+     *
+     * @param json is the json string to set
+     */
+    public void setJson(String json) {
+        this.json = json;
+    }
+
+    /**
      * Get an Integer representing the type of the object
      *
      * @return an Integer representing the type of the object
@@ -483,5 +460,14 @@ public class Event implements Cardable {
     @Override
     public int getType() {
         return Constraints.TYPE_EVENT;
+    }
+
+    /**
+     * Set an integer representing the type of th object
+     *
+     * @param type is the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
     }
 }

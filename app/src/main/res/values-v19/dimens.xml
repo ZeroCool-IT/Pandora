@@ -1,4 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright ZeroApp(c) 2015. All right reserved.
+  -->
+
 <resources>
     <dimen name="app_bar_top_padding">24dp</dimen>
     <dimen name="drawer_margin_top">48dp</dimen>
