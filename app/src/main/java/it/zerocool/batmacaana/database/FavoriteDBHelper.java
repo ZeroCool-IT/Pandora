@@ -49,7 +49,7 @@ public class FavoriteDBHelper extends SQLiteOpenHelper {
      * @param context is the applcation context
      */
     private FavoriteDBHelper(Context context) {
-        super(context, FavoriteDBManager.DB_NAME, null, FavoriteDBManager.DB_VERSION);
+        super(context, FavoriteDBMngr.DB_NAME, null, FavoriteDBMngr.DB_VERSION);
         this.context = context;
     }
 
