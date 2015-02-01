@@ -7,8 +7,8 @@ package it.zerocool.batmacaana;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.shamanland.fab.FloatingActionButton;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -41,7 +42,6 @@ import java.util.GregorianCalendar;
 import it.zerocool.batmacaana.model.Event;
 import it.zerocool.batmacaana.utilities.Constraints;
 import it.zerocool.batmacaana.utilities.ParsingUtilities;
-import it.zerocool.batmacaana.utilities.RequestUtilities;
 
 
 public class EventFragment extends Fragment implements View.OnClickListener {
@@ -69,6 +69,7 @@ public class EventFragment extends Fragment implements View.OnClickListener {
     private LinearLayout tagLayout;
     private LinearLayout descriptionLayout;
     private Palette palette;
+    private Target loadTarget;
 
     private ShareActionProvider shareActionProvider;
 
@@ -134,14 +135,40 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         }
 
         //Load imagery and change colors
-        LoadBitmapTask task = new LoadBitmapTask();
-        task.execute(Constraints.URI_IMAGE_MEDIUM + e.getImage());
+        loadBitmap(Constraints.URI_IMAGE_BIG + targetEvent.getImage());
+
 
         //Fill fields
         fillFields(e);
 
 
         return layout;
+    }
+
+    public void loadBitmap(String url) {
+
+        if (loadTarget == null)
+            loadTarget = new Target() {
+
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    // do something with the Bitmap
+                    setBitmap(bitmap);
+                }
+
+                @Override
+                public void onBitmapFailed(Drawable drawable) {
+
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable drawable) {
+
+                }
+            };
+
+
+        Picasso.with(getActivity()).load(url).into(loadTarget);
     }
 
     private void fillFields(Event e) {
@@ -192,7 +219,6 @@ public class EventFragment extends Fragment implements View.OnClickListener {
     }
 
     public void setBitmap(Bitmap bitmap) {
-//        ivEvent.setImageBitmap(bitmap);
         Picasso.with(getActivity()).
                 load(Constraints.URI_IMAGE_MEDIUM + targetEvent.getImage()).
                 error(R.drawable.im_noimage).
@@ -395,50 +421,4 @@ public class EventFragment extends Fragment implements View.OnClickListener {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private class LoadBitmapTask extends AsyncTask<String, Void, Bitmap> {
-
-        /**
-         * Override this method to perform a computation on a background thread. The
-         * specified parameters are the parameters passed to {@link #execute}
-         * by the caller of this task.
-         * <p/>
-         * This method can call {@link #publishProgress} to publish updates
-         * on the UI thread.
-         *
-         * @param params The parameters of the task.
-         * @return A result, defined by the subclass of this task.
-         * @see #onPreExecute()
-         * @see #onPostExecute
-         * @see #publishProgress
-         */
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            return RequestUtilities.downloadBitmap(params[0]);
-        }
-
-        /**
-         * <p>Runs on the UI thread after {@link #doInBackground}. The
-         * specified result is the value returned by {@link #doInBackground}.</p>
-         * <p/>
-         * <p>This method won't be invoked if the task was cancelled.</p>
-         *
-         * @param bitmap The result of the operation computed by {@link #doInBackground}.
-         * @see #onPreExecute
-         * @see #doInBackground
-         * @see #onCancelled(Object)
-         */
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            if (bitmap != null) {
-                setBitmap(bitmap);
-            } else
-                Picasso.with(getActivity()).
-                        load(R.drawable.im_noimage).
-                        placeholder(R.drawable.im_placeholder).
-                        into(ivEvent);
-
-        }
-    }
-
 }
