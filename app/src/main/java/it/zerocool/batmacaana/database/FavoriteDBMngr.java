@@ -14,6 +14,7 @@ import it.zerocool.batmacaana.model.Place;
 import it.zerocool.batmacaana.utilities.ParsingUtilities;
 
 /**
+ * DB use-case class.
  * Created by Marco Battisti on 31/01/2015.
  */
 public class FavoriteDBMngr {
@@ -60,10 +61,9 @@ public class FavoriteDBMngr {
      */
     public static void unfavoritePlace(SQLiteDatabase db, Place place) {
         if (place != null) {
-            String whereClause = ID_COLUMN + "= ? AND" + TYPE_COLUMN + "= ?";
-            String[] whereArgs = new String[2];
+            String whereClause = ID_COLUMN + "= ?";
+            String[] whereArgs = new String[1];
             whereArgs[0] = Integer.valueOf(place.getId()).toString();
-            whereArgs[1] = Integer.valueOf(place.getType()).toString();
             db.delete(TABLE_FAVORITE, whereClause, whereArgs);
         }
     }
@@ -100,10 +100,9 @@ public class FavoriteDBMngr {
      */
     public static boolean isFavorite(SQLiteDatabase db, Place place) {
         Place result = null;
-        String whereClause = ID_COLUMN + "= ? AND" + TYPE_COLUMN + "= ?";
-        String[] whereArgs = new String[2];
+        String whereClause = ID_COLUMN + "= ?";
+        String[] whereArgs = new String[1];
         whereArgs[0] = Integer.valueOf(place.getId()).toString();
-        whereArgs[1] = Integer.valueOf(place.getType()).toString();
         Cursor c = db.query(TABLE_FAVORITE, null, whereClause, whereArgs, null, null, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
