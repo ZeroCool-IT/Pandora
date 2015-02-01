@@ -228,12 +228,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 String title, message;
                 Bundle args = new Bundle();
                 WarningDialog dialog = new WarningDialog();
-                boolean kill = true;
                 title = context.getResources().getString(R.string.dialog_title_uhoh);
                 message = context.getResources().getString(R.string.dialog_message_error);
                 args.putString(WarningDialog.TITLE, title);
                 args.putString(WarningDialog.MESSAGE, message);
-                args.putBoolean(WarningDialog.KILL, kill);
+                args.putBoolean(WarningDialog.KILL, true);
                 dialog.setArguments(args);
                 dialog.show(fragmentManager, "Error retrieving data");
             }

@@ -19,22 +19,21 @@ import it.zerocool.batmacaana.utilities.ParsingUtilities;
  */
 public class FavoriteDBMngr {
 
+    public static final int ADD = 0;
+    public static final int REMOVE = 1;
+    public static final int CHECK = 2;
     //DB utility variable
     protected static final String DB_NAME = "FavoriteDB";
     protected static final int DB_VERSION = 1;
     protected static final String AUTHORITY = "it.zerocool.batmacaana";
-
     //Tables and columns
     protected static final String TABLE_FAVORITE = "Favorite";
-
     protected static final String ID_COLUMN = "ID";
     protected static final String TYPE_COLUMN = "TYPE";
     protected static final String JSON_COLUMN = "JSON";
-
     protected static final int TYPE_COLUMN_INDEX = 1;
-    protected static final int ID_COLUMN_INDEX = 2;
-    protected static final int JSON_COLUMN_INDEX = 3;
-
+    protected static final int ID_COLUMN_INDEX = 0;
+    protected static final int JSON_COLUMN_INDEX = 2;
 
     /**
      * Add a place to favorite's list
@@ -42,15 +41,20 @@ public class FavoriteDBMngr {
      * @param db    is the db
      * @param place is the place to add
      */
-    public static void favoritePlace(SQLiteDatabase db, Place place) {
+    public static boolean favoritePlace(SQLiteDatabase db, Place place) {
         if (place != null) {
             ContentValues values = new ContentValues();
             values.put(ID_COLUMN, place.getId());
             values.put(TYPE_COLUMN, place.getType());
             values.put(JSON_COLUMN, place.getJson());
 
-            db.insert(TABLE_FAVORITE, null, values);
+            long done = db.insert(TABLE_FAVORITE, null, values);
+            if (done >= 0)
+                return true;
+            else
+                return false;
         }
+        return false;
     }
 
     /**
@@ -110,6 +114,7 @@ public class FavoriteDBMngr {
             if (json != null) {
                 result = ParsingUtilities.parseSinglePlace(json);
             }
+            c.moveToNext();
         }
         return result != null;
 

@@ -60,7 +60,7 @@ public class FavoriteDBHelper extends SQLiteOpenHelper {
      * @return an instance of database
      */
     public static FavoriteDBHelper getInstance(Context context) {
-        if (singleton != null) {
+        if (singleton == null) {
             singleton = new FavoriteDBHelper(context);
         }
         return singleton;

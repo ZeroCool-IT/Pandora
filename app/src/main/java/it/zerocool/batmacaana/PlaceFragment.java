@@ -5,10 +5,12 @@
 package it.zerocool.batmacaana;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -34,6 +36,9 @@ import com.shamanland.fab.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import it.zerocool.batmacaana.database.FavoriteDBHelper;
+import it.zerocool.batmacaana.database.FavoriteDBMngr;
+import it.zerocool.batmacaana.dialog.WarningDialog;
 import it.zerocool.batmacaana.model.Place;
 import it.zerocool.batmacaana.utilities.Constraints;
 import it.zerocool.batmacaana.utilities.ParsingUtilities;
@@ -69,6 +74,10 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
     private LinearLayout descriptionLayout;
     private Toolbar toolbar;
     private Target loadTarget;
+    private boolean fave;
+//    private FavoriteDBHelper openHelper;
+//    private SQLiteDatabase db;
+
 
     public PlaceFragment() {
         // Required empty public constructor
@@ -77,6 +86,8 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        DatabaseOpenerAsyncTask task = new DatabaseOpenerAsyncTask();
+//        task.execute();
         setHasOptionsMenu(true);
 
     }
@@ -125,6 +136,11 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
             String tags = TextUtils.join(", ", p.getTags());
             ((ActionBarActivity) getActivity()).getSupportActionBar().setSubtitle(tags);
         }
+
+        //Check if is favorite
+        FavoriteDBEditorTask task = new FavoriteDBEditorTask();
+        task.execute(FavoriteDBMngr.CHECK);
+
 
         //Load imagery and change colors
         ivPlace = (ImageView) layout.findViewById(R.id.imageView);
@@ -217,38 +233,12 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
     }
 
     public void setPalette(Palette palette) {
-//        ActionBar ab =  ((ActionBarActivity) getActivity()).getSupportActionBar();
-//        ObjectAnimator colorFade = ObjectAnimator.ofObject(ab, "backgroundDrawable", new ArgbEvaluator(), Color.argb(255, 255, 255, 255), 0xff000000);
-//        colorFade.setDuration(7000);
-//        colorFade.start();
-//        final Handler handler = new Handler();
-
-
-        /*(new Thread(){
-            @Override
-            public void run(){
-                for(int i=0; i<255; i++){
-                    handler.post(new Runnable(){
-                        public void run(){
-                            ((ActionBarActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(palette.getVibrantColor(R.color.primaryColor)));
-                        }
-                    });
-                    // next will pause the thread for some time
-                    try{ sleep(10); }
-                    catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } { break; }
-                }
-            }
-        }).start();*/
 
         ((ActionBarActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(palette.getVibrantColor(R.color.primaryColor)));
         if (VERSION.SDK_INT >= 21) {
             getActivity().getWindow().setStatusBarColor(palette.getDarkVibrantColor(R.color.primaryColor));
         }
-/*        ObjectAnimator objectAnimator = ObjectAnimator.ofObject(buttonLayout, "backgroundColor", new ArgbEvaluator(), Color.argb(255, 0, 150, 136), palette.getLightMutedColor(R.color.primaryColor));
-        objectAnimator.setDuration(2500);
-        objectAnimator.start();*/
+
         buttonLayout.setBackgroundColor(palette.getLightMutedColor(R.color.primaryColor));
 
     }
@@ -379,18 +369,112 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getActivity(), R.string.no_map_app, Toast.LENGTH_SHORT).show();
             }
         } else if (v.getId() == R.id.favoriteButton) {
+            FavoriteDBEditorTask task = new FavoriteDBEditorTask();
             if (targetPlace.isFavorite()) {
+                task.execute(FavoriteDBMngr.REMOVE);
                 favoriteButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.ic_favorite_outline_grey600_36dp), null, null);
                 targetPlace.setFavorite(false);
                 buttonLayout.invalidate();
             } else {
+                task.execute(FavoriteDBMngr.ADD);
                 favoriteButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.ic_favorite_grey600_36dp), null, null);
                 targetPlace.setFavorite(true);
                 buttonLayout.invalidate();
 
             }
         }
-
-
     }
+
+    private class FavoriteDBEditorTask extends AsyncTask<Integer, Void, Boolean> {
+
+        private int op;
+        private SQLiteDatabase db;
+        private FavoriteDBHelper openHelper;
+        private boolean fave;
+
+        /**
+         * Override this method to perform a computation on a background thread. The
+         * specified parameters are the parameters passed to {@link #execute}
+         * by the caller of this task.
+         * <p/>
+         * This method can call {@link #publishProgress} to publish updates
+         * on the UI thread.
+         *
+         * @param params The parameters of the task.
+         * @return A result, defined by the subclass of this task.
+         * @see #onPreExecute()
+         * @see #onPostExecute
+         * @see #publishProgress
+         */
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            op = params[0];
+            openHelper = FavoriteDBHelper.getInstance(getActivity());
+            db = openHelper.getWritabelDB();
+            switch (op) {
+                case FavoriteDBMngr.ADD:
+                    FavoriteDBMngr.favoritePlace(db, targetPlace);
+                    break;
+                case FavoriteDBMngr.REMOVE:
+                    FavoriteDBMngr.unfavoritePlace(db, targetPlace);
+                    break;
+                case FavoriteDBMngr.CHECK:
+                    fave = FavoriteDBMngr.isFavorite(db, targetPlace);
+
+            }
+            return null;
+        }
+
+        /**
+         * <p>Runs on the UI thread after {@link #doInBackground}. The
+         * specified result is the value returned by {@link #doInBackground}.</p>
+         * <p/>
+         * <p>This method won't be invoked if the task was cancelled.</p>
+         *
+         * @param aVoid The result of the operation computed by {@link #doInBackground}.
+         * @see #onPreExecute
+         * @see #doInBackground
+         * @see #onCancelled(Object)
+         */
+        @Override
+        protected void onPostExecute(Boolean done) {
+            if (done) {
+                switch (op) {
+                    case FavoriteDBMngr.ADD:
+                        String added = getString(R.string.favorite_added);
+                        Toast.makeText(getActivity(), targetPlace.getName() + added, Toast.LENGTH_SHORT).show();
+                        break;
+                    case FavoriteDBMngr.REMOVE:
+                        String removed = getString(R.string.favorite_removed);
+                        Toast.makeText(getActivity(), targetPlace.getName() + removed, Toast.LENGTH_SHORT).show();
+                        break;
+                    case FavoriteDBMngr.CHECK:
+                        targetPlace.setFavorite(fave);
+                        if (fave) {
+                            favoriteButton
+                                    .setCompoundDrawablesWithIntrinsicBounds(null, getResources()
+                                            .getDrawable(R.drawable.ic_favorite_grey600_36dp), null, null);
+                        } else {
+                            favoriteButton
+                                    .setCompoundDrawablesWithIntrinsicBounds(null, getResources()
+                                            .getDrawable(R.drawable.ic_favorite_outline_grey600_36dp), null, null);
+                        }
+                    default:
+                        break;
+                }
+            } else {
+                String title = getResources().getString(R.string.dialog_title_uhoh);
+                String message = getResources().getString(R.string.dialog_message_db_error);
+                WarningDialog dialog = new WarningDialog();
+                Bundle arguments = new Bundle();
+                arguments.putString(WarningDialog.TITLE, title);
+                arguments.putString(WarningDialog.MESSAGE, message);
+                dialog.setArguments(arguments);
+                dialog.show(getFragmentManager(), "Error retrieving data");
+            }
+            openHelper.close();
+
+        }
+    }
+
 }
