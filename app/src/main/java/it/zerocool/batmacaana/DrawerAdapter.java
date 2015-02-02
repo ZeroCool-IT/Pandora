@@ -152,6 +152,12 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
                 case Constraints.SUBHEADER:
                     break;
                 case Constraints.FAVORITE:
+                    FavoriteFragment frag = new FavoriteFragment();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame, frag)
+                            .commit();
+                    ((ActionBarActivity) context).setTitle(context.getResources().getStringArray(R.array.drawer_list)[position]);
+                    drawerLayout.closeDrawers();
                     break;
                 case Constraints.SETTINGS:
                     break;

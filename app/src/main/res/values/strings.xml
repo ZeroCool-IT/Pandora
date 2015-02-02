@@ -54,6 +54,7 @@
     <string name="share">Share</string>
     <string name="favorite_added">&#160;added to the favorites\' list!</string>
     <string name="favorite_removed">&#160;removed from the favorites\' list!</string>
+    <string name="no_favorite">You have no favorite place!</string>
 
 
     <string-array name="drawer_list">

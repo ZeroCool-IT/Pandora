@@ -413,16 +413,16 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
             db = openHelper.getWritabelDB();
             switch (op) {
                 case FavoriteDBMngr.ADD:
-                    FavoriteDBMngr.favoritePlace(db, targetPlace);
-                    break;
+                    return FavoriteDBMngr.favoritePlace(db, targetPlace);
                 case FavoriteDBMngr.REMOVE:
                     FavoriteDBMngr.unfavoritePlace(db, targetPlace);
-                    break;
+                    return true;
                 case FavoriteDBMngr.CHECK:
                     fave = FavoriteDBMngr.isFavorite(db, targetPlace);
-
+                    return true;
+                default:
+                    return false;
             }
-            return null;
         }
 
         /**

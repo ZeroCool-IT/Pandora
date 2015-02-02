@@ -333,7 +333,7 @@ public class Place implements Cardable {
      */
     @Override
     public int getType() {
-        return Constraints.TYPE_PLACE;
+        return type;
     }
 
     /**
