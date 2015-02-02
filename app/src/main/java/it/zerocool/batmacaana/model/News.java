@@ -208,6 +208,10 @@ public class News implements Cardable {
         return false;
     }
 
+    public String getItemURI() {
+        return Constraints.PLACE_URI + Integer.valueOf(getId()).toString() + "&" + Integer.valueOf(getType()).toString();
+    }
+
     /**
      * Get the header title of the item
      *
@@ -282,7 +286,7 @@ public class News implements Cardable {
      */
     @Override
     public int getType() {
-        return Constraints.TYPE_NEWS;
+        return type;
     }
 
     /**

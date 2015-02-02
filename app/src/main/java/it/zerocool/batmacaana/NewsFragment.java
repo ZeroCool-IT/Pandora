@@ -264,7 +264,8 @@ public class NewsFragment extends Fragment implements View.OnClickListener {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
             String message = getResources().getString(R.string.share_news_message) +
-                    targetNews.getTitle();
+                    targetNews.getTitle() + "\n" +
+                    targetNews.getItemURI();
             intent.putExtra(Intent.EXTRA_TEXT, message);
             intent.setType("text/plain");
             setShareIntent(intent);

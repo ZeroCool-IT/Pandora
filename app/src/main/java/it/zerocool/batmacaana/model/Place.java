@@ -254,6 +254,10 @@ public class Place implements Cardable {
         return false;
     }
 
+    public String getItemURI() {
+        return Constraints.PLACE_URI + Integer.valueOf(getId()).toString() + "&" + Integer.valueOf(getType()).toString();
+    }
+
     /**
      * Get the header title of the item
      *

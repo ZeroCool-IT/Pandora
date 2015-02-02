@@ -72,9 +72,8 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
     private LinearLayout linkLayout;
     private LinearLayout tagLayout;
     private LinearLayout descriptionLayout;
-    private Toolbar toolbar;
     private Target loadTarget;
-    private boolean fave;
+    private Toolbar toolbar;
 //    private FavoriteDBHelper openHelper;
 //    private SQLiteDatabase db;
 
@@ -227,7 +226,6 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
                 placeholder(R.drawable.im_placeholder).
                 error(R.drawable.im_noimage).
                 into(ivPlace);
-        ;
         Palette.generateAsync(bitmap, PlacePaletteListener.newInstance(this));
 
     }
@@ -294,7 +292,8 @@ public class PlaceFragment extends Fragment implements View.OnClickListener {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
             String message = getResources().getString(R.string.share_place_message) +
-                    targetPlace.getName();
+                    targetPlace.getName() + "\n" +
+                    targetPlace.getItemURI();
             intent.putExtra(Intent.EXTRA_TEXT, message);
             intent.setType("text/plain");
             setShareIntent(intent);

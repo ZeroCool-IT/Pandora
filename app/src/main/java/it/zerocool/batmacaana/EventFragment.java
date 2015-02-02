@@ -412,7 +412,8 @@ public class EventFragment extends Fragment implements View.OnClickListener {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
             String message = getResources().getString(R.string.share_event_message) +
-                    targetEvent.getName();
+                    targetEvent.getName() + "\n" +
+                    targetEvent.getItemURI();
             intent.putExtra(Intent.EXTRA_TEXT, message);
             intent.setType("text/plain");
             setShareIntent(intent);

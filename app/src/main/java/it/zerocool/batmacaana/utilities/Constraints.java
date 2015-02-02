@@ -72,6 +72,7 @@ public class Constraints {
     public static final String OBJECT_SEARCH1 = "http://www.ilmiositodemo.altervista.org/app/json/cercadettaglio.php?user=";
     public static final String OBJECT_SEARCH2 = "&id=";
     public static final String OBJECT_SEARCH3 = "&type=";
+    public static final String PLACE_URI = "http://www.batmacaana.com/item/";
 
 
     //Week Days
@@ -82,20 +83,6 @@ public class Constraints {
     public static final int FRIDAY = 5;
     public static final int SATURDAY = 6;
     public static final int SUNDAY = 7;
-
-    //Holydays
-    public static final int JAN_01 = 0;
-    public static final int JAN_06 = 1;
-    public static final int EASTER = 2;
-    public static final int EASTERS_MONDAY = 3;
-    public static final int APRIL_25 = 4;
-    public static final int MAY_01 = 5;
-    public static final int JUNE_02 = 6;
-    public static final int AUG_15 = 7;
-    public static final int NOV_01 = 8;
-    public static final int DEC_08 = 9;
-    public static final int DEC_25 = 10;
-    public static final int DEC_26 = 11;
 
 
     //Latitude and longitude tags for Shared Preferences

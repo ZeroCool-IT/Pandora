@@ -316,6 +316,10 @@ public class Event implements Cardable {
         return false;
     }
 
+    public String getItemURI() {
+        return Constraints.PLACE_URI + Integer.valueOf(getId()).toString() + "&" + Integer.valueOf(getType()).toString();
+    }
+
     /**
      * Get the header title of the item
      *
@@ -351,21 +355,15 @@ public class Event implements Cardable {
      */
     public String startDateToString() {
         if (startDate != null) {
-            Locale l = Locale.getDefault();
             if (startHour != null) {
                 GregorianCalendar res = getStartDate();
                 res.set(GregorianCalendar.HOUR_OF_DAY, getStartHour().get(Calendar.HOUR_OF_DAY));
                 res.set(GregorianCalendar.MINUTE, getStartHour().get(Calendar.MINUTE));
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ITALY);
                 java.text.DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance(java.text.DateFormat.LONG, java.text.DateFormat.SHORT);
-//                DateFormat dateFormat = DateFormat.getDateTimeInstance();
-                String result = dateFormat.format(res.getTime());
-                return result;
+                return dateFormat.format(res.getTime());
             } else {
                 java.text.DateFormat dateFormat = SimpleDateFormat.getDateInstance(java.text.DateFormat.LONG);
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", l);
-                String result = dateFormat.format(getStartDate().getTime());
-                return result;
+                return dateFormat.format(getStartDate().getTime());
             }
         }
         return null;
@@ -376,21 +374,15 @@ public class Event implements Cardable {
      */
     public String endDateToString() {
         if (endDate != null) {
-            Locale l = Locale.getDefault();
             if (endHour != null) {
                 GregorianCalendar res = getEndDate();
                 res.set(GregorianCalendar.HOUR_OF_DAY, getEndHour().get(Calendar.HOUR_OF_DAY));
                 res.set(GregorianCalendar.MINUTE, getEndHour().get(Calendar.MINUTE));
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd  HH:mm", l);
                 java.text.DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance(java.text.DateFormat.LONG, java.text.DateFormat.SHORT);
-//                DateFormat dateFormat = DateFormat.getDateTimeInstance();
-                String result = dateFormat.format(res.getTime());
-                return result;
+                return dateFormat.format(res.getTime());
             } else {
                 java.text.DateFormat dateFormat = SimpleDateFormat.getDateInstance(java.text.DateFormat.LONG);
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", l);
-                String result = dateFormat.format(getEndDate().getTime());
-                return result;
+                return dateFormat.format(getEndDate().getTime());
             }
         }
         return null;
@@ -429,8 +421,8 @@ public class Event implements Cardable {
         } else {
             dateFormat = new SimpleDateFormat("MMM\ndd", Locale.getDefault());
         }
-        String result = dateFormat.format(getStartDate().getTime());
-        return result;
+        return dateFormat.format(getStartDate().getTime());
+
     }
 
     /**
@@ -459,7 +451,7 @@ public class Event implements Cardable {
      */
     @Override
     public int getType() {
-        return Constraints.TYPE_EVENT;
+        return type;
     }
 
     /**
