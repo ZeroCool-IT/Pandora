@@ -22,6 +22,7 @@ import it.zerocool.batmacaana.model.Cardable;
 import it.zerocool.batmacaana.utilities.Constraints;
 
 /**
+ * Adapter representing cardable object lists
  * Created by Marco on 11/01/2015.
  */
 public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentViewHolder> {
@@ -59,8 +60,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
     @Override
     public ContentAdapter.ContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.card_content, parent, false);
-        ContentViewHolder holder = new ContentViewHolder(view);
-        return holder;
+        return new ContentViewHolder(view);
     }
 
     /**
@@ -127,8 +127,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
 //                    Toast.makeText(context, "Touched card " + (contentItems.get(getPosition())).getHeader(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, DetailsActivity.class);
+                    int type = contentItems.get(getPosition()).getType();
                     intent.putExtra(Constraints.JSON_ARG, contentItems.get(getPosition()).getJson());
-                    intent.putExtra(Constraints.TYPE_ARG, contentItems.get(getPosition()).getType());
+                    intent.putExtra(Constraints.TYPE_ARG, type);
                     context.startActivity(intent);
 
 

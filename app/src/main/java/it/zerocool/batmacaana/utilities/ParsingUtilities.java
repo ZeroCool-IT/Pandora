@@ -98,7 +98,7 @@ public class ParsingUtilities {
      * @return the list of Place objects
      */
     public static ArrayList<Cardable> parsePlaceFromJSON(String json, Location currentLocation) {
-        ArrayList<Cardable> result = new ArrayList<Cardable>();
+        ArrayList<Cardable> result = new ArrayList<>();
         try {
             JSONObject reader = new JSONObject(json);
             JSONArray data = reader.getJSONArray("Luoghi");
@@ -239,7 +239,7 @@ public class ParsingUtilities {
      * @return the list of Event objects
      */
     public static ArrayList<Cardable> parseEventFromJSON(String json) {
-        ArrayList<Cardable> result = new ArrayList<Cardable>();
+        ArrayList<Cardable> result = new ArrayList<>();
         try {
             JSONObject reader = new JSONObject(json);
             JSONArray data = reader.getJSONArray("Eventi");
@@ -319,7 +319,7 @@ public class ParsingUtilities {
      * @return the list of News objects
      */
     public static ArrayList<Cardable> parseNewsFromJSON(String json) {
-        ArrayList<Cardable> result = new ArrayList<Cardable>();
+        ArrayList<Cardable> result = new ArrayList<>();
         try {
             JSONObject reader = new JSONObject(json);
             JSONArray data = reader.getJSONArray("News");
@@ -330,6 +330,7 @@ public class ParsingUtilities {
                     News n = new News(id);
                     n.setJson(toBuild.toString());
                     n.setTitle(toBuild.getString("NAME"));
+                    n.setType(toBuild.getInt("TYPE"));
                     n.setBody(toBuild.getString("DESCRIPTION"));
                     n.setDate(toBuild.getString("DATE"));
                     n.setImage(toBuild.getString("IMAGE"));
@@ -369,7 +370,7 @@ public class ParsingUtilities {
     }
 
     public static ArrayList<SearchResult> parseSearchResultsFromJSON(String json) {
-        ArrayList<SearchResult> result = new ArrayList<SearchResult>();
+        ArrayList<SearchResult> result = new ArrayList<>();
         try {
             JSONObject reader = new JSONObject(json);
             JSONArray data = reader.getJSONArray("Trovati");
