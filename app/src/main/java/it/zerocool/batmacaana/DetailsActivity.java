@@ -104,8 +104,25 @@ public class DetailsActivity extends ActionBarActivity {
                 args[0] +
                 Constraints.OBJECT_SEARCH3 +
                 args[1];
-        RequestObjectTask task = new RequestObjectTask();
-        task.execute(query, args[1]);
+
+        if (RequestUtilities.isOnline(this)) {
+            RequestObjectTask task = new RequestObjectTask();
+            task.execute(query, args[1]);
+        } else {
+            String message = getResources().getString(
+                    R.string.dialog_message_no_connection);
+            String title = getResources().getString(
+                    R.string.dialog_title_warning);
+
+            WarningDialog dialog = new WarningDialog();
+            Bundle arguments = new Bundle();
+            arguments.putString(WarningDialog.TITLE, title);
+            arguments.putString(WarningDialog.MESSAGE, message);
+            arguments.putBoolean(WarningDialog.KILL, true);
+            dialog.setArguments(arguments);
+            dialog.show(getSupportFragmentManager(), "No Connection warning");
+            Log.i("TASK ERROR", "No connection");
+        }
 
     }
 
@@ -169,7 +186,6 @@ public class DetailsActivity extends ActionBarActivity {
                 res = ParsingUtilities.parseSingleResult(json);
             } catch (IOException e) {
                 Log.e("ZCLOG", e.getMessage());
-//                this.cancel(true);
                 return null;
             }
             return res;
@@ -197,10 +213,6 @@ public class DetailsActivity extends ActionBarActivity {
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.container, frag)
                         .commit();
-/*                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra(Constraints.JSON_ARG, s);
-                intent.putExtra(Constraints.TYPE_ARG, type);
-                context.startActivity(intent);*/
             } else {
                 String title, message;
                 Bundle args = new Bundle();

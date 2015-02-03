@@ -94,20 +94,6 @@ public class NavigationDrawerFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-/*        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        selectItem(position);
-                        unselectView(previousSelected);
-                        selectView(view);
-
-                    }
-                })
-        );*/
-        /*View v = recyclerView.getChildAt(0);
-        int i = linearLayoutManager.getChildCount();
-        int j = recyclerView.getChildCount();*/
         return layout;
     }
 
@@ -175,28 +161,4 @@ public class NavigationDrawerFragment extends Fragment {
             //TODO About fragment
         }
     }
-
-//    private void drawSelected(View view) {
-//        TextView prevTv = (TextView) previousSelected.findViewById(R.id.listText);
-//        prevTv.setTextColor(getResources().getColor(R.color.text87));
-//        TextView tv = (TextView) view.findViewById(R.id.listText);
-//        tv.setTextColor(getResources().getColor(R.color.primaryColor));
-//        previousSelected = view;
-//    }
-
-/*    private void selectView(View v) {
-        TextView title = (TextView) v.findViewById(R.id.listText);
-        title.setTextColor(getResources().getColor(R.color.primaryColor));
-        v.setBackgroundColor(getResources().getColor(R.color.selected_item));
-        previousSelected = v;
-    }
-
-    private void unselectView(View v) {
-        if (v != null) {
-            TextView title = (TextView) v.findViewById(R.id.listText);
-            title.setTextColor(getResources().getColor(R.color.primary_text_color));
-            v.setBackgroundColor(getResources().getColor(R.color.transparent_bg));
-        }
-
-    }*/
 }
