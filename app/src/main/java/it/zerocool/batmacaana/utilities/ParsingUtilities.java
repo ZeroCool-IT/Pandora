@@ -380,7 +380,7 @@ public class ParsingUtilities {
                     JSONObject toBuild = data.getJSONObject(i);
                     SearchResult sr = new SearchResult();
                     sr.setId(toBuild.getInt("LUOGO_ID"));
-//                    sr.setType(toBuild.getInt("TYPE"));
+                    sr.setType(toBuild.getInt("TYPE"));
                     sr.setTagsFromCSV(toBuild.getString("TAGS"));
                     sr.setDescription(toBuild.getString("DESCRIPTION"));
                     sr.setheader(toBuild.getString("NAME"));
