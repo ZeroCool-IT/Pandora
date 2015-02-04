@@ -8,10 +8,13 @@ import android.animation.LayoutTransition;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -22,19 +25,51 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import it.zerocool.batmacaana.dialog.LocationWarningDialog;
 import it.zerocool.batmacaana.utilities.Constraints;
+import it.zerocool.batmacaana.utilities.RequestUtilities;
 import it.zerocool.batmacaana.utilities.SharedPreferencesProvider;
 
 
 public class HomeActivity extends ActionBarActivity {
 
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final String PROPERTY_APP_VERSION = "appVersion";
+    private static final String SERVER_URL = "";
+    private static final int MAX_ATTEMPTS = 5;
+    private static final int BACKOFF_MILLI_SECONDS = 2000;
+    private static final Random random = new Random();
+    String SENDER_ID = "557298603924";
+    GoogleCloudMessaging gcm;
+    AtomicInteger msgId = new AtomicInteger();
+    String regid;
     private Toolbar toolbar;
     private LocationWarningDialog dialog;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private Context context;
+    private SharedPreferences prefs;
+
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +82,153 @@ public class HomeActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
-        SharedPreferences sp = SharedPreferencesProvider.getSharedPreferences(this);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putInt(Constraints.KEY_USER_DEFAULT_START_VIEW, 0);
-        editor.apply();
+        context = getApplicationContext();
 
+        // Check device for Play Services APK.
+        if (checkPlayServices()) {
+            // If this check succeeds, proceed with normal processing.
+            // Otherwise, prompt user to get valid Play Services APK.
+            gcm = GoogleCloudMessaging.getInstance(this);
+            regid = getRegistrationId(context);
+
+            if (regid.isEmpty()) {
+                registerInBackground();
+            }
+            NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+            drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
+            SharedPreferences sp = SharedPreferencesProvider.getSharedPreferences(this);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putInt(Constraints.KEY_USER_DEFAULT_START_VIEW, 0);
+            editor.apply();
+        } else {
+            Log.i("PLAY SERVICE ERROR", "No valid Google Play Services APK found.");
+        }
+    }
+
+    /**
+     * Gets the current registration ID for application on GCM service.
+     * If result is empty, the app needs to register.
+     *
+     * @return registration ID, or empty string if there is no existing
+     * registration ID.
+     */
+    private String getRegistrationId(Context context) {
+        final SharedPreferences prefs = getGCMPreferences(context);
+        String registrationId = prefs.getString(Constraints.PROPERTY_REG_ID, "");
+        if (registrationId.isEmpty()) {
+            Log.i("GCM ERROR", "Registration not found.");
+            return "";
+        }
+        // Check if app was updated; if so, it must clear the registration ID
+        // since the existing regID is not guaranteed to work with the new
+        // app version.
+        int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
+        int currentVersion = getAppVersion(context);
+        if (registeredVersion != currentVersion) {
+            Log.i("GCM ERROR", "App version changed.");
+            return "";
+        }
+        return registrationId;
+    }
+
+    /**
+     * @param context is the application context
+     * @return Application's version code from {@code SharedPreferences}
+     */
+    private SharedPreferences getGCMPreferences(Context context) {
+        return getSharedPreferences(HomeActivity.class.getSimpleName(), Context.MODE_PRIVATE);
+    }
+
+    private void registerInBackground() {
+        new AsyncTask<Void, Void, String>() {
+
+
+            @Override
+            protected String doInBackground(Void... params) {
+                String msg = "";
+                try {
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(context);
+                    }
+                    regid = gcm.register(SENDER_ID);
+                    msg = "Device registered, registration ID=" + regid;
+                    sendRegistrationIdToBackend(regid);
+                    storeRegistrationId(context, regid);
+
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
+                    // If there is an error, don't just keep trying to register.
+                    // Require the user to click a button again, or perform
+                    // exponential back-off.
+                }
+
+                return msg;
+            }
+
+            /**
+             * <p>Runs on the UI thread after {@link #doInBackground}. The
+             * specified result is the value returned by {@link #doInBackground}.</p>
+             * <p/>
+             * <p>This method won't be invoked if the task was cancelled.</p>
+             *
+             * @param o The result of the operation computed by {@link #doInBackground}.
+             * @see #onPreExecute
+             * @see #doInBackground
+             * @see #onCancelled(Object)
+             */
+            @Override
+            protected void onPostExecute(String o) {
+                //mDisplay.append(msg + "\n");
+            }
+        }.execute(null, null, null);
+    }
+
+    /**
+     * Stores the registration ID and app versionCode in the application's
+     * {@code SharedPreferences}.
+     *
+     * @param context application's context.
+     * @param regId   registration ID
+     */
+    private void storeRegistrationId(Context context, String regId) {
+        final SharedPreferences prefs = getGCMPreferences(context);
+        int appVersion = getAppVersion(context);
+        Log.i("GCM", "Saving regId on app version " + appVersion);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constraints.PROPERTY_REG_ID, regId);
+        editor.putInt(PROPERTY_APP_VERSION, appVersion);
+        editor.apply();
+    }
+
+    /**
+     * Sends the registration ID to your server over HTTP, so it can use GCM/HTTP
+     * or CCS to send messages to your app. Not needed for this demo since the
+     * device sends upstream messages to a server that echoes back the message
+     * using the 'from' address in the message.
+     */
+    private void sendRegistrationIdToBackend(String regId) {
+        String serverUrl = SERVER_URL;
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("regId", regId);
+        long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
+        for (int i = 1; i <= MAX_ATTEMPTS; i++) {
+            try {
+                RequestUtilities.post(serverUrl, params);
+//                GCMRegistrar.setRegisteredOnServer(context, true);
+                return;
+            } catch (IOException e) {
+                if (i == MAX_ATTEMPTS) {
+                    break;
+                }
+                try {
+                    Thread.sleep(backoff);
+                } catch (InterruptedException e1) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+                backoff *= 2;
+            }
+        }
     }
 
 
@@ -72,11 +247,12 @@ public class HomeActivity extends ActionBarActivity {
         if (dialog != null) {
             dialog.dismiss();
         }
-        if (locationManager != null && locationListener != null) {
-            locationManager.removeUpdates(locationListener);
+        if (checkPlayServices()) {
+            if (locationManager != null && locationListener != null) {
+                locationManager.removeUpdates(locationListener);
+            }
+            requestLocationServices();
         }
-        Log.i("ZCLOG", "onResume() called");
-        requestLocationServices();
 
     }
 
@@ -87,7 +263,6 @@ public class HomeActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("ZCLOG", "onPause() called");
         locationManager.removeUpdates(locationListener);
     }
 
@@ -96,7 +271,6 @@ public class HomeActivity extends ActionBarActivity {
      */
     @Override
     protected void onStop() {
-        Log.i("ZCLOG", "onStop() called");
         super.onStop();
         locationManager.removeUpdates(locationListener);
     }
@@ -107,7 +281,6 @@ public class HomeActivity extends ActionBarActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("ZCLOG", "onStop() called");
         locationManager.removeUpdates(locationListener);
     }
 
@@ -208,6 +381,25 @@ public class HomeActivity extends ActionBarActivity {
                     Constraints.LOCATION_MIN_DISTANCE_UPDATE, locationListener);
         } else
             Log.e("ZCLOG", "The provider " + provider + " is not available!");
+    }
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i("PLAY SERVICE ERROR", "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
 }

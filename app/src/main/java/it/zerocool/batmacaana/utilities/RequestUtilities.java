@@ -29,7 +29,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Aux class containing Http request utility
@@ -159,6 +165,46 @@ public class RequestUtilities {
         boolean isConnected = activeNetwork != null
                 && activeNetwork.isConnectedOrConnecting();
         return isConnected;
+    }
+
+    public static void post(String endpoint, Map<String, String> params) throws IOException {
+        URL url;
+        try {
+            url = new URL(endpoint);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("invalid url: " + endpoint);
+        }
+        StringBuilder bodyBuilder = new StringBuilder();
+        Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> param = iterator.next();
+            bodyBuilder.append(param.getKey()).append('=').append(param.getValue());
+            if (iterator.hasNext()) {
+                bodyBuilder.append('&');
+            }
+        }
+        String body = bodyBuilder.toString();
+        byte[] bytes = body.getBytes();
+        HttpURLConnection conn = null;
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setUseCaches(false);
+            conn.setFixedLengthStreamingMode(bytes.length);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+            OutputStream out = conn.getOutputStream();
+            out.write(bytes);
+            out.close();
+            int status = conn.getResponseCode();
+            if (status != 200) {
+                throw new IOException("Errore " + status);
+            }
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
     }
 
 }
