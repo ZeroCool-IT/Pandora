@@ -57,10 +57,6 @@ public class HomeActivity extends ActionBarActivity {
     }
 
 
-
-
-
-
     /**
      * Dispatch onResume() to fragments.  Note that for better inter-operation
      * with older versions of the platform, at the point of this call the
@@ -73,12 +69,6 @@ public class HomeActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-/*        NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
-        SharedPreferences sp = SharedPreferencesProvider.getSharedPreferences(this);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putInt(Constraints.KEY_USER_DEFAULT_START_VIEW, 0);
-        editor.apply();*/
         if (dialog != null) {
             dialog.dismiss();
         }
@@ -92,6 +82,7 @@ public class HomeActivity extends ActionBarActivity {
 
     /**
      * Dispatch onPause() to fragments.
+     * Stops location update
      */
     @Override
     protected void onPause() {
@@ -100,6 +91,9 @@ public class HomeActivity extends ActionBarActivity {
         locationManager.removeUpdates(locationListener);
     }
 
+    /**
+     * Stops location update
+     */
     @Override
     protected void onStop() {
         Log.i("ZCLOG", "onStop() called");
@@ -107,6 +101,9 @@ public class HomeActivity extends ActionBarActivity {
         locationManager.removeUpdates(locationListener);
     }
 
+    /**
+     * Stops location update on activity destroy
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -114,6 +111,12 @@ public class HomeActivity extends ActionBarActivity {
         locationManager.removeUpdates(locationListener);
     }
 
+    /**
+     * Create the search option menu
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -149,6 +152,10 @@ public class HomeActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Save current location on Shared Preferences
+     * @param location is the location to save
+     */
     private void saveLocationToPreferences(Location location) {
         SharedPreferences sharedPreferences = getSharedPreferences(Constraints.PREF_FILE_NAME,
                 Context.MODE_PRIVATE);
@@ -157,12 +164,12 @@ public class HomeActivity extends ActionBarActivity {
         double longitude = location.getLongitude();
         editor.putString(Constraints.LATITUDE, Double.valueOf(latitude).toString());
         editor.putString(Constraints.LONGITUDE, Double.valueOf(longitude).toString());
-                /*Gson gson = new Gson();
-                String jLocation = gson.toJson(location);
-                editor.putString(PREF_LOCATION, jLocation);*/
         editor.apply();
     }
 
+    /**
+     * Request the location services
+     */
     private void requestLocationServices() {
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -182,10 +189,7 @@ public class HomeActivity extends ActionBarActivity {
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                /*if (status == LocationProvider.OUT_OF_SERVICE || status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
-                    Location location = locationManager.getLastKnownLocation(provider);
-                    saveLocationToPreferences(location);
-                }*/
+
             }
 
             @Override
@@ -204,8 +208,6 @@ public class HomeActivity extends ActionBarActivity {
                     Constraints.LOCATION_MIN_DISTANCE_UPDATE, locationListener);
         } else
             Log.e("ZCLOG", "The provider " + provider + " is not available!");
-        /*Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        saveLocationToPreferences(location);*/
     }
 
 }
