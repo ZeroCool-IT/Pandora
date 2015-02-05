@@ -14,7 +14,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -46,7 +45,7 @@ public class HomeActivity extends ActionBarActivity {
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String PROPERTY_APP_VERSION = "appVersion";
-    private static final String SERVER_URL = "";
+    private static final String SERVER_URL = "http://www.ilmiositodemo.altervista.org/app/notifiche/register.php";
     private static final int MAX_ATTEMPTS = 5;
     private static final int BACKOFF_MILLI_SECONDS = 2000;
     private static final Random random = new Random();
@@ -140,47 +139,8 @@ public class HomeActivity extends ActionBarActivity {
     }
 
     private void registerInBackground() {
-        new AsyncTask<Void, Void, String>() {
-
-
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "";
-                try {
-                    if (gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(context);
-                    }
-                    regid = gcm.register(SENDER_ID);
-                    msg = "Device registered, registration ID=" + regid;
-                    sendRegistrationIdToBackend(regid);
-                    storeRegistrationId(context, regid);
-
-                } catch (IOException ex) {
-                    msg = "Error :" + ex.getMessage();
-                    // If there is an error, don't just keep trying to register.
-                    // Require the user to click a button again, or perform
-                    // exponential back-off.
-                }
-
-                return msg;
-            }
-
-            /**
-             * <p>Runs on the UI thread after {@link #doInBackground}. The
-             * specified result is the value returned by {@link #doInBackground}.</p>
-             * <p/>
-             * <p>This method won't be invoked if the task was cancelled.</p>
-             *
-             * @param o The result of the operation computed by {@link #doInBackground}.
-             * @see #onPreExecute
-             * @see #doInBackground
-             * @see #onCancelled(Object)
-             */
-            @Override
-            protected void onPostExecute(String o) {
-                //mDisplay.append(msg + "\n");
-            }
-        }.execute(null, null, null);
+        GcmRegistrationAsyncTask task = new GcmRegistrationAsyncTask(this);
+        task.execute();
     }
 
     /**
@@ -401,5 +361,45 @@ public class HomeActivity extends ActionBarActivity {
         }
         return true;
     }
+
+/*    private class PerformRegistrationTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params) {
+            String msg = "";
+            try {
+                if (gcm == null) {
+                    gcm = GoogleCloudMessaging.getInstance(context);
+                }
+                regid = gcm.register(SENDER_ID);
+                msg = "Device registered, registration ID=" + regid;
+                sendRegistrationIdToBackend(regid);
+                storeRegistrationId(context, regid);
+
+            } catch (IOException ex) {
+                msg = "Error :" + ex.getMessage();
+                // If there is an error, don't just keep trying to register.
+                // Require the user to click a button again, or perform
+                // exponential back-off.
+            }
+
+            return msg;
+        }
+
+        *//**//**
+     * <p>Runs on the UI thread after {@link #doInBackground}. The
+     * specified result is the value returned by {@link #doInBackground}.</p>
+     * <p/>
+     * <p>This method won't be invoked if the task was cancelled.</p>
+     *
+     * @param o The result of the operation computed by {@link #doInBackground}.
+     * @see #onPreExecute
+     * @see #doInBackground
+     * @see #onCancelled(Object)
+     *//**//*
+        @Override
+        protected void onPostExecute(String o) {
+            //mDisplay.append(msg + "\n");
+        }
+    }*/
 
 }
