@@ -22,7 +22,6 @@ import it.zerocool.pandoracloud.registration.Registration;
  * Created by Marco Battisti on 05/02/2015.
  */
 class GcmRegistrationAsyncTask extends AsyncTask<Void, Void, String> {
-    // TODO: change to your own sender ID to Google Developers Console project number, as per instructions above
     private static final String SENDER_ID = "557298603924";
     private static Registration regService = null;
     private GoogleCloudMessaging gcm;
